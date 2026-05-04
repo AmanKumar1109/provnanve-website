@@ -190,7 +190,7 @@ const EventCard = ({ event, category, onClick }) => {
   };
 
   return (
-    <div className="shrink-0 w-260px sm:w-280px perspective:1000px">
+    <div className="shrink-0 w-[260px] sm:w-[280px] lg:w-[270px] xl:w-[275px] [perspective:1000px]">
       <div
         onClick={onClick}
         onMouseMove={handleMouseMove}
