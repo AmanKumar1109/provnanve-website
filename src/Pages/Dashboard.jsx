@@ -1,123 +1,273 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowLeft, User, Mail, Calendar, MapPin, Shirt } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { ArrowLeft, User, Mail, Phone, GraduationCap, Hash, Shirt, CheckCircle, Clock, Calendar, Building2, LogOut, ShieldCheck, ShieldX } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import heroVideo from '../assets/hero.mp4';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const Dashboard = () => {
     const { user, logout } = useAuth();
+    const navigate = useNavigate();
+    const [profile, setProfile] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            if (!user?.uid) {
+                setLoading(false);
+                return;
+            }
+            try {
+                const docRef = doc(db, 'users', user.uid);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    setProfile(docSnap.data());
+                }
+            } catch (err) {
+                console.error('Error fetching profile:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProfile();
+    }, [user]);
 
     const handleLogout = () => {
         logout();
+        navigate('/');
+    };
+
+    const branchMap = {
+        cse: 'Computer Science',
+        ece: 'Electronics & Communication',
+        ee: 'Electrical Engineering',
+        me: 'Mechanical Engineering',
+        ce: 'Civil Engineering',
+    };
+
+    const tshirtMap = {
+        s: 'Small (S)',
+        m: 'Medium (M)',
+        l: 'Large (L)',
+        xl: 'Extra Large (XL)',
+        xxl: 'XXL',
     };
 
     return (
-        <div className="relative min-h-screen flex items-center justify-center p-6 overflow-hidden bg-black">
-            <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover z-0 opacity-40"
-            >
-                <source src={heroVideo} type="video/mp4" />
-            </video>
+        <div className="min-h-screen bg-[#09000f] text-white">
+            {/* Top Nav Bar */}
+            <nav className="border-b border-white/10 bg-[#0e0018]/80 backdrop-blur-sm px-6 py-4 flex items-center justify-between">
+                <Link
+                    to="/"
+                    className="flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm font-medium"
+                >
+                    <ArrowLeft className="w-4 h-4" />
+                    Back to Home
+                </Link>
+                <span
+                    style={{ fontFamily: "'Orbitron', sans-serif" }}
+                    className="text-sm font-bold tracking-widest text-purple-400 uppercase"
+                >
+                    Provenance 6.0
+                </span>
+                <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 text-white/50 hover:text-red-400 transition-colors text-sm font-medium"
+                >
+                    <LogOut className="w-4 h-4" />
+                    Logout
+                </button>
+            </nav>
 
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0a0014]/90 via-[#0a0014]/70 to-[#0a0014]/90 z-0"></div>
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-500/10 via-transparent to-transparent z-0"></div>
+            <main className="max-w-4xl mx-auto px-6 py-10">
 
-            <Link to="/" className="fixed top-8 left-8 z-50 flex items-center gap-2 text-white/70 hover:text-white transition-colors group">
-                <div className="p-2 rounded-full bg-white/5 border border-white/10 group-hover:bg-purple-500/20 group-hover:border-purple-500/50 transition-all">
-                    <ArrowLeft className="w-5 h-5" />
+                {/* Page Title */}
+                <div className="mb-8">
+                    <h1 className="text-2xl font-bold text-white mb-1">Member Dashboard</h1>
+                    <p className="text-white/40 text-sm">
+                        Welcome back, <span className="text-purple-400">{profile?.name || user?.email || 'Member'}</span>
+                    </p>
                 </div>
-                <span className="font-medium">Back to Home</span>
-            </Link>
 
-            <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="relative z-10 w-full max-w-4xl"
-            >
-                <div className="glass-panel p-8 md:p-12 rounded-[2rem] border-purple-500/20 shadow-[0_0_50px_rgba(124,58,237,0.15)] overflow-hidden">
-                    <div className="text-center mb-10">
-                        <h1
-                            style={{ fontFamily: "'Luckiest Guy', system-ui" }}
-                            className="text-5xl md:text-6xl font-normal text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 via-yellow-400 via-cyan-400 to-purple-400 animate-gradient-text drop-shadow-[0_4px_10px_rgba(168,85,247,0.5)] mb-4 tracking-wider"
-                        >
-                            MEMBER DASHBOARD
-                        </h1>
-                        <div className="h-1 w-24 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto rounded-full"></div>
-                        <p className="mt-4 text-sm text-white/70">
-                            Welcome back, {user?.email || 'Member'}! Here's your event information.
+                {loading ? (
+                    <div className="flex items-center justify-center py-24">
+                        <div className="w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
+                    </div>
+                ) : (
+                    <div className="space-y-6">
+
+                        {/* Verification Status Banner */}
+                        <div className={`flex items-center gap-4 rounded-xl px-5 py-4 border ${
+                            profile?.isVerified
+                                ? 'bg-green-500/10 border-green-500/30'
+                                : 'bg-yellow-500/10 border-yellow-500/30'
+                        }`}>
+                            {profile?.isVerified ? (
+                                <>
+                                    <ShieldCheck className="w-6 h-6 text-green-400 shrink-0" />
+                                    <div>
+                                        <p className="font-semibold text-green-400 text-sm">Payment Verified</p>
+                                        <p className="text-white/50 text-xs mt-0.5">Your registration has been confirmed by the organizers.</p>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <ShieldX className="w-6 h-6 text-yellow-400 shrink-0" />
+                                    <div>
+                                        <p className="font-semibold text-yellow-400 text-sm">Verification Pending</p>
+                                        <p className="text-white/50 text-xs mt-0.5">Your payment is being reviewed. Please wait for confirmation.</p>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+
+                        {/* Profile Details Card */}
+                        <div className="bg-[#0e0018] border border-white/10 rounded-xl overflow-hidden">
+                            <div className="px-6 py-4 border-b border-white/10 flex items-center gap-3">
+                                <User className="w-5 h-5 text-purple-400" />
+                                <h2 className="font-semibold text-white">Profile Information</h2>
+                            </div>
+                            <div className="divide-y divide-white/5">
+
+                                {/* Name */}
+                                <div className="flex items-center gap-4 px-6 py-4">
+                                    <User className="w-4 h-4 text-purple-400/60 shrink-0" />
+                                    <div className="flex-1 flex items-center justify-between">
+                                        <span className="text-white/40 text-sm">Full Name</span>
+                                        <span className="text-white text-sm font-medium">{profile?.name || '—'}</span>
+                                    </div>
+                                </div>
+
+                                {/* Email */}
+                                <div className="flex items-center gap-4 px-6 py-4">
+                                    <Mail className="w-4 h-4 text-purple-400/60 shrink-0" />
+                                    <div className="flex-1 flex items-center justify-between">
+                                        <span className="text-white/40 text-sm">Email</span>
+                                        <span className="text-white text-sm font-medium">{profile?.email || user?.email || '—'}</span>
+                                    </div>
+                                </div>
+
+                                {/* Mobile */}
+                                <div className="flex items-center gap-4 px-6 py-4">
+                                    <Phone className="w-4 h-4 text-purple-400/60 shrink-0" />
+                                    <div className="flex-1 flex items-center justify-between">
+                                        <span className="text-white/40 text-sm">Mobile</span>
+                                        <span className="text-white text-sm font-medium">{profile?.mobile || '—'}</span>
+                                    </div>
+                                </div>
+
+                                {/* College */}
+                                <div className="flex items-center gap-4 px-6 py-4">
+                                    <Building2 className="w-4 h-4 text-purple-400/60 shrink-0" />
+                                    <div className="flex-1 flex items-center justify-between">
+                                        <span className="text-white/40 text-sm">College</span>
+                                        <span className="text-white text-sm font-medium">{profile?.collegeName || '—'}</span>
+                                    </div>
+                                </div>
+
+                                {/* Roll Number (only for within college) */}
+                                {profile?.collegeType === 'within' && (
+                                    <div className="flex items-center gap-4 px-6 py-4">
+                                        <Hash className="w-4 h-4 text-purple-400/60 shrink-0" />
+                                        <div className="flex-1 flex items-center justify-between">
+                                            <span className="text-white/40 text-sm">Roll Number</span>
+                                            <span className="text-white text-sm font-medium">{profile?.rollNumber || '—'}</span>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Branch */}
+                                <div className="flex items-center gap-4 px-6 py-4">
+                                    <GraduationCap className="w-4 h-4 text-purple-400/60 shrink-0" />
+                                    <div className="flex-1 flex items-center justify-between">
+                                        <span className="text-white/40 text-sm">Branch</span>
+                                        <span className="text-white text-sm font-medium">
+                                            {branchMap[profile?.branch] || profile?.branch || '—'}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* T-Shirt Size */}
+                                <div className="flex items-center gap-4 px-6 py-4">
+                                    <Shirt className="w-4 h-4 text-purple-400/60 shrink-0" />
+                                    <div className="flex-1 flex items-center justify-between">
+                                        <span className="text-white/40 text-sm">T-Shirt Size</span>
+                                        <span className="text-white text-sm font-medium">
+                                            {tshirtMap[profile?.tshirtSize] || profile?.tshirtSize || '—'}
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        {/* Registered Events Card */}
+                        <div className="bg-[#0e0018] border border-white/10 rounded-xl overflow-hidden">
+                            <div className="px-6 py-4 border-b border-white/10 flex items-center gap-3">
+                                <Calendar className="w-5 h-5 text-purple-400" />
+                                <h2 className="font-semibold text-white">My Registered Events</h2>
+                            </div>
+
+                            {profile?.registeredEvents && profile.registeredEvents.length > 0 ? (
+                                <div className="divide-y divide-white/5">
+                                    {profile.registeredEvents.map((event, idx) => (
+                                        <div key={idx} className="flex items-center gap-4 px-6 py-4">
+                                            <div className="w-2 h-2 rounded-full bg-purple-500 shrink-0" />
+                                            <span className="text-white/80 text-sm">{event}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="px-6 py-8 text-center">
+                                    <Calendar className="w-8 h-8 text-white/20 mx-auto mb-3" />
+                                    <p className="text-white/30 text-sm">No events registered yet.</p>
+                                    <p className="text-white/20 text-xs mt-1">Events will appear here once the organizers assign them.</p>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Payment Info */}
+                        <div className="bg-[#0e0018] border border-white/10 rounded-xl overflow-hidden">
+                            <div className="px-6 py-4 border-b border-white/10 flex items-center gap-3">
+                                <CheckCircle className="w-5 h-5 text-purple-400" />
+                                <h2 className="font-semibold text-white">Payment Details</h2>
+                            </div>
+                            <div className="divide-y divide-white/5">
+                                <div className="flex items-center gap-4 px-6 py-4">
+                                    <div className="flex-1 flex items-center justify-between">
+                                        <span className="text-white/40 text-sm">Payment App</span>
+                                        <span className="text-white text-sm font-medium capitalize">{profile?.paymentApp || '—'}</span>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-4 px-6 py-4">
+                                    <div className="flex-1 flex items-center justify-between">
+                                        <span className="text-white/40 text-sm">Transaction ID</span>
+                                        <span className="text-white text-sm font-medium font-mono">{profile?.transactionId || '—'}</span>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-4 px-6 py-4">
+                                    <div className="flex-1 flex items-center justify-between">
+                                        <span className="text-white/40 text-sm">Payment Status</span>
+                                        <span className={`text-sm font-semibold px-3 py-1 rounded-full ${
+                                            profile?.isVerified
+                                                ? 'text-green-400 bg-green-500/10'
+                                                : 'text-yellow-400 bg-yellow-500/10'
+                                        }`}>
+                                            {profile?.isVerified ? 'Verified' : 'Pending Review'}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Footer note */}
+                        <p className="text-center text-white/25 text-xs pb-4">
+                            Need help? Contact the organizers at provenance@rvscet.ac.in
                         </p>
+
                     </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div className="bg-black/40 border border-white/10 rounded-xl p-6">
-                            <div className="flex items-center gap-3 mb-4">
-                                <User className="w-6 h-6 text-purple-400" />
-                                <h3 className="text-xl font-semibold text-white">Profile Information</h3>
-                            </div>
-                            <div className="space-y-2 text-white/80">
-                                <p><span className="font-medium">Email:</span> {user?.email}</p>
-                                <p><span className="font-medium">Status:</span> Registered Member</p>
-                            </div>
-                        </div>
-
-                        <div className="bg-black/40 border border-white/10 rounded-xl p-6">
-                            <div className="flex items-center gap-3 mb-4">
-                                <Calendar className="w-6 h-6 text-purple-400" />
-                                <h3 className="text-xl font-semibold text-white">Event Details</h3>
-                            </div>
-                            <div className="space-y-2 text-white/80">
-                                <p><span className="font-medium">Event:</span> Provenance 2026</p>
-                                <p><span className="font-medium">Date:</span> Coming Soon</p>
-                                <p><span className="font-medium">Location:</span> RVS College</p>
-                            </div>
-                        </div>
-
-                        <div className="bg-black/40 border border-white/10 rounded-xl p-6">
-                            <div className="flex items-center gap-3 mb-4">
-                                <MapPin className="w-6 h-6 text-purple-400" />
-                                <h3 className="text-xl font-semibold text-white">Registration Status</h3>
-                            </div>
-                            <div className="space-y-2 text-white/80">
-                                <p><span className="font-medium">Status:</span> <span className="text-green-400">Confirmed</span></p>
-                                <p><span className="font-medium">T-Shirt Size:</span> Pending Selection</p>
-                            </div>
-                        </div>
-
-                        <div className="bg-black/40 border border-white/10 rounded-xl p-6">
-                            <div className="flex items-center gap-3 mb-4">
-                                <Shirt className="w-6 h-6 text-purple-400" />
-                                <h3 className="text-xl font-semibold text-white">Quick Actions</h3>
-                            </div>
-                            <div className="space-y-3">
-                                <Link
-                                    to="/signup"
-                                    className="block w-full bg-purple-600 hover:bg-purple-500 text-white font-medium py-2 px-4 rounded-lg transition-colors text-center"
-                                >
-                                    Sign Up for Events
-                                </Link>
-                                <button
-                                    onClick={handleLogout}
-                                    className="block w-full bg-red-600 hover:bg-red-500 text-white font-medium py-2 px-4 rounded-lg transition-colors"
-                                >
-                                    Logout
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="text-center">
-                        <p className="text-white/60 text-sm">
-                            Need help? Contact the event organizers for any questions about your registration.
-                        </p>
-                    </div>
-                </div>
-            </motion.div>
+                )}
+            </main>
         </div>
     );
 };

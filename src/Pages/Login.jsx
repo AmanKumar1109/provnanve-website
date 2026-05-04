@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Mail, Lock, Loader, AlertCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase';
 import heroVideo from '../assets/hero.mp4';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -30,13 +31,25 @@ const Login = () => {
         setLoading(true);
         try {
             const userCredential = await signInWithEmailAndPassword(auth, form.email, form.password);
-            // Update local auth context
+            const firebaseUser = userCredential.user;
+
+            // Fetch full profile from Firestore
+            let profileData = {};
+            try {
+                const docSnap = await getDoc(doc(db, 'users', firebaseUser.uid));
+                if (docSnap.exists()) {
+                    profileData = docSnap.data();
+                }
+            } catch (_) {}
+
+            // Store in auth context
             login({
-                email: userCredential.user.email,
-                uid: userCredential.user.uid,
-                displayName: userCredential.user.displayName
+                email: firebaseUser.email,
+                uid: firebaseUser.uid,
+                displayName: firebaseUser.displayName,
+                ...profileData,
             });
-            navigate('/');
+            navigate('/dashboard');
         } catch (err) {
             switch (err.code) {
                 case 'auth/user-not-found':

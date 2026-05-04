@@ -103,18 +103,10 @@ const Navbar = () => {
             <>
               <button
                 onClick={() => navigate('/dashboard')}
-                className="text-white/80 hover:text-white px-4 py-2.5 rounded-full border border-white/20 flex items-center gap-2"
+                className="bg-[#7c3aed] text-white px-6 py-2.5 rounded-full flex items-center gap-2"
               >
                 <LayoutDashboard className="w-4 h-4" />
                 Dashboard
-              </button>
-
-              <button
-                onClick={() => navigate('/signup')}
-                className="bg-[#7c3aed] text-white px-6 py-2.5 rounded-full flex items-center gap-2"
-              >
-                <UserPlus className="w-4 h-4" />
-                Sign Up
               </button>
             </>
           ) : (

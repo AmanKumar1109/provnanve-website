@@ -24,6 +24,7 @@ const Register = () => {
     paymentApp: '',
     otherPaymentApp: '',
     transactionId: '',
+    isVerified: false,
     paymentScreenshot: null,
   });
 
@@ -293,9 +294,9 @@ const Register = () => {
                     <div className="relative p-3 bg-white rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.1)]">
                       {/* Stylized QR Placeholder - User can replace src with their actual QR asset */}
                       <div className="w-40 h-40 bg-zinc-200 flex items-center justify-center rounded overflow-hidden">
-                        <img 
-                          src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=PROVENANCE_6.0_PAYMENT" 
-                          alt="Payment QR Code" 
+                        <img
+                          src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=PROVENANCE_6.0_PAYMENT"
+                          alt="Payment QR Code"
                           className="w-full h-full object-contain"
                         />
                       </div>
@@ -310,9 +311,9 @@ const Register = () => {
                   <div className="space-y-4">
                     <label className="block text-sm font-medium text-white/70">Upload Payment Screenshot / QR Code (JPG/PNG)</label>
                     <div className="relative group cursor-pointer">
-                      <input 
-                        type="file" 
-                        accept="image/*" 
+                      <input
+                        type="file"
+                        accept="image/*"
                         onChange={handleFileChange}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
                       />
@@ -363,17 +364,17 @@ const Register = () => {
 
                     <div className="relative group">
                       <Hash className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
-                      <input 
-                        name="transactionId" 
-                        type="text" 
-                        placeholder="Enter Transaction ID (e.g. TXN123456...)" 
-                        value={form.transactionId} 
-                        onChange={handleChange} 
-                        className={inputClass} 
+                      <input
+                        name="transactionId"
+                        type="text"
+                        placeholder="Enter Transaction ID (e.g. TXN123456...)"
+                        value={form.transactionId}
+                        onChange={handleChange}
+                        className={inputClass}
                       />
                       <div className="flex flex-col mt-2 px-1">
                         <span className="text-[10px] text-white/40 italic">You can find this in your payment app history</span>
-                        <button 
+                        <button
                           type="button"
                           onClick={() => setShowHelp(true)}
                           className="text-[11px] text-purple-400 hover:text-purple-300 underline mt-1 text-left flex items-center gap-1 transition-colors"
@@ -389,19 +390,19 @@ const Register = () => {
                 {/* Transaction ID Help Modal */}
                 <AnimatePresence>
                   {showHelp && (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm"
                     >
-                      <motion.div 
+                      <motion.div
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.9, opacity: 0 }}
                         className="bg-[#1a0b2e] border border-purple-500/30 rounded-3xl p-8 max-w-md w-full relative shadow-[0_0_50px_rgba(124,58,237,0.2)]"
                       >
-                        <button 
+                        <button
                           onClick={() => setShowHelp(false)}
                           className="absolute top-4 right-4 text-white/40 hover:text-white p-2 rounded-full hover:bg-white/5 transition-all"
                         >
