@@ -25,6 +25,12 @@ const YoutubeIcon = ({ size }) => (
   </svg>
 );
 
+const FacebookIcon = ({ size }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+  </svg>
+);
+
 const Footer = () => {
   const scrollToTop = () => {
     window.scrollTo({
@@ -33,10 +39,15 @@ const Footer = () => {
     });
   };
 
-  const socialLinks = [
-    { icon: InstagramIcon, href: '#', color: 'hover:text-pink-500 hover:shadow-[0_0_15px_rgba(236,72,153,0.5)]' },
-    { icon: LinkedinIcon, href: '#', color: 'hover:text-blue-500 hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]' },
-    { icon: YoutubeIcon, href: '#', color: 'hover:text-red-500 hover:shadow-[0_0_15px_rgba(239,68,68,0.5)]' },
+  const rvscetLinks = [
+    { icon: InstagramIcon, href: 'https://www.instagram.com/rvscetjsr/', color: 'hover:text-pink-500 hover:shadow-[0_0_15px_rgba(236,72,153,0.5)]' },
+    { icon: FacebookIcon, href: 'https://www.facebook.com/rvscet.engineering', color: 'hover:text-blue-500 hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]' },
+    { icon: LinkedinIcon, href: 'https://www.linkedin.com/school/rvs-college-of-engineering-and-technology/posts/?feedView=all', color: 'hover:text-blue-400 hover:shadow-[0_0_15px_rgba(96,165,250,0.5)]' },
+    { icon: YoutubeIcon, href: 'https://www.youtube.com/@rvscetjsr', color: 'hover:text-red-500 hover:shadow-[0_0_15px_rgba(239,68,68,0.5)]' },
+  ];
+
+  const provenanceLinks = [
+    { icon: InstagramIcon, href: 'https://www.instagram.com/provenance.rvscet/', color: 'hover:text-purple-500 hover:shadow-[0_0_15px_rgba(168,85,247,0.5)]' },
   ];
 
   const quickLinks = ['Home', 'Events', 'Register', 'Schedule', 'Contact'];
@@ -146,24 +157,51 @@ const Footer = () => {
               <span className="w-2 h-2 rounded-full bg-pink-500 shadow-[0_0_10px_#ec4899]"></span>
               Connect With Us
             </h3>
-            <p className="text-sm text-gray-400 mb-6">
-              Follow our official channels for the latest updates, announcements, and behind-the-scenes.
-            </p>
-            <div className="flex gap-4">
-              {socialLinks.map((social, idx) => {
-                const Icon = social.icon;
-                return (
-                  <motion.a
-                    key={idx}
-                    href={social.href}
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`w-10 h-10 rounded-full bg-gray-900 border border-gray-800 flex items-center justify-center text-gray-400 transition-all duration-300 ${social.color}`}
-                  >
-                    <Icon size={18} />
-                  </motion.a>
-                );
-              })}
+            
+            <div className="space-y-6">
+              <div>
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">RVSCET Official</p>
+                <div className="flex gap-3">
+                  {rvscetLinks.map((social, idx) => {
+                    const Icon = social.icon;
+                    return (
+                      <motion.a
+                        key={idx}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={`w-9 h-9 rounded-full bg-gray-900 border border-gray-800 flex items-center justify-center text-gray-400 transition-all duration-300 ${social.color}`}
+                      >
+                        <Icon size={16} />
+                      </motion.a>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Provenance 6.0</p>
+                <div className="flex gap-3">
+                  {provenanceLinks.map((social, idx) => {
+                    const Icon = social.icon;
+                    return (
+                      <motion.a
+                        key={idx}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={`w-9 h-9 rounded-full bg-gray-900 border border-gray-800 flex items-center justify-center text-gray-400 transition-all duration-300 ${social.color}`}
+                      >
+                        <Icon size={16} />
+                      </motion.a>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </div>
 

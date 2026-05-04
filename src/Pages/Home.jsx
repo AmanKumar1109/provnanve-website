@@ -4,6 +4,7 @@ import Hero from '../components/Hero';
 import About from '../components/About';
 import EventSection from '../components/EventSection';
 import GallerySection from '../components/GallerySection';
+import ClubSection from '../components/ClubSection';
 import Footer from '../components/Footer';
 
 const Home = () => {
@@ -15,6 +16,7 @@ const Home = () => {
         <About />
         <EventSection />
         <GallerySection />
+        <ClubSection />
       </main>
       <Footer />
     </div>
