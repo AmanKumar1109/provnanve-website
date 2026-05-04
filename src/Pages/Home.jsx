@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import About from '../components/About';
 import EventSection from '../components/EventSection';
+import GallerySection from '../components/GallerySection';
 
 const Home = () => {
   return (
@@ -12,6 +13,7 @@ const Home = () => {
         <Hero />
         <About />
         <EventSection />
+        <GallerySection />
       </main>
     </div>
   );
