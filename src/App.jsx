@@ -7,19 +7,36 @@ import Dashboard from './Pages/Dashboard';
 import Signup from './Pages/Signup';
 import CustomCursor from './components/CustomCursor';
 import { AuthProvider } from './contexts/AuthContext';
+import PageTransition from './components/PageTransition';
+import ReactLenis from 'lenis/react';
 
 function App() {
   return (
-    <AuthProvider>
-      <CustomCursor />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/signup" element={<Signup />} />
-      </Routes>
-    </AuthProvider>
+    <ReactLenis
+      root
+      options={{
+        lerp: 0.06,
+        duration: 1.4,
+        smoothWheel: true,
+        wheelMultiplier: 0.9,
+        smoothTouch: true,       // ✅ REQUIRED for mobile
+        touchMultiplier: 1.2,    // increase for noticeable effect
+        syncTouch: true
+      }}
+    >
+      <AuthProvider>
+        <CustomCursor />
+        <PageTransition>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/signup" element={<Signup />} />
+          </Routes>
+        </PageTransition>
+      </AuthProvider>
+    </ReactLenis>
   );
 }
 
