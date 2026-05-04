@@ -1,9 +1,8 @@
 import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { X, Clock, MapPin, Trophy, ChevronLeft, ChevronRight } from 'lucide-react';
 
 /* ═══════════════════════════════════
-   EVENT DATA
+    EVENT DATA
    ═══════════════════════════════════ */
 const categories = [
   {
@@ -69,28 +68,19 @@ const categories = [
 ];
 
 /* ═══════════════════════════════════
-   EVENT MODAL
+    EVENT MODAL
    ═══════════════════════════════════ */
 const EventModal = ({ event, category, onClose }) => {
   if (!event || !category) return null;
 
   return (
-    <motion.div
-      className="fixed inset-0 z-[9999] flex items-center justify-center px-4"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
 
       {/* Modal */}
-      <motion.div
-        className="relative w-full max-w-lg bg-zinc-900 border border-white/10 rounded-2xl p-6 sm:p-8 max-h-[85vh] overflow-y-auto"
-        initial={{ scale: 0.9, y: 30, opacity: 0 }}
-        animate={{ scale: 1, y: 0, opacity: 1 }}
-        exit={{ scale: 0.95, y: 10, opacity: 0 }}
-        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+      <div
+        className="relative w-full max-w-lg bg-zinc-900 border border-white/10 rounded-2xl p-6 sm:p-8 max-h-[85vh] overflow-y-auto shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top accent */}
@@ -99,7 +89,7 @@ const EventModal = ({ event, category, onClose }) => {
         {/* Close */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+          className="absolute top-4 right-4 p-1.5 rounded-lg bg-white/5 hover:bg-white/10"
         >
           <X className="w-4 h-4 text-white/50" />
         </button>
@@ -152,54 +142,101 @@ const EventModal = ({ event, category, onClose }) => {
 
         {/* CTA */}
         <button
-          className="w-full py-3 rounded-xl text-sm font-semibold text-white transition-all hover:brightness-110"
+          className="w-full py-3 rounded-xl text-sm font-semibold text-white hover:brightness-110"
           style={{ background: category.color }}
         >
           Register for {event.title}
         </button>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 };
 
 /* ═══════════════════════════════════
-   EVENT CARD
+    EVENT CARD
    ═══════════════════════════════════ */
-const EventCard = ({ event, category, onClick }) => (
-  <motion.div
-    onClick={onClick}
-    className="group flex-shrink-0 w-[260px] sm:w-[280px] bg-zinc-900/80 border border-white/[0.06] rounded-2xl p-5 cursor-pointer transition-all duration-300 hover:border-white/10 hover:shadow-lg hover:shadow-black/30"
-    whileHover={{ y: -4, scale: 1.02 }}
-    whileTap={{ scale: 0.98 }}
-  >
-    {/* Icon + Prize */}
-    <div className="flex items-start justify-between mb-4">
-      <span className="text-3xl group-hover:scale-110 transition-transform duration-300">{event.icon}</span>
-      <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-white/5 text-white/50" style={{ color: category.color }}>
-        {event.prize}
-      </span>
+const EventCard = ({ event, category, onClick }) => {
+  const [overlayPos, setOverlayPos] = useState({ x: 0, y: 0 });
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    setOverlayPos({ x, y });
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -16; // Slightly reduced tilt for better readability
+    const rotateY = ((x - centerX) / centerX) * 16;
+
+    setTilt({ x: rotateX, y: rotateY });
+  };
+
+  return (
+    <div className="shrink-0 w-260px sm:w-280px perspective:1000px">
+      <div
+        onClick={onClick}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => {
+          setIsHovering(false);
+          setTilt({ x: 0, y: 0 });
+        }}
+        className="group relative bg-[#0d0d0d] rounded-2xl p-5 cursor-pointer active:bg-zinc-800 border border-white/[0.06]"
+        style={{
+          transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+          transition: isHovering ? 'none' : 'transform 0.5s ease, border-color 0.3s',
+          transformStyle: 'preserve-3d',
+        }}
+      >
+        {/* ── BORDER GLOW LAYER ── */}
+        {/* We use a pseudo-element style div that sits exactly on the border */}
+        <div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(120px circle at ${overlayPos.x}px ${overlayPos.y}px, ${category.color}, transparent 80%)`,
+            WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+            WebkitMaskComposite: 'xor',
+            maskComposite: 'exclude',
+            padding: '1px', // Matches the border thickness
+          }}
+        />
+
+        {/* ── INNER SPOTLIGHT ── */}
+        <div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100"
+          style={{
+            background: `radial-gradient(200px circle at ${overlayPos.x}px ${overlayPos.y}px, ${category.color}15, transparent 40%)`,
+          }}
+        />
+
+        {/* ── CONTENT ── */}
+        <div className="relative z-10" style={{ transform: 'translateZ(25px)' }}>
+          <h3 className="text-base font-bold text-white mb-1.5">{event.title}</h3>
+          <p className="text-sm text-white/40 leading-relaxed line-clamp-2">
+            {event.desc}
+          </p>
+
+          <div className="mt-4 flex items-center justify-between">
+            <span className="text-[10px] text-white/30 tracking-wide">{event.time}</span>
+            <span 
+              className="text-[10px] font-medium tracking-wider uppercase" 
+              style={{ color: `${category.color}cc` }}
+            >
+              Details →
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
-
-    {/* Title */}
-    <h3 className="text-base font-bold text-white mb-1.5 group-hover:text-white transition-colors">{event.title}</h3>
-
-    {/* Description */}
-    <p className="text-sm text-white/40 leading-relaxed line-clamp-2 group-hover:text-white/55 transition-colors">
-      {event.desc}
-    </p>
-
-    {/* Bottom */}
-    <div className="mt-4 flex items-center justify-between">
-      <span className="text-[10px] text-white/30 tracking-wide">{event.time}</span>
-      <span className="text-[10px] font-medium tracking-wider uppercase transition-colors" style={{ color: `${category.color}80` }}>
-        Details →
-      </span>
-    </div>
-  </motion.div>
-);
+  );
+};
 
 /* ═══════════════════════════════════
-   MAIN: EVENT SECTION
+    MAIN: EVENT SECTION
    ═══════════════════════════════════ */
 const EventSection = () => {
   const [activeCategory, setActiveCategory] = useState('helix');
@@ -212,42 +249,30 @@ const EventSection = () => {
   const scrollCards = (direction) => {
     if (scrollRef.current) {
       const amount = 300;
-      scrollRef.current.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' });
+      scrollRef.current.scrollBy({ left: direction === 'left' ? -amount : amount });
     }
   };
 
   return (
     <section id="event" className="relative py-20 sm:py-28 px-4 sm:px-6 bg-[#0a0014]">
       {/* Subtle top glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-purple-600/5 rounded-full blur-[120px] pointer-events-none" />
+      {/* <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-purple-600/5 rounded-full blur-[120px] pointer-events-none" /> */}
 
       <div className="relative z-10 max-w-6xl mx-auto">
 
         {/* ── Section Header ── */}
-        <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
+        <div className="text-center mb-12">
           <span className="text-purple-400 text-xs font-bold tracking-[0.3em] uppercase">Explore</span>
           <h2 className="text-3xl sm:text-5xl font-bold text-white mt-2 mb-3">
-            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">Events</span>
+            Our <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-500">Events</span>
           </h2>
           <p className="text-white/40 text-sm sm:text-base max-w-md mx-auto">
             Choose a category and discover what awaits you at Provenance 6.0
           </p>
-        </motion.div>
+        </div>
 
         {/* ── Category Bar (Horizontal Scroll) ── */}
-        <motion.div
-          className="mb-10"
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
+        <div className="mb-10">
           <div className="flex gap-2 sm:gap-3 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory justify-start sm:justify-center">
             {categories.map((cat) => {
               const isActive = activeCategory === cat.id;
@@ -256,10 +281,10 @@ const EventSection = () => {
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
                   className={`
-                    flex-shrink-0 snap-start flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 border
+                    shrink-0 snap-start flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-sm font-medium border
                     ${isActive
                       ? 'text-white border-white/15 shadow-lg'
-                      : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/[0.03]'
+                      : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/3'
                     }
                   `}
                   style={isActive ? {
@@ -269,7 +294,7 @@ const EventSection = () => {
                   } : {}}
                 >
                   <span
-                    className="w-2 h-2 rounded-full transition-all duration-300"
+                    className="w-2 h-2 rounded-full"
                     style={{ background: isActive ? cat.color : 'rgba(255,255,255,0.15)' }}
                   />
                   <span>{cat.name}</span>
@@ -280,70 +305,55 @@ const EventSection = () => {
               );
             })}
           </div>
-        </motion.div>
+        </div>
 
         {/* ── Event Cards (Horizontal Scroll) ── */}
         <div className="relative">
           {/* Scroll arrows (desktop only) */}
           <button
             onClick={() => scrollCards('left')}
-            className="hidden lg:flex absolute -left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 items-center justify-center rounded-full bg-zinc-900/90 border border-white/10 text-white/50 hover:text-white hover:border-white/20 transition-all"
+            className="hidden lg:flex absolute -left-20 top-1/2 -translate-y-1/2 z-20 w-10 h-10 items-center justify-center rounded-full bg-zinc-900/90 border border-white/10 text-white/50 hover:text-white hover:border-white/20"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={() => scrollCards('right')}
-            className="hidden lg:flex absolute -right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 items-center justify-center rounded-full bg-zinc-900/90 border border-white/10 text-white/50 hover:text-white hover:border-white/20 transition-all"
+            className="hidden lg:flex absolute -right-20 top-1/2 -translate-y-1/2 z-20 w-10 h-10 items-center justify-center rounded-full bg-zinc-900/90 border border-white/10 text-white/50 hover:text-white hover:border-white/20"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
 
           {/* Cards container */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCategory}
-              ref={scrollRef}
-              className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-              transition={{ duration: 0.35 }}
-            >
-              {currentEvents.map((event, i) => (
-                <motion.div
-                  key={event.title}
-                  className="snap-start"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.08 }}
-                >
-                  <EventCard
-                    event={event}
-                    category={currentCategory}
-                    onClick={() => setSelectedEvent(event)}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
+          <div
+            ref={scrollRef}
+            className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
+          >
+            {currentEvents.map((event) => (
+              <div key={event.title} className="snap-start">
+                <EventCard
+                  event={event}
+                  category={currentCategory}
+                  onClick={() => setSelectedEvent(event)}
+                />
+              </div>
+            ))}
+          </div>
 
           {/* Fade edges */}
-          <div className="absolute top-0 left-0 w-8 h-full bg-gradient-to-r from-[#0a0014] to-transparent pointer-events-none z-10" />
-          <div className="absolute top-0 right-0 w-8 h-full bg-gradient-to-l from-[#0a0014] to-transparent pointer-events-none z-10" />
+          {/* <div className="absolute top-0 left-0 w-8 h-full bg-gradient-to-r from-[#0a0014] to-transparent pointer-events-none z-10" />
+          <div className="absolute top-0 right-0 w-8 h-full bg-gradient-to-l from-[#0a0014] to-transparent pointer-events-none z-10" /> */}
         </div>
 
       </div>
 
       {/* ── Modal ── */}
-      <AnimatePresence>
-        {selectedEvent && (
-          <EventModal
-            event={selectedEvent}
-            category={currentCategory}
-            onClose={() => setSelectedEvent(null)}
-          />
-        )}
-      </AnimatePresence>
+      {selectedEvent && (
+        <EventModal
+          event={selectedEvent}
+          category={currentCategory}
+          onClose={() => setSelectedEvent(null)}
+        />
+      )}
 
       {/* Hide scrollbar utility */}
       <style>{`
