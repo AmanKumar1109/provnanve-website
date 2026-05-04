@@ -1,15 +1,18 @@
 import React from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
+import { Routes, Route } from 'react-router-dom';
+import Home from './Pages/Home';
+import Register from './Pages/Register';
+import CustomCursor from './components/CustomCursor';
 
 function App() {
   return (
-    <div className="bg-[#0a0014] min-h-screen text-white selection:bg-purple-500/30">
-      <Navbar />
-      <main>
-        <Hero />
-      </main>
-    </div>
+    <>
+      <CustomCursor />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </>
   );
 }
 

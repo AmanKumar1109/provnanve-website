@@ -16,9 +16,24 @@
   }
 }
 
+@layer base {
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;700;900&family=Luckiest+Guy&display=swap');
+}
+
 @layer utilities {
   .text-glow {
     text-shadow: 0 0 10px rgba(217, 70, 239, 0.7), 0 0 20px rgba(139, 92, 246, 0.5);
+  }
+
+  @keyframes gradient-move {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .animate-gradient-text {
+    background-size: 200% auto;
+    animation: gradient-move 3s linear infinite;
   }
   
   .glass-panel {
@@ -31,5 +46,14 @@
 
   .neon-border {
     box-shadow: 0 0 10px rgba(139, 92, 246, 0.5), inset 0 0 10px rgba(217, 70, 239, 0.3);
+  }
+
+  @keyframes shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  .animate-shine {
+    animation: shine 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
 }
