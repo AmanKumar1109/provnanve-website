@@ -23,7 +23,7 @@ export default function LandingPage() {
                     <div>committee</div>
                     <div>sponsor</div>
                     <div>contact</div>
-                    <div className="text-white font-bold bg-[#c167ff] rounded-full px-4 py-2">register</div>
+                    <div className="text-white font-bold bg-[#c167ff] rounded-full px-4 py-2 z-[10]">register</div>
 
                 </div>
             </div>
