@@ -4,6 +4,7 @@ import Hero from '../components/Hero';
 import About from '../components/About';
 import EventSection from '../components/EventSection';
 import GallerySection from '../components/GallerySection';
+import Footer from '../components/Footer';
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
         <EventSection />
         <GallerySection />
       </main>
+      <Footer />
     </div>
   );
 };
