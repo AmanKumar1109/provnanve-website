@@ -9,6 +9,7 @@ import CustomCursor from './components/CustomCursor';
 import { AuthProvider } from './contexts/AuthContext';
 import PageTransition from './components/PageTransition';
 import ReactLenis from 'lenis/react';
+import ScrollProgress from './components/ScrollProgress';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
       }}
     >
       <AuthProvider>
+        <ScrollProgress />
         <CustomCursor />
         <PageTransition>
           <Routes>
