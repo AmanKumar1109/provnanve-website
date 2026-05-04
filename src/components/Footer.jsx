@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronUp, Mail, MapPin } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const InstagramIcon = ({ size }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -32,11 +33,41 @@ const FacebookIcon = ({ size }) => (
 );
 
 const Footer = () => {
+  const navigate = useNavigate();
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
+  };
+
+  const handleLinkClick = (e, destination) => {
+    e.preventDefault();
+    const dest = destination.toLowerCase();
+
+    // Route links
+    if (dest === 'register' || dest === 'login' || dest === 'contact') {
+      if (dest === 'contact') {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        return;
+      }
+      navigate(`/${dest}`);
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    // ID mapping for smooth scrolling
+    let targetId = dest;
+    if (dest === 'home') targetId = 'hero-section';
+    if (dest === 'events' || ['helix', 'tarangani', 'xpectra', 'panthers', 'circuitorn'].includes(dest)) {
+      targetId = 'event';
+    }
+
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const rvscetLinks = [
@@ -116,6 +147,7 @@ const Footer = () => {
                 <li key={idx}>
                   <a 
                     href={`#${link.toLowerCase()}`}
+                    onClick={(e) => handleLinkClick(e, link)}
                     className="group relative text-gray-400 hover:text-white transition-colors duration-300 inline-block"
                   >
                     {link}
@@ -137,6 +169,7 @@ const Footer = () => {
                 <li key={idx}>
                   <a 
                     href={`#${cat.name.toLowerCase()}`}
+                    onClick={(e) => handleLinkClick(e, cat.name)}
                     className="group flex items-center justify-between text-gray-400 hover:text-white transition-all duration-300"
                   >
                     <span className="font-medium group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400">
