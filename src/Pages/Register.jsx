@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, User, Mail, Phone, GraduationCap, Hash, Shirt, Lock, CheckCircle, AlertCircle, Loader, Image as ImageIcon, CreditCard, Wallet } from 'lucide-react';
+import { ArrowLeft, User, Mail, Phone, GraduationCap, Hash, Shirt, Lock, CheckCircle, AlertCircle, Loader, Image as ImageIcon, CreditCard, Wallet, HelpCircle, X, Info } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../firebase';
@@ -31,6 +32,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [showHelp, setShowHelp] = useState(false); // Added help modal state
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -361,10 +363,102 @@ const Register = () => {
 
                     <div className="relative group">
                       <Hash className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
-                      <input name="transactionId" type="text" placeholder="Enter Transaction ID" value={form.transactionId} onChange={handleChange} className={inputClass} />
+                      <input 
+                        name="transactionId" 
+                        type="text" 
+                        placeholder="Enter Transaction ID (e.g. TXN123456...)" 
+                        value={form.transactionId} 
+                        onChange={handleChange} 
+                        className={inputClass} 
+                      />
+                      <div className="flex flex-col mt-2 px-1">
+                        <span className="text-[10px] text-white/40 italic">You can find this in your payment app history</span>
+                        <button 
+                          type="button"
+                          onClick={() => setShowHelp(true)}
+                          className="text-[11px] text-purple-400 hover:text-purple-300 underline mt-1 text-left flex items-center gap-1 transition-colors"
+                        >
+                          <HelpCircle className="w-3 h-3" />
+                          Don't know Transaction ID? Click here
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
+
+                {/* Transaction ID Help Modal */}
+                <AnimatePresence>
+                  {showHelp && (
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm"
+                    >
+                      <motion.div 
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.9, opacity: 0 }}
+                        className="bg-[#1a0b2e] border border-purple-500/30 rounded-3xl p-8 max-w-md w-full relative shadow-[0_0_50px_rgba(124,58,237,0.2)]"
+                      >
+                        <button 
+                          onClick={() => setShowHelp(false)}
+                          className="absolute top-4 right-4 text-white/40 hover:text-white p-2 rounded-full hover:bg-white/5 transition-all"
+                        >
+                          <X className="w-6 h-6" />
+                        </button>
+
+                        <div className="flex items-center gap-3 mb-6">
+                          <div className="p-3 bg-purple-500/20 rounded-2xl">
+                            <Info className="w-6 h-6 text-purple-400" />
+                          </div>
+                          <h2 className="text-2xl font-bold text-white">How to find it?</h2>
+                        </div>
+
+                        <div className="space-y-6">
+                          <div className="space-y-2">
+                            <p className="text-white/80 text-sm leading-relaxed">
+                              Transaction ID is a unique number generated after every successful payment.
+                            </p>
+                          </div>
+
+                          <div className="space-y-3 bg-black/40 p-4 rounded-2xl border border-white/5">
+                            <h3 className="text-xs font-bold text-purple-400 uppercase tracking-widest">Example Formats</h3>
+                            <ul className="text-sm text-white/60 space-y-1 font-mono">
+                              <li>• TXN123456789</li>
+                              <li>• 8A7B9C123XYZ</li>
+                            </ul>
+                          </div>
+
+                          <div className="space-y-4">
+                            <h3 className="text-xs font-bold text-purple-400 uppercase tracking-widest">Where to check?</h3>
+                            <div className="grid grid-cols-1 gap-3">
+                              {[
+                                { app: "Google Pay", text: "Open payment → see 'UPI Transaction ID'" },
+                                { app: "PhonePe", text: "Tap payment → check 'Transaction ID'" },
+                                { app: "Paytm", text: "Open payment → view 'Order ID / UPI Ref No'" }
+                              ].map((guide, idx) => (
+                                <div key={idx} className="flex flex-col gap-1">
+                                  <span className="text-xs font-bold text-white/90">{guide.app}</span>
+                                  <span className="text-xs text-white/50">{guide.text}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => setShowHelp(false)}
+                            className="w-full py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-xl font-bold transition-all shadow-lg"
+                          >
+                            Got it!
+                          </motion.button>
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 {/* Submit Button */}
                 <motion.button
