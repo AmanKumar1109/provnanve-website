@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import About from '../components/About';
+import EventSection from '../components/EventSection';
 
 const Home = () => {
   return (
@@ -10,6 +11,7 @@ const Home = () => {
       <main>
         <Hero />
         <About />
+        <EventSection />
       </main>
     </div>
   );
