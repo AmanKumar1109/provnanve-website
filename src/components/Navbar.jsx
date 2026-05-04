@@ -44,12 +44,20 @@ const Navbar = () => {
           ))}
         </motion.div>
 
-        {/* Right side CTA (Desktop) */}
+        {/* Right side CTAs (Desktop) */}
         <motion.div 
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="hidden lg:block"
+          className="hidden lg:flex items-center gap-3"
         >
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate('/login')}
+            className="text-white/80 hover:text-white px-6 py-2.5 rounded-full font-medium border border-white/20 hover:border-purple-400/60 backdrop-blur-sm bg-white/5 transition-all"
+          >
+            Login
+          </motion.button>
           <motion.button 
             whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(124, 58, 237, 0.6)" }}
             whileTap={{ scale: 0.95 }}
@@ -99,6 +107,18 @@ const Navbar = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: navItems.length * 0.1 }}
+              onClick={() => {
+                setIsOpen(false);
+                navigate('/login');
+              }}
+              className="text-white border border-white/30 hover:border-purple-400 px-10 py-3 rounded-full font-bold text-xl active:scale-95 transition-all"
+            >
+              Login
+            </motion.button>
+            <motion.button 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: (navItems.length + 1) * 0.1 }}
               onClick={() => {
                 setIsOpen(false);
                 navigate('/register');
