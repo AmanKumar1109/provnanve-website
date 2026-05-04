@@ -22,7 +22,7 @@ const About = () => {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // 1. Text Content Entrance (Initial: opacity 0, x -50)
+      // 1. Text Content Entrance
       gsap.from(textRef.current, {
         opacity: 0,
         x: -50,
@@ -47,7 +47,7 @@ const About = () => {
         },
       });
 
-      // 3. Visual Element Scale Entrance
+      // 3. Visual Element Entrance (Initial Scale)
       gsap.from(visualRef.current, {
         opacity: 0,
         scale: 0.8,
@@ -59,7 +59,20 @@ const About = () => {
         },
       });
 
-      // 4. Infinite Floating Animation (Badge)
+      // 4. PARALLAX EFFECT (The Right Side Element)
+      // Moving it faster (negative Y) as the user scrolls down
+      gsap.to(visualRef.current, {
+        y: -150, // Adjust this value for intensity
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom", // Starts when top of section hits bottom of viewport
+          end: "bottom top",   // Ends when bottom of section hits top of viewport
+          scrub: true,         // Smoothly links animation to scroll position
+        },
+      });
+
+      // 5. Infinite Floating Animation (Badge)
       gsap.to(badgeRef.current, {
         y: -10,
         duration: 1.5,
@@ -68,7 +81,7 @@ const About = () => {
         ease: "power1.inOut",
       });
 
-      // 5. Infinite Rotation (Cyberpunk Circles)
+      // 6. Infinite Rotation (Cyberpunk Circles)
       gsap.to(circlesRef.current[0], {
         rotate: 360,
         duration: 20,
@@ -143,29 +156,29 @@ const About = () => {
             </div>
           </div>
 
-          {/* Visual Element / Card */}
-          <div ref={visualRef} className="relative">
+          {/* Visual Element / Card with Parallax Applied */}
+          <div ref={visualRef} className="relative will-change-transform">
             <div className="relative z-10 glass-panel p-2 rounded-[2.5rem] rotate-3 hover:rotate-0 transition-transform duration-700 overflow-hidden shadow-[0_0_50px_rgba(168,85,247,0.2)]">
-               <div className="aspect-square rounded-[2rem] bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
-                  
-                  {/* Rotating Circles */}
-                  <div 
-                    ref={el => circlesRef.current[0] = el}
-                    className="w-64 h-64 border-4 border-dashed border-purple-500/30 rounded-full" 
-                  />
-                  <div 
-                    ref={el => circlesRef.current[1] = el}
-                    className="absolute w-48 h-48 border-4 border-dashed border-blue-500/30 rounded-full" 
-                  />
+                <div className="aspect-square rounded-[2rem] bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center relative overflow-hidden">
+                   <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
+                   
+                   {/* Rotating Circles */}
+                   <div 
+                     ref={el => circlesRef.current[0] = el}
+                     className="w-64 h-64 border-4 border-dashed border-purple-500/30 rounded-full" 
+                   />
+                   <div 
+                     ref={el => circlesRef.current[1] = el}
+                     className="absolute w-48 h-48 border-4 border-dashed border-blue-500/30 rounded-full" 
+                   />
 
-                  <div className="relative text-center space-y-2">
-                    <div style={{ fontFamily: "'Luckiest Guy', cursive" }} className="text-8xl text-white opacity-10 leading-none">6.0</div>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                       <Rocket className="w-24 h-24 text-purple-400 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
-                    </div>
-                  </div>
-               </div>
+                   <div className="relative text-center space-y-2">
+                     <div style={{ fontFamily: "'Luckiest Guy', cursive" }} className="text-8xl text-white opacity-10 leading-none">6.0</div>
+                     <div className="absolute inset-0 flex items-center justify-center">
+                        <Rocket className="w-24 h-24 text-purple-400 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
+                     </div>
+                   </div>
+                </div>
             </div>
             
             {/* Floating Badge */}
