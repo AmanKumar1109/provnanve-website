@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, User, Mail, Phone, GraduationCap, Hash, Shirt, Lock, CheckCircle, AlertCircle, Loader } from 'lucide-react';
+import { ArrowLeft, User, Mail, Phone, GraduationCap, Hash, Shirt, Lock, CheckCircle, AlertCircle, Loader, Image as ImageIcon, CreditCard, Wallet } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
@@ -16,9 +16,17 @@ const Register = () => {
     password: '',
     mobile: '',
     rollNumber: '',
+    collegeType: 'within', // Added collegeType state
+    collegeName: '',       // Added collegeName state
     branch: '',
     tshirtSize: '',
+    paymentApp: '',
+    otherPaymentApp: '',
+    transactionId: '',
+    paymentScreenshot: null,
   });
+
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -29,13 +37,29 @@ const Register = () => {
     setError('');
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
+      setForm(prev => ({ ...prev, paymentScreenshot: file }));
+      setPreviewUrl(URL.createObjectURL(file));
+      setError('');
+    } else {
+      setError('Please upload a valid image file (JPG or PNG).');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
     // Basic validation
-    if (!form.name || !form.email || !form.password || !form.mobile || !form.rollNumber || !form.branch || !form.tshirtSize) {
-      setError('Please fill in all fields.');
+    const isWithinCollege = form.collegeType === 'within';
+    const hasRequiredFields = form.name && form.email && form.password && form.mobile && form.branch && form.tshirtSize;
+    const hasConditionalFields = isWithinCollege ? form.rollNumber : form.collegeName;
+    const hasPaymentFields = form.paymentScreenshot && form.paymentApp && form.transactionId && (form.paymentApp !== 'other' || form.otherPaymentApp);
+
+    if (!hasRequiredFields || !hasConditionalFields || !hasPaymentFields) {
+      setError('Please fill in all fields and upload payment screenshot.');
       return;
     }
     if (form.password.length < 6) {
@@ -55,9 +79,16 @@ const Register = () => {
         name: form.name,
         email: form.email,
         mobile: form.mobile,
-        rollNumber: form.rollNumber,
+        collegeType: form.collegeType,
+        rollNumber: form.collegeType === 'within' ? form.rollNumber : '',
+        collegeName: form.collegeType === 'outside' ? form.collegeName : 'RVSCET',
         branch: form.branch,
         tshirtSize: form.tshirtSize,
+        paymentApp: form.paymentApp === 'other' ? form.otherPaymentApp : form.paymentApp,
+        transactionId: form.transactionId,
+        // In a real app, you would upload the file to Firebase Storage first and save the URL here.
+        // For now, we are simulating the data structure.
+        paymentStatus: 'pending',
         registeredAt: serverTimestamp(),
       });
 
@@ -183,11 +214,32 @@ const Register = () => {
                     <input name="mobile" type="tel" placeholder="Enter Mobile Number" value={form.mobile} onChange={handleChange} className={inputClass} />
                   </div>
 
-                  {/* Roll Number */}
+                  {/* College Type Selection */}
                   <div className="relative group">
-                    <Hash className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
-                    <input name="rollNumber" type="text" placeholder="Enter Roll Number" value={form.rollNumber} onChange={handleChange} className={inputClass} />
+                    <GraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
+                    <select name="collegeType" value={form.collegeType} onChange={handleChange} className={`${inputClass} appearance-none pr-10`}>
+                      <option value="within">Within College</option>
+                      <option value="outside">Outside College</option>
+                    </select>
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                      <svg className="w-5 h-5 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
                   </div>
+
+                  {/* Conditional Rendering: Roll Number or College Name */}
+                  {form.collegeType === 'within' ? (
+                    <div className="relative group">
+                      <Hash className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
+                      <input name="rollNumber" type="text" placeholder="Enter Roll Number" value={form.rollNumber} onChange={handleChange} className={inputClass} />
+                    </div>
+                  ) : (
+                    <div className="relative group">
+                      <Hash className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
+                      <input name="collegeName" type="text" placeholder="Enter College Name" value={form.collegeName} onChange={handleChange} className={inputClass} />
+                    </div>
+                  )}
                 </div>
 
                 {/* Branch Dropdown */}
@@ -223,6 +275,94 @@ const Register = () => {
                     <svg className="w-5 h-5 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                     </svg>
+                  </div>
+                </div>
+
+                {/* --- Payment Section --- */}
+                <div className="pt-6 border-t border-white/10 space-y-6">
+                  <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                    <CreditCard className="w-6 h-6 text-purple-400" />
+                    Payment Verification
+                  </h3>
+
+                  {/* Admin QR Code Display */}
+                  <div className="flex flex-col items-center justify-center space-y-4 py-4 bg-white/5 rounded-2xl border border-white/10">
+                    <span className="text-sm font-bold tracking-widest text-purple-400 uppercase">Scan & Pay</span>
+                    <div className="relative p-3 bg-white rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                      {/* Stylized QR Placeholder - User can replace src with their actual QR asset */}
+                      <div className="w-40 h-40 bg-zinc-200 flex items-center justify-center rounded overflow-hidden">
+                        <img 
+                          src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=PROVENANCE_6.0_PAYMENT" 
+                          alt="Payment QR Code" 
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <div className="absolute -inset-1 border-2 border-purple-500/20 rounded-xl pointer-events-none animate-pulse" />
+                    </div>
+                    <p className="text-xs text-white/50 text-center px-4 italic">
+                      Scan this QR using any UPI app to make your payment.
+                    </p>
+                  </div>
+
+                  {/* File Upload */}
+                  <div className="space-y-4">
+                    <label className="block text-sm font-medium text-white/70">Upload Payment Screenshot / QR Code (JPG/PNG)</label>
+                    <div className="relative group cursor-pointer">
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={handleFileChange}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+                      />
+                      <div className={`w-full h-32 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center gap-2 transition-all ${previewUrl ? 'border-purple-500/50 bg-purple-500/5' : 'border-white/10 bg-white/5 hover:border-purple-500/30'}`}>
+                        {previewUrl ? (
+                          <div className="relative w-full h-full p-2">
+                            <img src={previewUrl} alt="Preview" className="w-full h-full object-contain rounded-lg" />
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity rounded-lg">
+                              <ImageIcon className="w-8 h-8 text-white" />
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                            <ImageIcon className="w-8 h-8 text-purple-400/50" />
+                            <span className="text-sm text-white/40">Click or drag to upload</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Payment App Dropdown & Details */}
+                  <div className="space-y-6">
+                    <div className="relative group">
+                      <Wallet className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
+                      <select name="paymentApp" value={form.paymentApp} onChange={handleChange} className={`${inputClass} appearance-none pr-10`}>
+                        <option value="" disabled>Select Payment App Used</option>
+                        <option value="gpay">Google Pay</option>
+                        <option value="phonepe">PhonePe</option>
+                        <option value="paytm">Paytm</option>
+                        <option value="bhim">BHIM</option>
+                        <option value="amazonpay">Amazon Pay</option>
+                        <option value="other">Other</option>
+                      </select>
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                        <svg className="w-5 h-5 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {form.paymentApp === 'other' && (
+                      <div className="relative group">
+                        <Wallet className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
+                        <input name="otherPaymentApp" type="text" placeholder="Enter Payment App Name" value={form.otherPaymentApp} onChange={handleChange} className={inputClass} />
+                      </div>
+                    )}
+
+                    <div className="relative group">
+                      <Hash className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
+                      <input name="transactionId" type="text" placeholder="Enter Transaction ID" value={form.transactionId} onChange={handleChange} className={inputClass} />
+                    </div>
                   </div>
                 </div>
 

@@ -33,9 +33,13 @@ const CustomCursor = () => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   
-  const springConfig = { damping: 35, stiffness: 600 };
+  // High-performance spring for silky smooth movement
+  const springConfig = { damping: 45, stiffness: 450, mass: 0.8 };
   const cursorX = useSpring(mouseX, springConfig);
   const cursorY = useSpring(mouseY, springConfig);
+
+  // Separate spring for smooth rotation transitions
+  const rotateSpring = useSpring(180, { damping: 25, stiffness: 200 });
 
   const FIXED_ROTATION = 180; // Tip points UP
 
@@ -45,8 +49,8 @@ const CustomCursor = () => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
 
-      // Trail logic
-      setTrail(prev => [{ x: e.clientX, y: e.clientY, id: now }, ...prev].slice(0, 4));
+      // Smooth trail with limited points for performance
+      setTrail(prev => [{ x: e.clientX, y: e.clientY, id: now }, ...prev].slice(0, 5));
 
       const target = e.target;
       const isClickable = 
@@ -73,19 +77,22 @@ const CustomCursor = () => {
     };
   }, [mouseX, mouseY]);
 
+  useEffect(() => {
+    rotateSpring.set(isPointer ? FIXED_ROTATION + 15 : FIXED_ROTATION);
+  }, [isPointer, rotateSpring]);
+
   return (
     <>
       <style>{`
-        body { cursor: none; }
-        button, a { cursor: none !important; }
+        body, button, a, select, input { cursor: none !important; }
         @media (max-width: 1024px) {
-          body, button, a { cursor: auto !important; }
+          body, button, a, select, input { cursor: auto !important; }
           .kunai-cursor-container { display: none; }
         }
       `}</style>
 
       <div className="kunai-cursor-container pointer-events-none fixed inset-0 z-[9999]">
-        {/* Shadow Clone Trails */}
+        {/* Shadow Clone Trails - Optimized for smoothness */}
         <AnimatePresence>
           {trail.map((point) => (
             <motion.div
@@ -95,13 +102,13 @@ const CustomCursor = () => {
                 left: point.x,
                 top: point.y,
                 translateX: '-50%',
-                translateY: '-5%', // Adjusted for tip at the top
+                translateY: '-5%',
                 rotate: FIXED_ROTATION,
               }}
-              initial={{ opacity: 0.1, scale: 0.5 }}
-              animate={{ opacity: 0, scale: 0.3 }}
+              initial={{ opacity: 0.08, scale: 0.4 }}
+              animate={{ opacity: 0, scale: 0.2 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
             >
               <KunaiSVG />
             </motion.div>
@@ -112,8 +119,8 @@ const CustomCursor = () => {
         {isClicking && (
           <motion.div
             initial={{ scale: 0, opacity: 0.8 }}
-            animate={{ scale: 3, opacity: 0 }}
-            className="fixed rounded-full border-2 border-[#d946ef]/50"
+            animate={{ scale: 4, opacity: 0 }}
+            className="fixed rounded-full border-2 border-[#d946ef]/50 z-40"
             style={{
               left: mouseX.get(),
               top: mouseY.get(),
@@ -132,29 +139,35 @@ const CustomCursor = () => {
             left: cursorX,
             top: cursorY,
             translateX: '-50%',
-            translateY: '-5%', // Now the sharp tip (which is at the top) is exactly at the mouse point
-            rotate: isPointer ? FIXED_ROTATION + 15 : FIXED_ROTATION,
-          }}
-          animate={{
-            scale: isPointer ? 0.6 : 0.5,
+            translateY: '-5%',
+            rotate: rotateSpring,
           }}
         >
-          {/* Theme Aura Glow */}
+          {/* Theme Aura Glow - Pulsing for extra smoothness */}
           <motion.div
-            className="absolute inset-0 rounded-full bg-gradient-to-r from-[#7c3aed]/40 to-[#d946ef]/40 blur-2xl scale-[2.5]"
+            className="absolute inset-0 rounded-full bg-gradient-to-r from-[#7c3aed]/30 to-[#d946ef]/30 blur-2xl scale-[2.5]"
             animate={{
               opacity: isPointer ? 1 : 0.4,
-              scale: isPointer ? 3 : 2.5,
+              scale: isPointer ? [2.5, 3, 2.5] : 2.5,
+            }}
+            transition={{ 
+              scale: { repeat: Infinity, duration: 2, ease: "easeInOut" },
+              opacity: { duration: 0.3 }
             }}
           />
           
           {/* Kunai Visual */}
           <motion.div
             animate={{
-              rotate: isClicking ? [0, -30, 0] : 0,
-              x: isClicking ? [0, 10, 0] : 0,
+              scale: isPointer ? 0.6 : 0.5,
+              rotate: isClicking ? [0, -35, 0] : 0,
+              x: isClicking ? [0, 15, 0] : 0,
             }}
-            transition={{ duration: 0.1 }}
+            transition={{ 
+              scale: { duration: 0.2 },
+              rotate: { duration: 0.12, ease: "circOut" },
+              x: { duration: 0.12, ease: "circOut" }
+            }}
           >
             <KunaiSVG />
           </motion.div>
