@@ -1,14 +1,16 @@
-import React from 'react'
-import { Route, Routes } from 'react-router-dom'
-import LandingPage from "./Pages/LandingPage"
+import React from 'react';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
 
-const App = () => {
+function App() {
   return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/about" element={<h1>About</h1>} />
-    </Routes>
-  )
+    <div className="bg-[#0a0014] min-h-screen text-white selection:bg-purple-500/30">
+      <Navbar />
+      <main>
+        <Hero />
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
