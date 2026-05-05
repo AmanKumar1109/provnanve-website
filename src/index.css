@@ -92,6 +92,15 @@
     animation: pulse 0.5s alternate infinite;
     pointer-events: none;
   }
+
+  /* Hide scrollbar utility */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 /* Smooths out the GSAP Clipping */

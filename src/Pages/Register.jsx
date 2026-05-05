@@ -125,27 +125,46 @@ const Register = () => {
   const inputClass =
     'w-full bg-black/40 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white placeholder:text-white/30 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20 transition-all';
 
-  const CustomSelect = ({ label, name, value, options, onChange, icon: Icon }) => {
+  const CustomSelect = ({ label, name, value, options, onChange, icon: Icon, isSearchable = false }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const selectedOption = options.find(opt => opt.value === value);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+    // Flatten options if they are grouped
+    const allOptions = options.flatMap(opt => opt.options || opt);
+    const selectedOption = allOptions.find(opt => opt.value === value);
+
+    const filteredOptions = options.map(group => {
+      if (group.options) {
+        const matchingOptions = group.options.filter(opt =>
+          opt.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (opt.keywords && opt.keywords.toLowerCase().includes(searchTerm.toLowerCase()))
+        );
+        return matchingOptions.length > 0 ? { ...group, options: matchingOptions } : null;
+      }
+      return (
+        group.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (group.keywords && group.keywords.toLowerCase().includes(searchTerm.toLowerCase()))
+      ) ? group : null;
+    }).filter(Boolean);
 
     return (
       <div className="relative">
         <div
           onClick={() => setIsOpen(!isOpen)}
-          className={`${inputClass} cursor-pointer flex items-center justify-between group`}
+          className={`${inputClass} cursor-pointer flex items-center justify-between group transition-all duration-300 ${isOpen ? 'border-purple-500/50 ring-1 ring-purple-500/20' : ''}`}
         >
           <div className="flex items-center gap-3">
-            {Icon && <Icon className="w-5 h-5 text-purple-400/50 group-hover:text-purple-400 transition-colors" />}
+            {Icon && <Icon className={`w-5 h-5 transition-colors duration-300 ${isOpen ? 'text-purple-400' : 'text-purple-400/50 group-hover:text-purple-400'}`} />}
             <span className={value ? 'text-white' : 'text-white/30'}>
               {selectedOption ? selectedOption.label : label}
             </span>
           </div>
           <motion.div
             animate={{ rotate: isOpen ? 180 : 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.3 }}
           >
-            <svg className="w-5 h-5 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`w-5 h-5 transition-colors ${isOpen ? 'text-purple-400' : 'text-white/30'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
             </svg>
           </motion.div>
@@ -156,27 +175,98 @@ const Register = () => {
             <>
               <div
                 className="fixed inset-0 z-40"
-                onClick={() => setIsOpen(false)}
+                onClick={() => { setIsOpen(false); setSearchTerm(''); setIsSearchOpen(false); }}
               />
               <motion.div
                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                className="absolute z-50 w-full mt-2 bg-[#1a0b2e]/95 backdrop-blur-xl border border-purple-500/30 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] overflow-hidden"
+                className="absolute z-50 w-full mt-2 bg-[#0d021a]/95 backdrop-blur-2xl border border-purple-500/30 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.6)]"
               >
-                {options.map((opt) => (
-                  <div
-                    key={opt.value}
-                    onClick={() => {
-                      onChange({ target: { name, value: opt.value } });
-                      setIsOpen(false);
-                    }}
-                    className={`px-6 py-3 text-sm cursor-pointer transition-colors hover:bg-purple-500/20 ${value === opt.value ? 'text-purple-400 bg-purple-500/10' : 'text-white/70 hover:text-white'
-                      }`}
-                  >
-                    {opt.label}
+                {isSearchable && (
+                  <div className="p-3 border-b border-white/5">
+                    {!isSearchOpen ? (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsSearchOpen(true);
+                        }}
+                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-white/40 hover:text-white/60 transition-colors bg-white/5 rounded-xl border border-white/5"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        Search Branch...
+                      </button>
+                    ) : (
+                      <div className="relative flex items-center gap-2">
+                        <input
+                          type="text"
+                          placeholder="Type to search..."
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          className="w-full bg-white/5 border border-purple-500/30 rounded-xl py-2 px-4 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-purple-500/50 transition-all"
+                          autoFocus
+                        />
+                        <button
+                          onClick={() => {
+                            setSearchTerm('');
+                            setIsSearchOpen(false);
+                          }}
+                          className="p-2 text-white/30 hover:text-white transition-colors"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
                   </div>
-                ))}
+                )}
+
+                <div className="scrollbar-hide">
+                  {filteredOptions.length > 0 ? (
+                    filteredOptions.map((item, idx) => {
+                      if (item.options) {
+                        return (
+                          <div key={idx} className="mb-2 last:mb-0">
+                            <div className="px-6 py-2 text-[10px] font-bold text-purple-400 uppercase tracking-[0.2em] bg-white/5 border-y border-white/5">
+                              {item.category}
+                            </div>
+                            {item.options.map((opt) => (
+                              <div
+                                key={opt.value}
+                                onClick={() => {
+                                  onChange({ target: { name, value: opt.value } });
+                                  setIsOpen(false);
+                                  setSearchTerm('');
+                                }}
+                                className={`px-6 py-3 text-sm cursor-pointer transition-all hover:bg-purple-500/20 ${value === opt.value ? 'text-purple-400 bg-purple-500/10' : 'text-white/70 hover:text-white'}`}
+                              >
+                                {opt.label}
+                              </div>
+                            ))}
+                          </div>
+                        );
+                      }
+                      return (
+                        <div
+                          key={item.value}
+                          onClick={() => {
+                            onChange({ target: { name, value: item.value } });
+                            setIsOpen(false);
+                            setSearchTerm('');
+                          }}
+                          className={`px-6 py-3 text-sm cursor-pointer transition-all hover:bg-purple-500/20 ${value === item.value ? 'text-purple-400 bg-purple-500/10' : 'text-white/70 hover:text-white'}`}
+                        >
+                          {item.label}
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className="px-6 py-8 text-center text-white/30 text-sm">
+                      No results found
+                    </div>
+                  )}
+                </div>
               </motion.div>
             </>
           )}
@@ -186,7 +276,7 @@ const Register = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-start justify-center p-6 py-20 overflow-y-auto bg-black">
+    <div className="relative w-full p-6 py-24 bg-black">
       {/* Background Video */}
       <video autoPlay loop muted playsInline className="fixed inset-0 w-full h-full object-cover z-0 opacity-40">
         <source src={heroVideo} type="video/mp4" />
@@ -209,7 +299,7 @@ const Register = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="relative z-10 w-full max-w-2xl"
+        className="relative z-10 w-full max-w-2xl mx-auto"
       >
         <div className="glass-panel p-8 md:p-12 rounded-[2rem] border-purple-500/20 shadow-[0_0_50px_rgba(124,58,237,0.15)]">
 
@@ -338,27 +428,43 @@ const Register = () => {
                   value={form.branch}
                   onChange={handleChange}
                   icon={GraduationCap}
+                  isSearchable={true}
                   options={[
-                    { value: 'cse', label: 'Computer Science & Engineering' },
-                    { value: 'cs-aiml', label: 'CS (AI & ML)' },
-                    { value: 'it', label: 'Information Technology' },
-                    { value: 'ece', label: 'Electronics & Communication' },
-                    { value: 'eee', label: 'Electrical & Electronics' },
-                    { value: 'ee', label: 'Electrical Engineering' },
-                    { value: 'me', label: 'Mechanical Engineering' },
-                    { value: 'ce', label: 'Civil Engineering' },
-                    { value: 'metallurgy', label: 'Metallurgical Engineering' },
-                    { value: 'production', label: 'Production Engineering' },
-                    { value: 'mining', label: 'Mining Engineering' },
-                    { value: 'bca', label: 'BCA' },
-                    { value: 'mca', label: 'MCA' },
-                    { value: 'bba', label: 'BBA' },
-                    { value: 'diploma-cse', label: 'Diploma (CSE)' },
-                    { value: 'diploma-me', label: 'Diploma (Mechanical)' },
-                    { value: 'diploma-ee', label: 'Diploma (Electrical)' },
-                    { value: 'diploma-ce', label: 'Diploma (Civil)' },
-                    { value: 'mechatronics', label: 'Mechatronics' },
-                    { value: 'other', label: 'Other' }
+                    {
+                      category: 'Engineering (B.Tech)',
+                      options: [
+                        { value: 'cse', label: 'Computer Science & Engineering', keywords: 'cse computer science cs' },
+                        { value: 'cs-aiml', label: 'CS (AI & ML)', keywords: 'ai ml aiml artificial intelligence machine learning' },
+                        { value: 'it', label: 'Information Technology', keywords: 'it info tech' },
+                        { value: 'ece', label: 'Electronics & Communication', keywords: 'ece electronics communication' },
+                        { value: 'eee', label: 'Electrical & Electronics', keywords: 'eee electrical electronics' },
+                        { value: 'ee', label: 'Electrical Engineering', keywords: 'ee electrical' },
+                        { value: 'me', label: 'Mechanical Engineering', keywords: 'me mechanical' },
+                        { value: 'ce', label: 'Civil Engineering', keywords: 'ce civil' },
+                        { value: 'metallurgy', label: 'Metallurgical Engineering', keywords: 'metallurgy metal' },
+                        { value: 'production', label: 'Production Engineering', keywords: 'production prod' },
+                        { value: 'mining', label: 'Mining Engineering', keywords: 'mining mine' },
+                      ]
+                    },
+                    {
+                      category: 'Diploma',
+                      options: [
+                        { value: 'diploma-cse', label: 'Diploma (CSE)', keywords: 'diploma cse cs computer science' },
+                        { value: 'diploma-me', label: 'Diploma (Mechanical)', keywords: 'diploma me mechanical' },
+                        { value: 'diploma-ee', label: 'Diploma (Electrical)', keywords: 'diploma ee electrical' },
+                        { value: 'diploma-ce', label: 'Diploma (Civil)', keywords: 'diploma ce civil' },
+                      ]
+                    },
+                    {
+                      category: 'Professional & Others',
+                      options: [
+                        { value: 'bca', label: 'BCA', keywords: 'bca bachelor computer' },
+                        { value: 'mca', label: 'MCA', keywords: 'mca master computer' },
+                        { value: 'bba', label: 'BBA', keywords: 'bba business admin' },
+                        { value: 'mechatronics', label: 'Mechatronics', keywords: 'mecha tronics' },
+                        { value: 'other', label: 'Other', keywords: 'other miscellaneous' }
+                      ]
+                    }
                   ]}
                 />
 
