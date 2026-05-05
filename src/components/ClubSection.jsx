@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 
 // Inline SVGs for Social Icons
@@ -86,11 +86,25 @@ const clubs = [
 
 // ... (Keep your Icon components and clubs array as they are)
 
+
 const ClubSection = () => {
   const containerRef = useRef(null);
-  const isDesktop = typeof window !== "undefined" && window.innerWidth >= 1024;
 
-  const [isMobile, setIsMobile] = React.useState(false);
+  // ✅ Responsive detection
+  const [isMobile, setIsMobile] = useState(false);
+
+  const scrollByAmount = (dir = 1) => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    // scroll ~1 card at a time (90% of container width)
+    const amount = el.clientWidth * 0.9 * dir;
+
+    el.scrollBy({
+      left: amount,
+      behavior: "smooth",
+    });
+  };
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 1024);
@@ -99,191 +113,189 @@ const ClubSection = () => {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  useEffect(() => {
-    if (!isMobile) return;
 
-    const el = containerRef.current;
-    if (!el) return;
-
-    const totalWidth = el.scrollWidth / 2;
-
-    const tween = gsap.to(el, {
-      scrollLeft: totalWidth,
-      duration: 15,
-      ease: "none",
-      repeat: -1,
-      modifiers: {
-        scrollLeft: (x) => parseFloat(x) % totalWidth
-      }
-    });
-
-    const pause = () => tween.pause();
-    const resume = () => tween.resume();
-
-    el.addEventListener("touchstart", pause);
-    el.addEventListener("touchend", resume);
-
-    return () => {
-      tween.kill();
-      el.removeEventListener("touchstart", pause);
-      el.removeEventListener("touchend", resume);
-    };
-  }, [isMobile]);
-
+  // ✅ Desktop hover animation
   const handleMouseEnter = (e) => {
     const target = e.currentTarget;
-    const cards = containerRef.current.querySelectorAll('.club-card');
+    const cards = containerRef.current.querySelectorAll(".club-card");
 
-    // 1. Expand the hovered card
     gsap.to(target, {
-      flex: 1.6, // Increase width share
+      flex: 1.6,
       borderRadius: "24px",
-      borderColor: "rgba(168, 85, 247, 0.4)",
       duration: 0.5,
-      ease: "power3.out"
+      ease: "power3.out",
     });
 
-    // 2. Shrink the siblings
     cards.forEach((card) => {
       if (card !== target) {
         gsap.to(card, {
-          flex: 0.85, // Reduce width share
-          opacity: 0.6, // Subtle fade for focus
+          flex: 0.85,
+          opacity: 0.6,
           duration: 0.5,
-          ease: "power3.out"
         });
       }
     });
   };
 
   const handleMouseLeave = () => {
-    const cards = containerRef.current.querySelectorAll('.club-card');
+    const cards = containerRef.current.querySelectorAll(".club-card");
 
-    // Reset everyone to equal width and pill shape
     gsap.to(cards, {
       flex: 1,
       borderRadius: "9999px",
-      backgroundColor: "#0d051a",
-      borderColor: "rgb(31, 41, 55)",
       opacity: 1,
       duration: 0.5,
-      ease: "power3.inOut"
+      ease: "power3.inOut",
     });
   };
 
   return (
-    <section className="relative bg-[#080012] py-16 px-4 overflow-hidden border-t border-purple-500/10">
-      <div className="container mx-auto max-w-7xl">
+    <section className="relative bg-[#080012] py-16 px-4 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+
+        {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 tracking-wider mb-2">
+          <h2 className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">
             ORGANIZING COMMITTEES
           </h2>
-          <p className="text-sm text-gray-400">The creative and technical minds behind PROVENANCE 6.0</p>
+          <p className="text-sm text-gray-400">
+            The creative and technical minds behind PROVENANCE 6.0
+          </p>
         </div>
 
-        <div
-          ref={containerRef}
-          className="
-  flex gap-4
+        <div className="relative">
 
-  overflow-x-auto lg:overflow-visible
-  scroll-smooth
+          {/* LEFT BUTTON */}
+          {isMobile && <button
+            onClick={() => scrollByAmount(-1)}
+            className="
+      hidden sm:flex
+      absolute left-0 top-1/2 -translate-y-1/2 z-20
 
-  snap-none
+      h-10 w-10 items-center justify-center
+      rounded-full bg-black/50 backdrop-blur
+      border border-white/10 text-white
 
-  px-4
+      hover:bg-black/70
+    "
+          >
+            ‹
+          </button>}
 
-  h-[420px] sm:h-[480px] lg:h-[550px]
-"
-        >
-          {(isMobile ? [...clubs, ...clubs] : clubs).map((club, idx) => {
-            // Extract the base color name (e.g., "blue" from "blue-400")
-            const baseColor = club.mask.split('-')[0];
+          {/* RIGHT BUTTON */}
+          {isMobile && <button
+            onClick={() => scrollByAmount(1)}
+            className="
+      hidden sm:flex
+      absolute right-0 top-1/2 -translate-y-1/2 z-20
 
-            return (
-              <div
-                key={idx}
-                onMouseEnter={!isMobile ? handleMouseEnter : undefined}
-                onMouseLeave={!isMobile ? handleMouseLeave : undefined}
-                className="
+      h-10 w-10 items-center justify-center
+      rounded-full bg-black/50 backdrop-blur
+      border border-white/10 text-white
+
+      hover:bg-black/70
+    "
+          >
+            ›
+          </button>
+}
+          {/* Container */}
+          <div
+            ref={containerRef}
+            className="
+              flex gap-4
+              overflow-x-auto lg:overflow-visible
+              scroll-smooth
+
+              snap-x snap-mandatory lg:snap-none
+
+              px-4
+              h-[420px] sm:h-[480px] lg:h-[550px]"
+          >
+
+            {clubs.map((club, idx) => {
+              const baseColor = club.mask.split("-")[0];
+
+              return (
+                <div
+                  key={idx}
+                  onMouseEnter={!isMobile ? handleMouseEnter : undefined}
+                  onMouseLeave={!isMobile ? handleMouseLeave : undefined}
+                  className="
                   club-card group relative flex flex-col cursor-pointer overflow-hidden
 
                   w-[85%] sm:w-[70%] md:w-[50%] lg:w-auto
-              flex-[0_0_85%] sm:flex-[0_0_70%] md:flex-[0_0_50%] lg:flex-1 lg:min-w-0
-
+                  flex-[0_0_85%] sm:flex-[0_0_70%] md:flex-[0_0_50%] lg:flex-1
                   snap-center lg:snap-none
-
                   border border-gray-800 rounded-3xl lg:rounded-full
                 "
-                style={{ willChange: "flex, border-radius" }}
-              >
-                {/* ================= IMAGE & DYNAMIC MASK ================= */}
-                <div className="relative w-full h-[50%] sm:h-[55%] overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1526394931762-90052e97b376?w=500&auto=format&fit=crop&q=60"
-                    alt={club.name}
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
-                  />
-
-                  {/* Gradient Mask: Fades from the dynamic bottom color to transparent */}
-                  <div
-                    className="absolute inset-0 transition-opacity duration-500"
-                    style={{
-                      background: `linear-gradient(to top, ${baseColor === 'blue' ? '#08143a' : baseColor === 'purple' ? '#1a0b2e' : baseColor === 'green' ? '#061a11' : baseColor === 'orange' ? '#241005' : '#1a0505'} 20%, transparent 80%)`
-                    }}
-                  />
-                </div>
-
-                {/* ================= DYNAMIC CONTENT SECTION ================= */}
-                <div
-                  className="
-                  flex flex-col justify-end 
-                  h-[50%] sm:h-[45%]
-
-                  px-4 sm:px-6 
-                  py-6 sm:py-8 
-                  text-center relative z-10
-                "
-                  style={{
-                    // Fallback to a dark version of the specific club color
-                    backgroundColor: `color-mix(in srgb, ${baseColor}, black 85%)`
-                  }}
                 >
-                  <p className="text-xs sm:text-sm text-gray-300 leading-relaxed line-clamp-3">
-                    {club.name}
-                  </p>
 
-                  <div className="mb-3">
-                    <span className="text-[10px] uppercase font-bold tracking-widest text-white/90 bg-white/10 px-3 py-1 rounded-full border border-white/10">
-                      {club.tagline}
-                    </span>
+                  {/* IMAGE */}
+                  <div className="relative w-full h-[50%] sm:h-[55%] overflow-hidden">
+                    <img
+                      src="https://images.unsplash.com/photo-1526394931762-90052e97b376?w=500&auto=format&fit=crop&q=60"
+                      alt={club.name}
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                    />
+
+                    {/* MASK */}
+                    <div
+                      className="absolute inset-0 transition-opacity duration-500"
+                      style={{
+                        background: `linear-gradient(to top, ${baseColor === "blue"
+                          ? "#08143a"
+                          : baseColor === "purple"
+                            ? "#1a0b2e"
+                            : baseColor === "green"
+                              ? "#061a11"
+                              : baseColor === "orange"
+                                ? "#241005"
+                                : "#1a0505"
+                          } 20%, transparent 80%)`,
+                      }}
+                    />
                   </div>
 
-                  <p className="text-xs text-gray-300 leading-relaxed line-clamp-3 mb-4">
-                    {club.desc}
-                  </p>
+                  {/* CONTENT */}
+                  <div
+                    className="
+                    flex flex-col justify-end
+                    h-[50%] sm:h-[45%]
+                    px-4 sm:px-6 py-6 sm:py-8
+                    text-center
+                  "
+                    style={{
+                      backgroundColor: `color-mix(in srgb, ${baseColor}, black 85%)`,
+                    }}
+                  >
+                    <p className="text-xs sm:text-sm text-gray-300">
+                      {club.name}
+                    </p>
 
-                  {/* Socials */}
-                  <div className="flex gap-4 justify-center">
-                    {club.socials.map((social, sIdx) => {
-                      const Icon = social.icon;
-                      return (
-                        <a
-                          key={sIdx}
-                          href={social.href}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-gray-400 hover:text-white transition-transform hover:scale-110"
-                        >
-                          <Icon size={20} />
-                        </a>
-                      );
-                    })}
+                    <div className="mb-2">
+                      <span className="text-[10px] uppercase text-white/90 bg-white/10 px-3 py-1 rounded-full">
+                        {club.tagline}
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-gray-400 line-clamp-3">
+                      {club.desc}
+                    </p>
+
+                    <div className="flex justify-center gap-3 mt-3">
+                      {club.socials.map((social, i) => {
+                        const Icon = social.icon;
+                        return <Icon key={i} size={18} />;
+                      })}
+                    </div>
                   </div>
+
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+
+          </div>
         </div>
       </div>
     </section>

@@ -5,7 +5,6 @@ import Register from './Pages/Register';
 import Login from './Pages/Login';
 import Dashboard from './Pages/Dashboard';
 import Signup from './Pages/Signup';
-import CustomCursor from './components/CustomCursor';
 import { AuthProvider } from './contexts/AuthContext';
 import PageTransition from './components/PageTransition';
 import ReactLenis from 'lenis/react';
@@ -27,7 +26,6 @@ function App() {
     >
       <AuthProvider>
         <ScrollProgress />
-        <CustomCursor />
         <PageTransition>
           <Routes>
             <Route path="/" element={<Home />} />
