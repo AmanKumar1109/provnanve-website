@@ -179,7 +179,7 @@ const ClubSection = () => {
           </div>
 
           <div className="mt-8 max-w-md mx-auto h-1.5 bg-gray-900 rounded-full overflow-hidden border border-white/5">
-            <div 
+            <div
               className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full transition-all duration-150 ease-out shadow-[0_0_10px_rgba(168,85,247,0.5)]"
               style={{ width: `${Math.max(5, scrollProgress)}%` }}
             />
