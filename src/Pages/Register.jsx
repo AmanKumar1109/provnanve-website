@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, User, Mail, Phone, GraduationCap, Hash, Shirt, Lock, CheckCircle, AlertCircle, Loader, Image as ImageIcon, CreditCard, Wallet, HelpCircle, X, Info } from 'lucide-react';
+import { ArrowLeft, User, Mail, Phone, GraduationCap, Hash, Shirt, Lock, CheckCircle, AlertCircle, Loader, CreditCard, Wallet, HelpCircle, X, Info } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -26,10 +26,7 @@ const Register = () => {
     paymentApp: '',
     otherPaymentApp: '',
     transactionId: '',
-    paymentScreenshot: null,
   });
-
-  const [previewUrl, setPreviewUrl] = useState(null);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -43,16 +40,6 @@ const Register = () => {
     setError('');
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
-      setForm(prev => ({ ...prev, paymentScreenshot: file }));
-      setPreviewUrl(URL.createObjectURL(file));
-      setError('');
-    } else {
-      setError('Please upload a valid image file (JPG or PNG).');
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,10 +49,10 @@ const Register = () => {
     const isWithinCollege = form.collegeType === 'within';
     const hasRequiredFields = form.name && form.email && form.password && form.mobile && form.branch && form.tshirtSize;
     const hasConditionalFields = isWithinCollege ? form.rollNumber : form.collegeName;
-    const hasPaymentFields = form.paymentScreenshot && form.paymentApp && form.transactionId && (form.paymentApp !== 'other' || form.otherPaymentApp);
+    const hasPaymentFields = form.paymentApp && form.transactionId && (form.paymentApp !== 'other' || form.otherPaymentApp);
 
     if (!hasRequiredFields || !hasConditionalFields || !hasPaymentFields) {
-      setError('Please fill in all fields and upload payment screenshot.');
+      setError('Please fill in all required fields.');
       return;
     }
     if (form.password.length < 6) {
@@ -107,8 +94,6 @@ const Register = () => {
         tshirtSize: form.tshirtSize,
         paymentApp: form.paymentApp === 'other' ? form.otherPaymentApp : form.paymentApp,
         transactionId: form.transactionId,
-        // In a real app, you would upload the file to Firebase Storage first and save the URL here.
-        // For now, we are simulating the data structure.
         paymentStatus: 'pending',
         registeredAt: serverTimestamp(),
       });

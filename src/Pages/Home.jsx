@@ -15,9 +15,9 @@ const Home = () => {
       <main>
         <Hero />
         <About />
-        <EventSection />
-        <GallerySection />
-        <ClubSection />
+        <div className="-mt-12"><EventSection /></div>
+        <div className="-mt-12"><GallerySection /></div>
+        <div className="-mt-12"><ClubSection /></div>
       </main>
       <ScrollToTop />
       <Footer />

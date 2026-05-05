@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useRef } from 'react';
-import { User, Download } from 'lucide-react';
+import { User, Download, LayoutDashboard } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -12,6 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
   const heroRef = useRef(null);
   const videoRef = useRef(null);
 
@@ -93,15 +95,26 @@ const Hero = () => {
         {/* Buttons */}
         <div className="flex flex-row items-center justify-center gap-3 sm:gap-6">
 
-          {/* Register */}
-          <button
-            onClick={() => navigate('/register')}
-            className="group relative flex items-center justify-center gap-2 bg-[#7c3aed] text-white px-5 sm:px-8 py-3 rounded-xl font-semibold text-base sm:text-lg transition-all w-auto overflow-hidden hover:scale-105 active:scale-95 hover:shadow-[0_0_25px_rgba(124,58,237,0.8)]"
-          >
-            <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:animate-shine" />
-            <User className="w-5 h-5 z-10" />
-            <span className="z-10">Register</span>
-          </button>
+          {/* Register / Dashboard */}
+          {isLoggedIn ? (
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="group relative flex items-center justify-center gap-2 bg-[#7c3aed] text-white px-5 sm:px-8 py-3 rounded-xl font-semibold text-base sm:text-lg transition-all w-auto overflow-hidden hover:scale-105 active:scale-95 hover:shadow-[0_0_25px_rgba(124,58,237,0.8)]"
+            >
+              <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:animate-shine" />
+              <LayoutDashboard className="w-5 h-5 z-10" />
+              <span className="z-10">Dashboard</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate('/register')}
+              className="group relative flex items-center justify-center gap-2 bg-[#7c3aed] text-white px-5 sm:px-8 py-3 rounded-xl font-semibold text-base sm:text-lg transition-all w-auto overflow-hidden hover:scale-105 active:scale-95 hover:shadow-[0_0_25px_rgba(124,58,237,0.8)]"
+            >
+              <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:animate-shine" />
+              <User className="w-5 h-5 z-10" />
+              <span className="z-10">Register</span>
+            </button>
+          )}
 
           {/* Brochure */}
           <button
