@@ -68,12 +68,22 @@ const clubs = [
     socials: [
       { icon: InstagramIcon, href: "https://www.instagram.com/provenance.rvscet/" }
     ]
+  },
+  {
+    name: "RVS PANTHERS",
+    tagline: "Sports",
+    desc: "The powerhouse of athletic excellence, fostering teamwork, sportsmanship, and physical endurance.",
+    color: "from-red-400 to-orange-400",
+    borderGlow: "group-hover:shadow-[0_0_20px_rgba(248,113,113,0.4)]",
+    socials: [
+      { icon: InstagramIcon, href: "https://www.instagram.com/panthers.rvscet/" }
+    ]
   }
 ];
 
 const ClubSection = () => {
   return (
-    <section className="relative bg-[#080012] py-16 px-6 overflow-hidden border-t border-purple-500/10">
+    <section className="relative bg-[#080012] py-16 px-4 sm:px-6 overflow-hidden border-t border-purple-500/10">
       <div className="container mx-auto relative z-10 max-w-6xl">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 tracking-wider mb-2">
@@ -82,53 +92,67 @@ const ClubSection = () => {
           <p className="text-sm text-gray-400">The creative and technical minds behind PROVENANCE 6.0</p>
         </div>
 
-        {/* Compact Grid Layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {clubs.map((club, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1, duration: 0.4 }}
-              viewport={{ once: true }}
-              className={`group relative bg-[#0d051a] border border-gray-800 rounded-xl p-5 flex flex-col h-full transition-all duration-300 hover:border-gray-600 ${club.borderGlow}`}
-            >
-              {/* Colored Top Bar */}
-              <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${club.color} rounded-t-xl opacity-70 group-hover:opacity-100 transition-opacity`}></div>
+        {/* Scrollable Layout */}
+        <div className="relative">
+          {/* Fading Edges for Scroll indication */}
+          <div className="absolute top-0 left-0 w-4 sm:w-8 h-full bg-gradient-to-r from-[#080012] to-transparent pointer-events-none z-10" />
+          <div className="absolute top-0 right-0 w-4 sm:w-8 h-full bg-gradient-to-l from-[#080012] to-transparent pointer-events-none z-10" />
 
-              <div className="flex-grow">
-                <h3 className={`text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r ${club.color} mb-1`}>
-                  {club.name}
-                </h3>
-                <span className="inline-block text-[10px] font-semibold tracking-wider text-gray-300 bg-gray-800/50 px-2 py-0.5 rounded-full mb-3">
-                  {club.tagline}
-                </span>
-                <p className="text-xs text-gray-400 leading-relaxed line-clamp-4">
-                  {club.desc}
-                </p>
-              </div>
+          <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-12 pt-4 px-4 sm:px-0 -mx-4 sm:mx-0 snap-x snap-mandatory scrollbar-hide items-stretch overscroll-x-contain">
+            {clubs.map((club, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1, duration: 0.4 }}
+                viewport={{ once: true }}
+                className={`snap-start shrink-0 w-[270px] sm:w-[320px] group relative bg-[#0d051a] border border-gray-800 rounded-xl p-6 sm:p-7 flex flex-col transition-all duration-300 hover:border-gray-500 hover:-translate-y-2 ${club.borderGlow}`}
+              >
+                {/* Colored Top Bar */}
+                <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${club.color} rounded-t-xl opacity-70 group-hover:opacity-100 transition-opacity`}></div>
 
-              {/* Social Links Footer */}
-              <div className="mt-5 pt-4 border-t border-gray-800/50 flex items-center gap-3">
-                {club.socials.map((social, sIdx) => {
-                  const Icon = social.icon;
-                  return (
-                    <a
-                      key={sIdx}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-gray-500 hover:text-white transition-colors duration-200"
-                    >
-                      <Icon size={16} />
-                    </a>
-                  );
-                })}
-              </div>
-            </motion.div>
-          ))}
+                <div className="flex-grow">
+                  <h3 className={`text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${club.color} mb-1 pb-1 inline-block`}>
+                    {club.name}
+                  </h3>
+                  <div className="mb-3">
+                    <span className="inline-block text-[10px] font-semibold tracking-wider text-gray-300 bg-gray-800/80 px-2 py-0.5 rounded-full">
+                      {club.tagline}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    {club.desc}
+                  </p>
+                </div>
+
+                {/* Social Links Footer */}
+                <div className="mt-6 pt-4 border-t border-gray-800/50 flex items-center gap-3">
+                  {club.socials.map((social, sIdx) => {
+                    const Icon = social.icon;
+                    return (
+                      <a
+                        key={sIdx}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-500 hover:text-white transition-colors duration-200"
+                      >
+                        <Icon size={18} />
+                      </a>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
+
+      {/* Hide scrollbar utility */}
+      <style>{`
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
     </section>
   );
 };
