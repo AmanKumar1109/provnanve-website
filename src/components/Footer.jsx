@@ -261,15 +261,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Scroll to Top Button */}
-        <motion.button
-          onClick={scrollToTop}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className="absolute right-6 bottom-6 md:bottom-12 w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 to-blue-600 text-white flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-shadow z-50 border border-white/10"
-        >
-          <ChevronUp size={24} />
-        </motion.button>
       </div>
     </footer>
   );

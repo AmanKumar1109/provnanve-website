@@ -95,6 +95,14 @@ const categories = [
     EVENT MODAL
    ═══════════════════════════════════ */
 const EventModal = ({ event, category, onClose }) => {
+  React.useEffect(() => {
+    // Prevent background scrolling when modal is open
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
   if (!event || !category) return null;
 
   return (

@@ -6,10 +6,11 @@ import EventSection from '../components/EventSection';
 import GallerySection from '../components/GallerySection';
 import ClubSection from '../components/ClubSection';
 import Footer from '../components/Footer';
+import ScrollToTop from '../components/ScrollToTop';
 
 const Home = () => {
   return (
-    <div className="bg-[#0a0014] min-h-screen text-white selection:bg-purple-500/30">
+    <div className="bg-[#0a0014] min-h-screen text-white selection:bg-purple-500/30 relative">
       <Navbar />
       <main>
         <Hero />
@@ -18,6 +19,7 @@ const Home = () => {
         <GallerySection />
         <ClubSection />
       </main>
+      <ScrollToTop />
       <Footer />
     </div>
   );
