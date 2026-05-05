@@ -25,7 +25,6 @@ const Register = () => {
     paymentApp: '',
     otherPaymentApp: '',
     transactionId: '',
-    isVerified: false,
     paymentScreenshot: null,
   });
 
@@ -175,7 +174,7 @@ const Register = () => {
             >
               <CheckCircle className="w-20 h-20 text-green-400" />
               <h2 className="text-3xl font-bold text-white">Registration Successful!</h2>
-              
+
               {/* Registration ID Display */}
               <div className="w-full max-w-sm bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl px-5 py-4">
                 <p className="text-xs font-bold tracking-widest uppercase text-purple-400 mb-2">Your Registration ID</p>
@@ -186,17 +185,16 @@ const Register = () => {
                     setCopiedRegId(true);
                     setTimeout(() => setCopiedRegId(false), 2000);
                   }}
-                  className={`mx-auto flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
-                    copiedRegId
+                  className={`mx-auto flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${copiedRegId
                       ? 'bg-green-500/20 text-green-400 border border-green-500/30'
                       : 'bg-white/5 text-white/60 border border-white/10 hover:bg-purple-500/20 hover:text-purple-400'
-                  }`}
+                    }`}
                 >
                   {copiedRegId ? 'Copied!' : 'Copy ID'}
                 </button>
                 <p className="text-xs text-white/40 mt-3">Save this ID — you'll need it for event check-in.</p>
               </div>
-              
+
               <p className="text-white/40 text-sm">Redirecting to login page in 5 seconds…</p>
             </motion.div>
           ) : (
