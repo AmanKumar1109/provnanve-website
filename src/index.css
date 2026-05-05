@@ -56,6 +56,42 @@
   .animate-shine {
     animation: shine 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
+
+  @keyframes theme-glow {
+    0% {
+      background-position: 0% 50%;
+      box-shadow: 0 0 10px #a855f7, 0 0 20px #ec4899;
+    }
+    50% {
+      background-position: 100% 50%;
+      box-shadow: 0 0 15px #3b82f6, 0 0 30px #a855f7;
+    }
+    100% {
+      background-position: 0% 50%;
+      box-shadow: 0 0 10px #a855f7, 0 0 20px #ec4899;
+    }
+  }
+
+  .theme-bar {
+    background: linear-gradient(90deg, #3b82f6, #a855f7, #ec4899, #3b82f6);
+    background-size: 200% auto;
+    animation: theme-glow 2s linear infinite;
+  }
+  
+  .theme-bar::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff, 0 0 20px #a855f7, 0 0 30px #ec4899;
+    animation: pulse 0.5s alternate infinite;
+    pointer-events: none;
+  }
 }
 
 /* Smooths out the GSAP Clipping */

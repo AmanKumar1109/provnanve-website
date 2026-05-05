@@ -11,29 +11,29 @@ const categories = [
     label: 'Tech & AI Club',
     color: '#38bdf8',
     events: [
-      { title: 'Eminence in Prompt', desc: 'AI image generation challenge using advanced Prompt Engineering.', icon: '🎨', prize: 'Exciting Prizes', time: 'Day 1 — 10:00 AM', venue: 'AI Lab', rules: ['Individual event', 'Bring your own laptop', 'Time limit: 1 hour'] },
-      { title: 'Shinobi Script', desc: 'DSA Coding Battle (C, C++, Java, Python). Prove your algorithmic might.', icon: '🥷', prize: 'Exciting Prizes', time: 'Day 1 — 12:00 PM', venue: 'Computer Lab', rules: ['Individual event', 'Platform: HackerRank', 'No internet access'] },
-      { title: 'Mangaka\'s Edge', desc: 'Graphic Design competition (Poster & Logo creation).', icon: '🖌️', prize: 'Exciting Prizes', time: 'Day 1 — 2:00 PM', venue: 'Design Studio', rules: ['Individual event', 'Software: Photoshop/Illustrator', 'Theme given on spot'] },
-      { title: 'Hunter Rank: PRO', desc: 'ATS-based Resume Building competition.', icon: '📜', prize: 'Exciting Prizes', time: 'Day 2 — 10:00 AM', venue: 'Seminar Hall', rules: ['Individual event', 'Bring details/portfolio', 'Judged on ATS score'] },
-      { title: 'Frag-Ops: CS:GO Elite', desc: '5v5 FPS Tournament. Tactical supremacy.', icon: '🔫', prize: 'Exciting Prizes', time: 'Day 1 — 11:00 AM', venue: 'Gaming Arena', rules: ['Team of 5', 'Bring your peripherals', 'Knockout format'] },
-      { title: 'Trigger-Point: BGMI Arena', desc: 'Battle Royale Mobile Gaming. Survive till the end.', icon: '📱', prize: 'Exciting Prizes', time: 'Day 2 — 11:00 AM', venue: 'Main Auditorium', rules: ['Squad of 4', 'Eradicate hackers', 'Multiple room matches'] },
-      { title: 'Colors of Konoha', desc: 'Anime Rangoli Competition. Bring the ninja world to life with colors.', icon: '🌸', prize: 'Exciting Prizes', time: 'Day 2 — 10:00 AM', venue: 'Campus Corridor', rules: ['Team of 2-3', 'Bring your own colors', 'Anime theme mandatory'] },
-      { title: 'Sage Mode: Trivia', desc: 'Tech + Anime Quiz. Test your ultimate otaku and geek knowledge.', icon: '🧠', prize: 'Exciting Prizes', time: 'Day 2 — 2:00 PM', venue: 'Seminar Hall', rules: ['Team of 2', 'Buzzer rounds', 'Tech and Anime questions'] },
+      { title: 'Eminence in Prompt', desc: 'AI image generation challenge using advanced Prompt Engineering.', icon: '🎨', prize: 'Exciting Prizes', time: 'Day 2 — 12:00 PM - 1:00 PM', venue: 'AI Lab', rules: ['Individual event', 'Bring your own laptop', 'Time limit: 1 hour'] },
+      { title: 'Shinobi Script', desc: 'DSA Coding Battle (C, C++, Java, Python). Prove your algorithmic might.', icon: '🥷', prize: 'Exciting Prizes', time: 'Day 1 — 2:00 PM - 3:30 PM', venue: 'Computer Lab', rules: ['Individual event', 'Platform: HackerRank', 'No internet access'] },
+      { title: 'Mangaka\'s Edge', desc: 'Graphic Design competition (Dojo Design).', icon: '🖌️', prize: 'Exciting Prizes', time: 'Day 2 — 11:00 AM - 12:00 PM', venue: 'Design Studio', rules: ['Individual event', 'Software: Photoshop/Illustrator', 'Theme given on spot'] },
+      { title: 'Hunter Rank: PRO', desc: 'ATS-based Resume Building competition.', icon: '📜', prize: 'Exciting Prizes', time: 'Day 1 — 10:00 AM - 11:00 AM', venue: 'Seminar Hall', rules: ['Individual event', 'Bring details/portfolio', 'Judged on ATS score'] },
+      { title: 'Frag-Ops: PC Gaming', desc: 'PC Gaming Tournament. Tactical supremacy.', icon: '🔫', prize: 'Exciting Prizes', time: 'Day 2 — 11:00 AM - 12:00 PM', venue: 'Gaming Arena', rules: ['Team of 5', 'Bring your peripherals', 'Knockout format'] },
+      { title: 'Trigger-Point: BGMI Arena', desc: 'Battle Royale Mobile Gaming. Survive till the end.', icon: '📱', prize: 'Exciting Prizes', time: 'Day 1 — 2:00 PM - 3:30 PM', venue: 'Main Auditorium', rules: ['Squad of 4', 'Eradicate hackers', 'Multiple room matches'] },
+      { title: 'Colors of Konoha', desc: 'Anime Rangoli Competition. Bring the ninja world to life with colors.', icon: '🌸', prize: 'Exciting Prizes', time: 'Day 1 — 10:00 AM - 11:00 AM', venue: 'Campus Corridor', rules: ['Team of 2-3', 'Bring your own colors', 'Anime theme mandatory'] },
+      { title: 'Sage Mode: Trivia', desc: 'Tech + Anime Quiz. Test your ultimate otaku and geek knowledge.', icon: '🧠', prize: 'Exciting Prizes', time: 'Day 1 — 11:00 AM - 11:30 AM', venue: 'Seminar Hall', rules: ['Team of 2', 'Buzzer rounds', 'Tech and Anime questions'] },
     ],
   },
   {
-    id: 'tarangani',
-    name: 'TARANGANI',
+    id: 'tarangini',
+    name: 'TARANGINI',
     label: 'Cultural Club',
     color: '#fb923c',
     events: [
-      { title: 'Paper Dance', desc: 'Dance on a shrinking piece of paper with your partner without stepping off.', icon: '👣', prize: 'Exciting Prizes', time: 'Day 1 — 3:00 PM', venue: 'Open Air Theater', rules: ['Duo event', 'Paper folds every round', 'Last pair standing wins'] },
-      { title: 'Street Reloaded', desc: 'Impromptu Dance battle. Show your spontaneous moves.', icon: '🕺', prize: 'Exciting Prizes', time: 'Day 1 — 5:00 PM', venue: 'Main Ground', rules: ['Individual/Crew', 'Random tracks', 'Freestyle'] },
-      { title: 'Solo / Duo Singing', desc: 'Sing your heart out and mesmerize the audience.', icon: '🎤', prize: 'Exciting Prizes', time: 'Day 2 — 10:00 AM', venue: 'Main Auditorium', rules: ['Solo or Duo', 'Karaoke allowed', '3 min time limit'] },
-      { title: 'Paper Dress Making', desc: 'Design and create a stunning dress using only newspapers.', icon: '👗', prize: 'Exciting Prizes', time: 'Day 2 — 12:00 PM', venue: 'Art Gallery', rules: ['Team of 3 (1 model)', 'Only newspaper & pins', 'Time limit: 1 hour'] },
-      { title: 'Solo/Duo/Group Dance', desc: 'Prepared dance performances across various genres.', icon: '💃', prize: 'Exciting Prizes', time: 'Day 2 — 3:00 PM', venue: 'Main Auditorium', rules: ['Any dance style', 'Bring track in pendrive', 'Max 5 mins'] },
-      { title: 'Face Painting', desc: 'Use the face as a canvas to express creativity.', icon: '🎨', prize: 'Exciting Prizes', time: 'Day 1 — 11:00 AM', venue: 'Corridor Area', rules: ['Team of 2 (1 model)', 'Bring own paints', 'Theme based'] },
-      { title: 'Ramp Walk', desc: 'Sizzle the stage with your style, confidence, and walk.', icon: '✨', prize: 'Exciting Prizes', time: 'Day 2 — 6:00 PM', venue: 'Main Auditorium', rules: ['Individual or Couple', 'Appropriate attire', 'Judged on confidence & style'] },
+      { title: 'Paper Dance', desc: 'Dance on a shrinking piece of paper with your partner without stepping off.', icon: '👣', prize: 'Exciting Prizes', time: 'Day 1 — 11:00 AM - 12:30 PM', venue: 'Open Air Theater', rules: ['Duo event', 'Paper folds every round', 'Last pair standing wins'] },
+      { title: 'Street Reloaded', desc: 'Impromptu Dance battle. Show your spontaneous moves.', icon: '🕺', prize: 'Exciting Prizes', time: 'Day 1 — 4:00 PM - 5:00 PM', venue: 'Main Ground', rules: ['Individual/Crew', 'Random tracks', 'Freestyle'] },
+      { title: 'Solo Song', desc: 'Sing your heart out and mesmerize the audience.', icon: '🎤', prize: 'Exciting Prizes', time: 'Day 1 — 5:00 PM - 6:00 PM', venue: 'Main Auditorium', rules: ['Solo', 'Karaoke allowed', '3 min time limit'] },
+      { title: 'Cut the Crap', desc: 'Design and create a stunning dress using only newspapers.', icon: '👗', prize: 'Exciting Prizes', time: 'Day 2 — 11:30 AM - 1:00 PM', venue: 'Art Gallery', rules: ['Team of 3 (1 model)', 'Only newspaper & pins', 'Time limit: 1 hour'] },
+      { title: 'Solo/Group Dance', desc: 'Prepared dance performances across various genres. (Round 1 & 2)', icon: '💃', prize: 'Exciting Prizes', time: 'Day 1 — 4:40 PM - 7:00 PM', venue: 'Main Auditorium', rules: ['Any dance style', 'Bring track in pendrive', 'Max 5 mins'] },
+      { title: 'Face Painting', desc: 'Use the face as a canvas to express creativity.', icon: '🎨', prize: 'Exciting Prizes', time: 'Day 2 — 10:00 AM - 11:30 AM', venue: 'Corridor Area', rules: ['Team of 2 (1 model)', 'Bring own paints', 'Theme based'] },
+      { title: 'Ramp Walk', desc: 'Sizzle the stage with your style, confidence, and walk. (Grand Finale)', icon: '✨', prize: 'Exciting Prizes', time: 'Day 1 — 7:00 PM Onwards', venue: 'Main Auditorium', rules: ['Individual or Couple', 'Appropriate attire', 'Judged on confidence & style'] },
     ],
   },
   {
@@ -42,41 +42,51 @@ const categories = [
     label: 'Media Club',
     color: '#c084fc',
     events: [
-      { title: 'Photography', desc: 'Capture the best moments of the fest or based on a theme.', icon: '📸', prize: 'Exciting Prizes', time: 'Day 1 & 2', venue: 'Campus Wide', rules: ['Individual', 'DSLR or Mobile', 'No heavy editing'] },
-      { title: 'Reel Making', desc: 'Create viral short-form content covering the energy of the fest.', icon: '📱', prize: 'Exciting Prizes', time: 'Day 1 & 2', venue: 'Campus Wide', rules: ['Individual/Team', 'Max 60 secs', 'Submit by Day 2 evening'] },
+      { title: 'Photography', desc: 'Capture the best moments of the fest or based on a theme.', icon: '📸', prize: 'Exciting Prizes', time: 'Day 1: All Day | Day 2: Before 11:30 PM', venue: 'Campus Wide', rules: ['Individual', 'DSLR or Mobile', 'No heavy editing'] },
+      { title: 'Reel Making', desc: 'Create viral short-form content covering the energy of the fest.', icon: '📱', prize: 'Exciting Prizes', time: 'Day 1: All Day | Day 2: Before 11:30 PM', venue: 'Campus Wide', rules: ['Individual/Team', 'Max 60 secs', 'Submit by Day 2 11:30 PM'] },
       { title: 'AI Film Making', desc: 'Produce a short film utilizing AI tools for generation/editing.', icon: '🎬', prize: 'Exciting Prizes', time: 'Day 2 — 11:00 AM', venue: 'Media Lab', rules: ['Team of up to 4', 'AI usage mandatory', 'Runtime 3-5 mins'] },
-      { title: 'Khana Khazana', desc: 'Food Without Fire competition. Show your culinary skills safely.', icon: '🥗', prize: 'Exciting Prizes', time: 'Day 1 — 12:00 PM', venue: 'Food Court Area', rules: ['Team of 2-3', 'No flame/induction', 'Judged on taste & presentation'] },
+      { title: 'Khana Khazana', desc: 'Food Without Fire competition. Show your culinary skills safely.', icon: '🥗', prize: 'Exciting Prizes', time: 'Day 1 — 11:00 AM - 12:00 PM', venue: 'Food Court Area', rules: ['Team of 2-3', 'No flame/induction', 'Judged on taste & presentation'] },
     ],
   },
   {
     id: 'panthers',
-    name: 'PANTHERS',
+    name: 'RVS PANTHERS',
     label: 'Sports Club',
     color: '#f87171',
     events: [
-      { title: 'Gully Cricket', desc: 'The classic street-style cricket tournament.', icon: '🏏', prize: 'Exciting Prizes', time: 'Day 1 — 9:00 AM', venue: 'Sports Ground', rules: ['Team of 6', 'Tennis ball', 'Box cricket rules'] },
-      { title: 'Basketball 3×3', desc: 'Fast-paced half-court basketball matches.', icon: '🏀', prize: 'Exciting Prizes', time: 'Day 1 — 10:00 AM', venue: 'Basketball Court', rules: ['Team of 3+1', 'Half-court', '10-min matches'] },
-      { title: 'Volleyball', desc: 'High-flying spikes and solid blocks in this team tournament.', icon: '🏐', prize: 'Exciting Prizes', time: 'Day 2 — 9:00 AM', venue: 'Volleyball Court', rules: ['Team of 6', 'Standard rules', 'Knockout matches'] },
-      { title: 'Football', desc: 'Show your footwork and teamwork on the pitch.', icon: '⚽', prize: 'Exciting Prizes', time: 'Day 1 & 2', venue: 'Main Field', rules: ['Team of 7', 'Rolling subs', '15 min halves'] },
-      { title: 'Tug of War', desc: 'Ultimate test of raw strength and team coordination.', icon: '🪢', prize: 'Exciting Prizes', time: 'Day 2 — 3:00 PM', venue: 'Sports Ground', rules: ['Team of 8', 'Weight limit applies', 'Best of 3 pulls'] },
-      { title: 'Arm Wrestling', desc: 'One-on-one test of arm strength and technique.', icon: '💪', prize: 'Exciting Prizes', time: 'Day 1 — 2:00 PM', venue: 'Indoor Sports Hall', rules: ['Individual', 'Weight categories', 'Standard rules'] },
-      { title: 'Musical Chairs', desc: 'The classic game of speed, alertness, and finding a seat.', icon: '🪑', prize: 'Exciting Prizes', time: 'Day 2 — 1:00 PM', venue: 'Indoor Area', rules: ['Individual', 'Music stops, grab a chair', 'Last one wins'] },
+      { title: 'Girls Cricket / Gully Cricket', desc: 'The classic street-style cricket tournament.', icon: '🏏', prize: 'Exciting Prizes', time: 'Day 1 — 11:00 AM - 5:00 PM', venue: 'Sports Ground', rules: ['Team of 6', 'Tennis ball', 'Box cricket rules'] },
+      { title: 'Basketball', desc: 'Fast-paced basketball matches.', icon: '🏀', prize: 'Exciting Prizes', time: 'Day 1 — 10:00 AM - 2:00 PM', venue: 'Basketball Court', rules: ['Team of 3+1', 'Half-court', '10-min matches'] },
+      { title: 'Volleyball', desc: 'High-flying spikes and solid blocks in this team tournament.', icon: '🏐', prize: 'Exciting Prizes', time: 'Day 1 — 10:00 AM (End TBC)', venue: 'Volleyball Court', rules: ['Team of 6', 'Standard rules', 'Knockout matches'] },
+      { title: 'Football', desc: 'Show your footwork and teamwork on the pitch.', icon: '⚽', prize: 'Exciting Prizes', time: 'Day 1 — 10:00 AM (End TBC)', venue: 'Main Field', rules: ['Team of 7', 'Rolling subs', '15 min halves'] },
+      { title: 'Tug of War', desc: 'Ultimate test of raw strength and team coordination.', icon: '🪢', prize: 'Exciting Prizes', time: 'Day 1 — 2:00 PM - 3:30 PM', venue: 'Sports Ground', rules: ['Team of 8', 'Weight limit applies', 'Best of 3 pulls'] },
+      { title: 'Arm Wrestling', desc: 'One-on-one test of arm strength and technique.', icon: '💪', prize: 'Exciting Prizes', time: 'Day 1 — 12:00 PM - 1:00 PM', venue: 'Indoor Sports Hall', rules: ['Individual', 'Weight categories', 'Standard rules'] },
+      { title: 'Musical Chair', desc: 'The classic game of speed, alertness, and finding a seat.', icon: '🪑', prize: 'Exciting Prizes', time: 'Day 1 — 3:00 PM - 4:00 PM', venue: 'Indoor Area', rules: ['Individual', 'Music stops, grab a chair', 'Last one wins'] },
     ],
   },
   {
-    id: 'circuitorn',
-    name: 'CIRCUITORN',
+    id: 'circuitron',
+    name: 'CIRCUITRON',
     label: 'IoT Club',
     color: '#4ade80',
     events: [
-      { title: 'IoT Design', desc: 'Design and prototype an innovative IoT solution.', icon: '🌐', prize: 'Exciting Prizes', time: 'Day 1 — 10:00 AM', venue: 'IoT Lab', rules: ['Team of 2-4', 'Hardware + Software', 'Working prototype needed'] },
-      { title: 'Rubik’s Cube', desc: 'Speedcubing competition to see who solves it the fastest.', icon: '🧊', prize: 'Exciting Prizes', time: 'Day 1 — 1:00 PM', venue: 'Seminar Hall', rules: ['Individual', 'Bring your own cube', 'WCA rules apply'] },
-      { title: 'Robo Race', desc: 'Race your custom-built robots through a challenging obstacle track.', icon: '🏎️', prize: 'Exciting Prizes', time: 'Day 2 — 10:00 AM', venue: 'Open Ground', rules: ['Team of 3-4', 'Wired/Wireless bots', 'Time penalty for track exits'] },
-      { title: 'Robo Soccer', desc: 'Bots face off in a soccer match. Control and score!', icon: '⚽', prize: 'Exciting Prizes', time: 'Day 1 — 3:00 PM', venue: 'Robotics Arena', rules: ['Team of 2-4', 'Specific dimension limits', '2v2 bot matches'] },
-      { title: 'Robo War', desc: 'Heavyweight bot combat. Destroy or be destroyed.', icon: '⚔️', prize: 'Exciting Prizes', time: 'Day 2 — 2:00 PM', venue: 'War Arena', rules: ['Team of 3-5', 'Weight class limits', 'Safety precautions mandatory'] },
-      { title: 'Balloon Pop', desc: 'Equip your bot with needles and pop the opponent’s balloons.', icon: '🎈', prize: 'Exciting Prizes', time: 'Day 1 — 11:00 AM', venue: 'Robotics Arena', rules: ['Team of 2-3', 'Remote control', 'Last balloon standing wins'] },
-      { title: 'Treasure Hunt', desc: 'Solve tech and logic clues scattered around campus to find the treasure.', icon: '🗺️', prize: 'Exciting Prizes', time: 'Day 2 — 9:00 AM', venue: 'Campus Wide', rules: ['Team of 4', 'Time-based', 'Decode clues to advance'] },
-      { title: 'Bridge the Gap', desc: 'Construct a bridge using popsicle sticks that can hold the most weight.', icon: '🌉', prize: 'Exciting Prizes', time: 'Day 1 — 2:00 PM', venue: 'Civil Lab', rules: ['Team of 2-3', 'Materials provided', 'Judged on load-to-weight ratio'] },
+      { title: 'IoT Design', desc: 'Design and prototype an innovative IoT solution.', icon: '🌐', prize: 'Exciting Prizes', time: 'Day 1 — 10:00 AM - 11:30 AM', venue: 'IoT Lab', rules: ['Team of 2-4', 'Hardware + Software', 'Working prototype needed'] },
+      { title: 'Rubik’s Cube', desc: 'Speedcubing competition to see who solves it the fastest.', icon: '🧊', prize: 'Exciting Prizes', time: 'Day 2 — 10:30 AM - 11:30 AM', venue: 'Seminar Hall', rules: ['Individual', 'Bring your own cube', 'WCA rules apply'] },
+      { title: 'Robo Race', desc: 'Race your custom-built robots through a challenging obstacle track.', icon: '🏎️', prize: 'Exciting Prizes', time: 'Day 1 — 10:00 AM - 11:30 AM', venue: 'Open Ground', rules: ['Team of 3-4', 'Wired/Wireless bots', 'Time penalty for track exits'] },
+      { title: 'Robo Soccer', desc: 'Bots face off in a soccer match. Control and score!', icon: '⚽', prize: 'Exciting Prizes', time: 'Day 1 — 2:00 PM - 3:30 PM', venue: 'Robotics Arena', rules: ['Team of 2-4', 'Specific dimension limits', '2v2 bot matches'] },
+      { title: 'Robo War', desc: 'Heavyweight bot combat. Destroy or be destroyed.', icon: '⚔️', prize: 'Exciting Prizes', time: 'Day 1 — 11:30 AM - 1:00 PM', venue: 'War Arena', rules: ['Team of 3-5', 'Weight class limits', 'Safety precautions mandatory'] },
+      { title: 'Balloon Pop', desc: 'Equip your bot with needles and pop the opponent’s balloons.', icon: '🎈', prize: 'Exciting Prizes', time: 'Day 1 — 11:30 AM - 1:00 PM', venue: 'Robotics Arena', rules: ['Team of 2-3', 'Remote control', 'Last balloon standing wins'] },
+      { title: 'Treasure Hunt', desc: 'Solve tech and logic clues scattered around campus to find the treasure.', icon: '🗺️', prize: 'Exciting Prizes', time: 'Day 2 — 2:00 PM - 4:00 PM', venue: 'Campus Wide', rules: ['Team of 4', 'Time-based', 'Decode clues to advance'] },
+      { title: 'Bridge the Gap', desc: 'Construct a bridge using popsicle sticks that can hold the most weight.', icon: '🌉', prize: 'Exciting Prizes', time: 'Day 2 — 10:00 AM - 11:00 AM', venue: 'Civil Lab', rules: ['Team of 2-3', 'Materials provided', 'Judged on load-to-weight ratio'] },
+    ],
+  },
+  {
+    id: 'independent',
+    name: 'INDEPENDENT EVENTS',
+    label: 'Open Events',
+    color: '#eab308',
+    events: [
+      { title: 'Debate Competition', desc: 'Test your oratory and analytical skills against the best minds.', icon: '🗣️', prize: 'Exciting Prizes', time: 'Day 2 — 1:00 PM - 3:00 PM', venue: 'Seminar Hall', rules: ['Individual/Team', 'Topics provided prior', 'Not managed by any club'] },
+      { title: 'Flip & Win', desc: 'A fun game of chance and skill.', icon: '🎲', prize: 'Exciting Prizes', time: 'Day 2 — 3:30 PM - 4:30 PM', venue: 'Open Ground', rules: ['Individual', 'On-spot registration', 'Not managed by any club'] },
     ],
   },
 ];
@@ -353,10 +363,10 @@ const EventSection = () => {
           {/* Cards container */}
           <div
             ref={scrollRef}
-            className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
+            className="flex gap-4 overflow-x-auto pb-8 pt-2 scrollbar-hide snap-x snap-mandatory -mx-4 px-4 sm:-mx-0 sm:px-0 overscroll-x-contain"
           >
             {currentEvents.map((event) => (
-              <div key={event.title} className="snap-start">
+              <div key={event.title} className="snap-start py-2">
                 <EventCard
                   event={event}
                   category={currentCategory}
