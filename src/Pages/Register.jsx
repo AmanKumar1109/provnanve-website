@@ -22,6 +22,7 @@ const Register = () => {
     collegeType: 'within', // Added collegeType state
     collegeName: '',       // Added collegeName state
     branch: '',
+    year: '',
     tshirtSize: '',
     paymentApp: '',
     otherPaymentApp: '',
@@ -47,7 +48,7 @@ const Register = () => {
 
     // Basic validation
     const isWithinCollege = form.collegeType === 'within';
-    const hasRequiredFields = form.name && form.email && form.password && form.mobile && form.branch && form.tshirtSize;
+    const hasRequiredFields = form.name && form.email && form.password && form.mobile && form.branch && form.year && form.tshirtSize;
     const hasConditionalFields = isWithinCollege ? form.rollNumber : form.collegeName;
     const hasPaymentFields = form.paymentApp && form.transactionId && (form.paymentApp !== 'other' || form.otherPaymentApp);
 
@@ -91,6 +92,7 @@ const Register = () => {
         rollNumber: form.collegeType === 'within' ? form.rollNumber : '',
         collegeName: form.collegeType === 'outside' ? form.collegeName : 'RVSCET',
         branch: form.branch,
+        year: form.year,
         tshirtSize: form.tshirtSize,
         paymentApp: form.paymentApp === 'other' ? form.otherPaymentApp : form.paymentApp,
         transactionId: form.transactionId,
@@ -123,16 +125,76 @@ const Register = () => {
   const inputClass =
     'w-full bg-black/40 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white placeholder:text-white/30 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20 transition-all';
 
+  const CustomSelect = ({ label, name, value, options, onChange, icon: Icon }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const selectedOption = options.find(opt => opt.value === value);
+
+    return (
+      <div className="relative">
+        <div
+          onClick={() => setIsOpen(!isOpen)}
+          className={`${inputClass} cursor-pointer flex items-center justify-between group`}
+        >
+          <div className="flex items-center gap-3">
+            {Icon && <Icon className="w-5 h-5 text-purple-400/50 group-hover:text-purple-400 transition-colors" />}
+            <span className={value ? 'text-white' : 'text-white/30'}>
+              {selectedOption ? selectedOption.label : label}
+            </span>
+          </div>
+          <motion.div
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <svg className="w-5 h-5 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </motion.div>
+        </div>
+
+        <AnimatePresence>
+          {isOpen && (
+            <>
+              <div
+                className="fixed inset-0 z-40"
+                onClick={() => setIsOpen(false)}
+              />
+              <motion.div
+                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                className="absolute z-50 w-full mt-2 bg-[#1a0b2e]/95 backdrop-blur-xl border border-purple-500/30 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] overflow-hidden"
+              >
+                {options.map((opt) => (
+                  <div
+                    key={opt.value}
+                    onClick={() => {
+                      onChange({ target: { name, value: opt.value } });
+                      setIsOpen(false);
+                    }}
+                    className={`px-6 py-3 text-sm cursor-pointer transition-colors hover:bg-purple-500/20 ${value === opt.value ? 'text-purple-400 bg-purple-500/10' : 'text-white/70 hover:text-white'
+                      }`}
+                  >
+                    {opt.label}
+                  </div>
+                ))}
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  };
+
   return (
-    <div className="relative min-h-screen flex items-center justify-center p-6 overflow-hidden bg-black">
+    <div className="relative min-h-screen flex items-start justify-center p-6 py-20 overflow-y-auto bg-black">
       {/* Background Video */}
-      <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
+      <video autoPlay loop muted playsInline className="fixed inset-0 w-full h-full object-cover z-0 opacity-40">
         <source src={heroVideo} type="video/mp4" />
       </video>
 
       {/* Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0014]/90 via-[#0a0014]/70 to-[#0a0014]/90 z-0" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-500/10 via-transparent to-transparent z-0" />
+      <div className="fixed inset-0 bg-gradient-to-b from-[#0a0014]/90 via-[#0a0014]/70 to-[#0a0014]/90 z-0" />
+      <div className="fixed inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-500/10 via-transparent to-transparent z-0" />
 
       {/* Back Button */}
       <Link to="/" className="fixed top-8 left-8 z-50 flex items-center gap-2 text-white/70 hover:text-white transition-colors group">
@@ -149,7 +211,7 @@ const Register = () => {
         transition={{ duration: 0.8 }}
         className="relative z-10 w-full max-w-2xl"
       >
-        <div className="glass-panel p-8 md:p-12 rounded-[2rem] border-purple-500/20 shadow-[0_0_50px_rgba(124,58,237,0.15)] overflow-hidden">
+        <div className="glass-panel p-8 md:p-12 rounded-[2rem] border-purple-500/20 shadow-[0_0_50px_rgba(124,58,237,0.15)]">
 
           {/* Success State */}
           {success ? (
@@ -243,18 +305,17 @@ const Register = () => {
                   </div>
 
                   {/* College Type Selection */}
-                  <div className="relative group">
-                    <GraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
-                    <select name="collegeType" value={form.collegeType} onChange={handleChange} className={`${inputClass} appearance-none pr-10`}>
-                      <option value="within">Within College</option>
-                      <option value="outside">Outside College</option>
-                    </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                      <svg className="w-5 h-5 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div>
-                  </div>
+                  <CustomSelect
+                    label="Select College Type"
+                    name="collegeType"
+                    value={form.collegeType}
+                    onChange={handleChange}
+                    icon={GraduationCap}
+                    options={[
+                      { value: 'within', label: 'Within College' },
+                      { value: 'outside', label: 'Outside College' }
+                    ]}
+                  />
 
                   {/* Conditional Rendering: Roll Number or College Name */}
                   {form.collegeType === 'within' ? (
@@ -271,40 +332,67 @@ const Register = () => {
                 </div>
 
                 {/* Branch Dropdown */}
-                <div className="relative group">
-                  <GraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
-                  <select name="branch" value={form.branch} onChange={handleChange} className={`${inputClass} appearance-none pr-10`}>
-                    <option value="" disabled>Select Branch</option>
-                    <option value="cse">Computer Science</option>
-                    <option value="ece">Electronics &amp; Communication</option>
-                    <option value="ee">Electrical Engineering</option>
-                    <option value="me">Mechanical Engineering</option>
-                    <option value="ce">Civil Engineering</option>
-                  </select>
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <svg className="w-5 h-5 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </div>
+                <CustomSelect
+                  label="Select Branch"
+                  name="branch"
+                  value={form.branch}
+                  onChange={handleChange}
+                  icon={GraduationCap}
+                  options={[
+                    { value: 'cse', label: 'Computer Science & Engineering' },
+                    { value: 'cs-aiml', label: 'CS (AI & ML)' },
+                    { value: 'it', label: 'Information Technology' },
+                    { value: 'ece', label: 'Electronics & Communication' },
+                    { value: 'eee', label: 'Electrical & Electronics' },
+                    { value: 'ee', label: 'Electrical Engineering' },
+                    { value: 'me', label: 'Mechanical Engineering' },
+                    { value: 'ce', label: 'Civil Engineering' },
+                    { value: 'metallurgy', label: 'Metallurgical Engineering' },
+                    { value: 'production', label: 'Production Engineering' },
+                    { value: 'mining', label: 'Mining Engineering' },
+                    { value: 'bca', label: 'BCA' },
+                    { value: 'mca', label: 'MCA' },
+                    { value: 'bba', label: 'BBA' },
+                    { value: 'diploma-cse', label: 'Diploma (CSE)' },
+                    { value: 'diploma-me', label: 'Diploma (Mechanical)' },
+                    { value: 'diploma-ee', label: 'Diploma (Electrical)' },
+                    { value: 'diploma-ce', label: 'Diploma (Civil)' },
+                    { value: 'mechatronics', label: 'Mechatronics' },
+                    { value: 'other', label: 'Other' }
+                  ]}
+                />
+
+                {/* Year Selection */}
+                <CustomSelect
+                  label="Select Year"
+                  name="year"
+                  value={form.year}
+                  onChange={handleChange}
+                  icon={GraduationCap}
+                  options={[
+                    { value: '1st', label: '1st Year' },
+                    { value: '2nd', label: '2nd Year' },
+                    { value: '3rd', label: '3rd Year' },
+                    { value: '4th', label: '4th Year' },
+                    { value: 'other', label: 'Other / Graduated' }
+                  ]}
+                />
 
                 {/* T-Shirt Size */}
-                <div className="relative group">
-                  <Shirt className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
-                  <select name="tshirtSize" value={form.tshirtSize} onChange={handleChange} className={`${inputClass} appearance-none pr-10`}>
-                    <option value="" disabled>Select T-Shirt Size</option>
-                    <option value="s">Small (S)</option>
-                    <option value="m">Medium (M)</option>
-                    <option value="l">Large (L)</option>
-                    <option value="xl">Extra Large (XL)</option>
-                    <option value="xxl">XXL</option>
-                  </select>
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <svg className="w-5 h-5 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </div>
+                <CustomSelect
+                  label="Select T-Shirt Size"
+                  name="tshirtSize"
+                  value={form.tshirtSize}
+                  onChange={handleChange}
+                  icon={Shirt}
+                  options={[
+                    { value: 's', label: 'Small (S)' },
+                    { value: 'm', label: 'Medium (M)' },
+                    { value: 'l', label: 'Large (L)' },
+                    { value: 'xl', label: 'Extra Large (XL)' },
+                    { value: 'xxl', label: 'XXL' }
+                  ]}
+                />
 
                 {/* --- Payment Section --- */}
                 <div className="pt-6 border-t border-white/10 space-y-6">
@@ -346,23 +434,22 @@ const Register = () => {
 
                   {/* Payment App Dropdown & Details */}
                   <div className="space-y-6">
-                    <div className="relative group">
-                      <Wallet className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
-                      <select name="paymentApp" value={form.paymentApp} onChange={handleChange} className={`${inputClass} appearance-none pr-10`}>
-                        <option value="" disabled>Select Payment App Used</option>
-                        <option value="gpay">Google Pay</option>
-                        <option value="phonepe">PhonePe</option>
-                        <option value="paytm">Paytm</option>
-                        <option value="bhim">BHIM</option>
-                        <option value="amazonpay">Amazon Pay</option>
-                        <option value="other">Other</option>
-                      </select>
-                      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                        <svg className="w-5 h-5 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </div>
-                    </div>
+                    {/* Payment App Dropdown & Details */}
+                    <CustomSelect
+                      label="Select Payment App Used"
+                      name="paymentApp"
+                      value={form.paymentApp}
+                      onChange={handleChange}
+                      icon={Wallet}
+                      options={[
+                        { value: 'gpay', label: 'Google Pay' },
+                        { value: 'phonepe', label: 'PhonePe' },
+                        { value: 'paytm', label: 'Paytm' },
+                        { value: 'bhim', label: 'BHIM' },
+                        { value: 'amazonpay', label: 'Amazon Pay' },
+                        { value: 'other', label: 'Other' }
+                      ]}
+                    />
 
                     {form.paymentApp === 'other' && (
                       <div className="relative group">
