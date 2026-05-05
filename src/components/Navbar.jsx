@@ -39,14 +39,14 @@ const Navbar = () => {
         ease: "power2.out"
       }, "-=0.3");
 
-    gsap.from(".desktop-link", {
-      y: 20,
-      opacity: 0,
-      stagger: 0.1,
-      duration: 0.8,
-      ease: "power4.out",
-      delay: 0.2
-    });
+    // gsap.from(".desktop-link", {
+    //   y: 20,
+    //   opacity: 0,
+    //   stagger: 0.1,
+    //   duration: 0.8,
+    //   ease: "power4.out",
+    //   delay: 0.2
+    // });
 
   }, { scope: bar });
 
@@ -67,9 +67,9 @@ const Navbar = () => {
         {/* Logos */}
         <div className="flex items-center gap-4">
           <Link to="/" className="flex items-center gap-4">
-            <img src={provLogo} className="h-12 w-12 rounded-full" />
+            <img src={provLogo} className="h-12 rounded-full" />
             <div className="w-[1px] h-8 bg-white/30"></div>
-            <img src={rvsLogo} className="h-12 w-12 rounded-full bg-white" />
+            <img src={rvsLogo} className="h-12 rounded-full bg-white" />
           </Link>
         </div>
 

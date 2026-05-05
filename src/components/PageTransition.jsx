@@ -28,7 +28,7 @@ function PageTransition({ children }) {
     gsap.set(percentTextRef.current, { y: "100%", opacity: 0 });
     gsap.set(contentRef.current, {
       scale: 1.5,
-      filter: "blur(10px)",
+      filter: "blur(20px)",
       opacity: 0,
     });
 

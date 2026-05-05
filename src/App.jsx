@@ -16,11 +16,11 @@ function App() {
       root
       options={{
         lerp: 0.06,
-        duration: 1.4,
+        duration: 1.2,
         smoothWheel: true,
         wheelMultiplier: 0.9,
         smoothTouch: true,       // ✅ REQUIRED for mobile
-        touchMultiplier: 0.9,    // increase for noticeable effect
+        touchMultiplier: 1.2,    // increase for noticeable effect
         syncTouch: true
       }}
     >
