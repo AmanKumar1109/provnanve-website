@@ -1,40 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { createPortal } from 'react-dom';
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 
 const ScrollProgress = () => {
-  const [scrollWidth, setScrollWidth] = useState(0);
+  const { scrollYProgress } = useScroll();
+  
+  // Create a spring-animated value for the scroll progress
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      if (scrollHeight <= 0) return;
-      
-      const progress = (scrollTop / scrollHeight) * 100;
-      setScrollWidth(progress);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    // Also update on resize
-    window.addEventListener('resize', handleScroll);
-    
-    // Initial check
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-    };
-  }, []);
+  // Fade in the bar only when the user has scrolled a little bit
+  const opacity = useTransform(scrollYProgress, [0, 0.005], [0, 1]);
 
   if (typeof document === 'undefined') return null;
 
   return createPortal(
-    <div
-      className={`fixed top-0 left-0 h-[3px] md:h-[4px] z-[2147483647] theme-bar transition-all duration-300 ease-out ${
-        scrollWidth > 0 ? 'opacity-100' : 'opacity-0'
-      }`}
-      style={{ width: `${scrollWidth}%` }}
+    <motion.div
+      className="fixed top-0 left-0 right-0 h-[3px] md:h-[4px] z-[2147483647] theme-bar origin-left"
+      style={{ 
+        scaleX,
+        opacity 
+      }}
     />,
     document.body
   );

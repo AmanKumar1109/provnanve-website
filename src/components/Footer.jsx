@@ -60,7 +60,7 @@ const Footer = () => {
     // ID mapping for smooth scrolling
     let targetId = dest;
     if (dest === 'home') targetId = 'hero-section';
-    if (dest === 'events' || ['helix', 'tarangani', 'xpectra', 'panthers', 'circuitorn'].includes(dest)) {
+    if (dest === 'events' || ['helix', 'tarangini', 'xpectra', 'rvs panthers', 'panthers', 'circuitron'].includes(dest)) {
       targetId = 'event';
     }
 
@@ -84,10 +84,10 @@ const Footer = () => {
   const quickLinks = ['Home', 'Events', 'Register', 'Schedule', 'Contact'];
   const categories = [
     { name: 'HELIX', desc: 'Tech & AI' },
-    { name: 'TARANGANI', desc: 'Cultural' },
+    { name: 'TARANGINI', desc: 'Cultural' },
     { name: 'XPECTRA', desc: 'Media' },
-    { name: 'PANTHERS', desc: 'Sports' },
-    { name: 'CIRCUITORN', desc: 'IoT' },
+    { name: 'RVS PANTHERS', desc: 'Sports' },
+    { name: 'CIRCUITRON', desc: 'Robotics & IoT' },
   ];
 
   return (
@@ -261,15 +261,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Scroll to Top Button */}
-        <motion.button
-          onClick={scrollToTop}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className="absolute right-6 bottom-6 md:bottom-12 w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 to-blue-600 text-white flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-shadow z-50 border border-white/10"
-        >
-          <ChevronUp size={24} />
-        </motion.button>
       </div>
     </footer>
   );

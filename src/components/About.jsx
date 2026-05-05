@@ -1,9 +1,39 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef, useCallback } from 'react';
 import { Users, Rocket, Cpu, Globe } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+// Import gallery images for the slider
+import img1 from '../assets/gallaryImages/1.jpeg';
+import img2 from '../assets/gallaryImages/2.jpeg';
+import img3 from '../assets/gallaryImages/3.jpeg';
+import img4 from '../assets/gallaryImages/4.jpeg';
+import img5 from '../assets/gallaryImages/5.jpeg';
+import img6 from '../assets/gallaryImages/6.jpeg';
+import img7 from '../assets/gallaryImages/7.jpeg';
+import img8 from '../assets/gallaryImages/8.jpeg';
+import imgLogo from '../assets/logo.png';
+import imgPicon from '../assets/picon.png';
+import imgRvs from '../assets/RVS_Logo_Coloured_White_bg.png';
+
 gsap.registerPlugin(ScrollTrigger);
+
+const sliderImages = [
+  img1, img2, img3, img4, img5, img6, img7, img8,
+  imgLogo, imgPicon, imgRvs,
+];
+
+/* Hide scrollbar (injected once) */
+const SCROLLBAR_STYLE_ID = 'about-slider-scrollbar-hide';
+if (typeof document !== 'undefined' && !document.getElementById(SCROLLBAR_STYLE_ID)) {
+  const style = document.createElement('style');
+  style.id = SCROLLBAR_STYLE_ID;
+  style.textContent = `
+    .about-stacked-scroll::-webkit-scrollbar { display: none; }
+    .about-stacked-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  `;
+  document.head.appendChild(style);
+}
 
 const About = () => {
   const containerRef = useRef(null);
@@ -11,7 +41,8 @@ const About = () => {
   const statsRef = useRef([]);
   const visualRef = useRef(null);
   const badgeRef = useRef(null);
-  const circlesRef = useRef([]);
+  const scrollBoxRef = useRef(null);
+  const cardRefs = useRef([]);
 
   const stats = [
     { icon: <Users className="w-6 h-6" />, label: 'Attendees', value: '5,000+' },
@@ -20,6 +51,43 @@ const About = () => {
     { icon: <Globe className="w-6 h-6" />, label: 'Reach', value: 'National' },
   ];
 
+  /* ── Stacked cards scroll handler ── */
+  const handleScroll = useCallback(() => {
+    const box = scrollBoxRef.current;
+    if (!box) return;
+
+    const containerH = box.clientHeight;
+    const scrollTop = box.scrollTop;
+
+    cardRefs.current.forEach((card, idx) => {
+      if (!card) return;
+
+      // How far this card's "section" has been scrolled past
+      const cardStart = idx * containerH;
+      const progress = (scrollTop - cardStart) / containerH; // 0 = just arrived, 1 = fully scrolled past
+
+      if (progress < 0) {
+        // Card hasn't been reached yet — it sits below, fully normal
+        card.style.transform = 'scale(1) translateY(0)';
+        card.style.opacity = '1';
+        card.style.boxShadow = 'none';
+      } else if (progress >= 0 && progress < 1) {
+        // Card is currently being scrolled past — scale it down, push it back
+        const scale = 1 - progress * 0.08; // shrinks to 0.92
+        const yShift = progress * 12;       // pushes down slightly
+        card.style.transform = `scale(${scale}) translateY(${yShift}px)`;
+        card.style.opacity = `${1 - progress * 0.3}`;
+        card.style.boxShadow = `0 ${4 + progress * 10}px ${20 + progress * 20}px rgba(0,0,0,${0.2 + progress * 0.3})`;
+      } else {
+        // Card is fully scrolled past — small and behind
+        card.style.transform = 'scale(0.92) translateY(12px)';
+        card.style.opacity = '0.7';
+        card.style.boxShadow = '0 14px 40px rgba(0,0,0,0.5)';
+      }
+    });
+  }, []);
+
+  /* ── GSAP Animations (unchanged from original) ── */
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       // 1. Text Content Entrance
@@ -60,15 +128,14 @@ const About = () => {
       });
 
       // 4. PARALLAX EFFECT (The Right Side Element)
-      // Moving it faster (negative Y) as the user scrolls down
       gsap.to(visualRef.current, {
-        y: -150, // Adjust this value for intensity
+        y: -150,
         ease: "none",
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top bottom", // Starts when top of section hits bottom of viewport
-          end: "bottom top",   // Ends when bottom of section hits top of viewport
-          scrub: true,         // Smoothly links animation to scroll position
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
         },
       });
 
@@ -79,20 +146,6 @@ const About = () => {
         repeat: -1,
         yoyo: true,
         ease: "power1.inOut",
-      });
-
-      // 6. Infinite Rotation (Cyberpunk Circles)
-      gsap.to(circlesRef.current[0], {
-        rotate: 360,
-        duration: 20,
-        repeat: -1,
-        ease: "none",
-      });
-      gsap.to(circlesRef.current[1], {
-        rotate: -360,
-        duration: 15,
-        repeat: -1,
-        ease: "none",
       });
 
     }, containerRef);
@@ -158,26 +211,56 @@ const About = () => {
 
           {/* Visual Element / Card with Parallax Applied */}
           <div ref={visualRef} className="relative will-change-transform">
-            <div className="relative z-10 glass-panel p-2 rounded-[2.5rem] rotate-3 hover:rotate-0 transition-transform duration-700 overflow-hidden shadow-[0_0_50px_rgba(168,85,247,0.2)]">
-                <div className="aspect-square rounded-[2rem] bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center relative overflow-hidden">
-                   <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
-                   
-                   {/* Rotating Circles */}
-                   <div 
-                     ref={el => circlesRef.current[0] = el}
-                     className="w-64 h-64 border-4 border-dashed border-purple-500/30 rounded-full" 
-                   />
-                   <div 
-                     ref={el => circlesRef.current[1] = el}
-                     className="absolute w-48 h-48 border-4 border-dashed border-blue-500/30 rounded-full" 
-                   />
+            <div className="relative z-10 glass-panel p-2 rounded-[2.5rem] rotate-3 hover:rotate-0 transition-transform duration-700 shadow-[0_0_50px_rgba(168,85,247,0.2)]">
+                <div className="aspect-square rounded-[2rem] bg-gradient-to-br from-purple-500/20 to-blue-500/20 relative overflow-hidden">
 
-                   <div className="relative text-center space-y-2">
-                     <div style={{ fontFamily: "'Luckiest Guy', cursive" }} className="text-8xl text-white opacity-10 leading-none">6.0</div>
-                     <div className="absolute inset-0 flex items-center justify-center">
-                        <Rocket className="w-24 h-24 text-purple-400 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
-                     </div>
+                   {/* ── Stacked Cards Scroll Container ── */}
+                   <div
+                     ref={scrollBoxRef}
+                     className="about-stacked-scroll"
+                     onScroll={handleScroll}
+                     style={{
+                       position: 'absolute',
+                       inset: 0,
+                       overflowY: 'scroll',
+                       overflowX: 'hidden',
+                       borderRadius: '2rem',
+                     }}
+                   >
+                     {/* Each card is sticky — it sticks at top while the next one scrolls up over it */}
+                     {sliderImages.map((src, idx) => (
+                       <div
+                         key={idx}
+                         style={{
+                           position: 'sticky',
+                           top: 0,
+                           width: '100%',
+                           height: '100%',
+                           flexShrink: 0,
+                           zIndex: sliderImages.length + idx,
+                           transformOrigin: 'center top',
+                           willChange: 'transform, opacity',
+                           borderRadius: '1rem',
+                           overflow: 'hidden',
+                         }}
+                         ref={(el) => (cardRefs.current[idx] = el)}
+                       >
+                         <img
+                           src={src}
+                           alt={`Provenance 6.0 – Slide ${idx + 1}`}
+                           style={{
+                             width: '100%',
+                             height: '100%',
+                             objectFit: 'cover',
+                             display: 'block',
+                           }}
+                           loading={idx === 0 ? 'eager' : 'lazy'}
+                           draggable={false}
+                         />
+                       </div>
+                     ))}
                    </div>
+
                 </div>
             </div>
             
