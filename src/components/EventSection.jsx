@@ -155,7 +155,7 @@ const EventModal = ({ event, category, onClose }) => {
   if (!event || !category) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[99999] flex items-center justify-center px-4 sm:px-6">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4 sm:px-6">
       {/* Dark Blurred Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
