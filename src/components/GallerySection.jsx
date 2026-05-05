@@ -141,6 +141,30 @@ const GallerySection = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const baseSpeed = 20;
 
+  useEffect(() => {
+    const handlePopState = () => {
+      if (selectedImage) {
+        setSelectedImage(null);
+      }
+    };
+
+    if (selectedImage) {
+      window.history.pushState({ galleryModal: true }, '');
+      window.addEventListener('popstate', handlePopState);
+    }
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [selectedImage]);
+
+  const closeModal = () => {
+    setSelectedImage(null);
+    if (window.history.state && window.history.state.galleryModal) {
+      window.history.back();
+    }
+  };
+
   return (
     <section id="gallery" className="relative h-screen bg-[#05000a] overflow-hidden flex flex-col justify-center py-20">
 
@@ -161,7 +185,7 @@ const GallerySection = () => {
       </div>
 
       {selectedImage && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4" onClick={() => setSelectedImage(null)}>
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4" onClick={closeModal}>
           <div className="absolute inset-0 bg-black/95 backdrop-blur-xl" />
           <div className="relative z-10 max-w-5xl w-full rounded-2xl overflow-hidden border border-white/10 scale-animation">
             <img src={selectedImage.src} alt={selectedImage.alt} className="w-full h-auto max-h-[85vh] object-contain" />
