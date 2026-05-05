@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Clock, MapPin, Trophy, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 import eminanceInPromptImg from '../assets/event thumbnails/EminenceInPrompt_Promptathon_Helix.png';
 import shinobiScriptImg from '../assets/event thumbnails/ShinobiScript_DSA_Helix.png';
@@ -136,6 +138,9 @@ const categories = [
     EVENT MODAL
    ═══════════════════════════════════ */
 const EventModal = ({ event, category, onClose }) => {
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+
   useEffect(() => {
     // Prevent background scrolling when modal is open
     document.body.style.overflow = 'hidden';
@@ -271,13 +276,19 @@ const EventModal = ({ event, category, onClose }) => {
           {/* CTA */}
           <div className="mt-auto pt-4">
             <button
+              onClick={() => {
+                if (!isLoggedIn) {
+                  onClose();
+                  navigate('/register');
+                }
+              }}
               className="w-full py-3.5 sm:py-4 rounded-xl text-sm font-black tracking-widest uppercase text-white transition-all hover:scale-[1.02] active:scale-[0.98]"
               style={{ 
                 background: `linear-gradient(135deg, ${category.color}, ${category.color}99)`,
                 boxShadow: `0 8px 25px ${category.color}40`
               }}
             >
-              Register Now
+              {isLoggedIn ? 'Enrol Now' : 'Register'}
             </button>
           </div>
         </div>

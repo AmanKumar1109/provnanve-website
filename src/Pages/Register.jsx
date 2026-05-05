@@ -6,6 +6,7 @@ import { AnimatePresence } from 'framer-motion';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../firebase';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import heroVideo from '../assets/hero.mp4';
 
 const Register = () => {
@@ -33,6 +34,8 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [successRegId, setSuccessRegId] = useState('');
+  const [copiedRegId, setCopiedRegId] = useState(false);
   const [showHelp, setShowHelp] = useState(false); // Added help modal state
 
   const handleChange = (e) => {
@@ -76,9 +79,24 @@ const Register = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, form.email, form.password);
       const user = userCredential.user;
 
-      // 2. Save details to Firestore → users/{uid}
+      // 2. Generate unique 6-digit registration ID
+      const generateRegId = async () => {
+        let regId;
+        let isUnique = false;
+        while (!isUnique) {
+          regId = String(Math.floor(100000 + Math.random() * 900000));
+          const q = query(collection(db, 'users'), where('registrationId', '==', regId));
+          const snap = await getDocs(q);
+          if (snap.empty) isUnique = true;
+        }
+        return regId;
+      };
+      const registrationId = await generateRegId();
+
+      // 3. Save details to Firestore → users/{uid}
       await setDoc(doc(db, 'users', user.uid), {
         uid: user.uid,
+        registerationId: registrationId,
         name: form.name,
         email: form.email,
         mobile: form.mobile,
@@ -95,8 +113,9 @@ const Register = () => {
         registeredAt: serverTimestamp(),
       });
 
+      setSuccessRegId(registrationId);
       setSuccess(true);
-      setTimeout(() => navigate('/'), 2500);
+      setTimeout(() => navigate('/login'), 5000);
     } catch (err) {
       switch (err.code) {
         case 'auth/email-already-in-use':
@@ -156,7 +175,29 @@ const Register = () => {
             >
               <CheckCircle className="w-20 h-20 text-green-400" />
               <h2 className="text-3xl font-bold text-white">Registration Successful!</h2>
-              <p className="text-white/60">Welcome aboard! Redirecting you to the homepage…</p>
+              
+              {/* Registration ID Display */}
+              <div className="w-full max-w-sm bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl px-5 py-4">
+                <p className="text-xs font-bold tracking-widest uppercase text-purple-400 mb-2">Your Registration ID</p>
+                <p className="text-3xl font-bold font-mono text-white tracking-[0.3em] mb-3">{successRegId}</p>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(successRegId);
+                    setCopiedRegId(true);
+                    setTimeout(() => setCopiedRegId(false), 2000);
+                  }}
+                  className={`mx-auto flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
+                    copiedRegId
+                      ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                      : 'bg-white/5 text-white/60 border border-white/10 hover:bg-purple-500/20 hover:text-purple-400'
+                  }`}
+                >
+                  {copiedRegId ? 'Copied!' : 'Copy ID'}
+                </button>
+                <p className="text-xs text-white/40 mt-3">Save this ID — you'll need it for event check-in.</p>
+              </div>
+              
+              <p className="text-white/40 text-sm">Redirecting to login page in 5 seconds…</p>
             </motion.div>
           ) : (
             <>
