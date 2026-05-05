@@ -8,6 +8,7 @@ import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import heroVideo from '../assets/hero.mp4';
+import qrcode from '../assets/qr.jpg';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -186,8 +187,8 @@ const Register = () => {
                     setTimeout(() => setCopiedRegId(false), 2000);
                   }}
                   className={`mx-auto flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${copiedRegId
-                      ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                      : 'bg-white/5 text-white/60 border border-white/10 hover:bg-purple-500/20 hover:text-purple-400'
+                    ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                    : 'bg-white/5 text-white/60 border border-white/10 hover:bg-purple-500/20 hover:text-purple-400'
                     }`}
                 >
                   {copiedRegId ? 'Copied!' : 'Copy ID'}
@@ -334,8 +335,7 @@ const Register = () => {
                       {/* Stylized QR Placeholder - User can replace src with their actual QR asset */}
                       <div className="w-40 h-40 bg-zinc-200 flex items-center justify-center rounded overflow-hidden">
                         <img
-                          src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=PROVENANCE_6.0_PAYMENT"
-                          alt="Payment QR Code"
+                          src={qrcode}
                           className="w-full h-full object-contain"
                         />
                       </div>
@@ -344,35 +344,20 @@ const Register = () => {
                     <p className="text-xs text-white/50 text-center px-4 italic">
                       Scan this QR using any UPI app to make your payment.
                     </p>
-                  </div>
 
-                  {/* File Upload */}
-                  <div className="space-y-4">
-                    <label className="block text-sm font-medium text-white/70">Upload Payment Screenshot / QR Code (JPG/PNG)</label>
-                    <div className="relative group cursor-pointer">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
-                      />
-                      <div className={`w-full h-32 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center gap-2 transition-all ${previewUrl ? 'border-purple-500/50 bg-purple-500/5' : 'border-white/10 bg-white/5 hover:border-purple-500/30'}`}>
-                        {previewUrl ? (
-                          <div className="relative w-full h-full p-2">
-                            <img src={previewUrl} alt="Preview" className="w-full h-full object-contain rounded-lg" />
-                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity rounded-lg">
-                              <ImageIcon className="w-8 h-8 text-white" />
-                            </div>
-                          </div>
-                        ) : (
-                          <>
-                            <ImageIcon className="w-8 h-8 text-purple-400/50" />
-                            <span className="text-sm text-white/40">Click or drag to upload</span>
-                          </>
-                        )}
+                    {/* Registration Fee */}
+                    <div className="flex flex-col items-center gap-1 pt-2">
+                      <div className="flex items-center gap-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-xl px-5 py-2">
+                        <span className="text-2xl font-extrabold text-white tracking-wide">₹900</span>
+                        <span className="text-xs font-semibold text-purple-300 uppercase tracking-widest">Registration Fee</span>
                       </div>
+                      <p className="text-xs text-yellow-400/80 flex items-center gap-1 mt-1">
+                        <span>🎁</span>
+                        <span>This Registration fee includes a <span className="font-bold text-yellow-300">Welcome Kit</span></span>
+                      </p>
                     </div>
                   </div>
+
 
                   {/* Payment App Dropdown & Details */}
                   <div className="space-y-6">
