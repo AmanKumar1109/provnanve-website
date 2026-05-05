@@ -1,16 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Maximize2, X } from 'lucide-react';
 import { gsap } from 'gsap';
+import galleryImg1 from '../assets/gallaryImages/1.jpeg';
+import galleryImg2 from '../assets/gallaryImages/2.jpeg';
+import galleryImg3 from '../assets/gallaryImages/3.jpeg';
+import galleryImg4 from '../assets/gallaryImages/4.jpeg';
+import galleryImg5 from '../assets/gallaryImages/5.jpeg';
+import galleryImg6 from '../assets/gallaryImages/6.jpeg';
+import galleryImg7 from '../assets/gallaryImages/7.jpeg';
+import galleryImg8 from '../assets/gallaryImages/8.jpeg';
 
 const galleryImages = [
-  { id: 1, src: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80", alt: "Main Stage Crowd", height: "h-[400px]" },
-  { id: 2, src: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=800&q=80", alt: "Hackathon Night", height: "h-[300px]" },
-  { id: 3, src: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&q=80", alt: "Esports Tournament", height: "h-[450px]" },
-  { id: 4, src: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80", alt: "Live Concert", height: "h-[350px]" },
-  { id: 5, src: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&q=80", alt: "Tech Expo", height: "h-[420px]" },
-  { id: 6, src: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80", alt: "Cyber Security", height: "h-[380px]" },
-  { id: 7, src: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80", alt: "Infrastructure", height: "h-[320px]" },
-  { id: 8, src: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80", alt: "Collaboration", height: "h-[400px]" },
+  { id: 1, src: galleryImg1, alt: "Main Stage Crowd", height: "h-[400px]" },
+  { id: 2, src: galleryImg2, alt: "Hackathon Night", height: "h-[300px]" },
+  { id: 3, src: galleryImg3, alt: "Esports Tournament", height: "h-[450px]" },
+  { id: 4, src: galleryImg4, alt: "Live Concert", height: "h-[350px]" },
+  { id: 5, src: galleryImg5, alt: "Tech Expo", height: "h-[420px]" },
+  { id: 6, src: galleryImg6, alt: "Cyber Security", height: "h-[380px]" },
+  { id: 7, src: galleryImg7, alt: "Infrastructure", height: "h-[320px]" },
+  { id: 8, src: galleryImg8, alt: "Collaboration", height: "h-[400px]" },
 ];
 
 const SpotlightCard = ({ img, onImageClick, parentTimeline }) => {
