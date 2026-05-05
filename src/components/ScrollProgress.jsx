@@ -31,7 +31,9 @@ const ScrollProgress = () => {
 
   return createPortal(
     <div
-      className="fixed top-0 left-0 h-[3px] md:h-[4px] z-[2147483647] theme-bar transition-all duration-150 ease-out"
+      className={`fixed top-0 left-0 h-[3px] md:h-[4px] z-[2147483647] theme-bar transition-all duration-300 ease-out ${
+        scrollWidth > 0 ? 'opacity-100' : 'opacity-0'
+      }`}
       style={{ width: `${scrollWidth}%` }}
     />,
     document.body

@@ -76,7 +76,6 @@
     background: linear-gradient(90deg, #3b82f6, #a855f7, #ec4899, #3b82f6);
     background-size: 200% auto;
     animation: theme-glow 2s linear infinite;
-    position: relative;
   }
   
   .theme-bar::after {
