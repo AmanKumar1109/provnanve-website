@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { X, Clock, MapPin, Trophy, ChevronLeft, ChevronRight } from 'lucide-react';
 
 /* ═══════════════════════════════════
@@ -88,13 +88,14 @@ const EventModal = ({ event, category, onClose }) => {
   if (!event || !category) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
+    <div className="fixed inset-0 z-9999 flex items-center justify-center px-4 overflow-y-auto">
+
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
 
       {/* Modal */}
       <div
-        className="relative w-full max-w-lg bg-zinc-900 border border-white/10 rounded-2xl p-6 sm:p-8 max-h-[85vh] overflow-y-auto shadow-2xl"
+        className="relative w-full max-w-lg mx-auto bg-zinc-900 border border-white/10 rounded-2xl p-6 sm:p-8 max-h-[80vh] overflow-y-auto shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top accent */}
@@ -236,8 +237,8 @@ const EventCard = ({ event, category, onClick }) => {
 
           <div className="mt-4 flex items-center justify-between">
             <span className="text-[10px] text-white/30 tracking-wide">{event.time}</span>
-            <span 
-              className="text-[10px] font-medium tracking-wider uppercase" 
+            <span
+              className="text-[10px] font-medium tracking-wider uppercase"
               style={{ color: `${category.color}cc` }}
             >
               Details →
@@ -266,6 +267,18 @@ const EventSection = () => {
       scrollRef.current.scrollBy({ left: direction === 'left' ? -amount : amount });
     }
   };
+
+  useEffect(() => {
+    if (selectedEvent) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedEvent]);
 
   return (
     <section id="event" className="relative py-20 sm:py-28 px-4 sm:px-6 bg-[#0a0014]">
