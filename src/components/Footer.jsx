@@ -60,7 +60,7 @@ const Footer = () => {
     // ID mapping for smooth scrolling
     let targetId = dest;
     if (dest === 'home') targetId = 'hero-section';
-    if (dest === 'events' || ['helix', 'tarangani', 'xpectra', 'panthers', 'circuitorn'].includes(dest)) {
+    if (dest === 'events' || ['helix', 'tarangini', 'xpectra', 'rvs panthers', 'panthers', 'circuitron'].includes(dest)) {
       targetId = 'event';
     }
 
@@ -84,10 +84,10 @@ const Footer = () => {
   const quickLinks = ['Home', 'Events', 'Register', 'Schedule', 'Contact'];
   const categories = [
     { name: 'HELIX', desc: 'Tech & AI' },
-    { name: 'TARANGANI', desc: 'Cultural' },
+    { name: 'TARANGINI', desc: 'Cultural' },
     { name: 'XPECTRA', desc: 'Media' },
-    { name: 'PANTHERS', desc: 'Sports' },
-    { name: 'CIRCUITORN', desc: 'IoT' },
+    { name: 'RVS PANTHERS', desc: 'Sports' },
+    { name: 'CIRCUITRON', desc: 'Robotics & IoT' },
   ];
 
   return (

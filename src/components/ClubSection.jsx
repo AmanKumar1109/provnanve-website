@@ -81,7 +81,69 @@ const clubs = [
   }
 ];
 
+/* Card component extracted for reuse */
+const ClubCard = ({ club }) => (
+  <div
+    className={`shrink-0 w-[270px] sm:w-[320px] group relative bg-[#0d051a] border border-gray-800 rounded-xl p-6 sm:p-7 flex flex-col transition-all duration-300 hover:border-gray-500 hover:-translate-y-2 ${club.borderGlow}`}
+  >
+    {/* Colored Top Bar */}
+    <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${club.color} rounded-t-xl opacity-70 group-hover:opacity-100 transition-opacity`}></div>
+
+    <div className="flex-grow">
+      <h3 className={`text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${club.color} mb-1 pb-1 inline-block`}>
+        {club.name}
+      </h3>
+      <div className="mb-3">
+        <span className="inline-block text-[10px] font-semibold tracking-wider text-gray-300 bg-gray-800/80 px-2 py-0.5 rounded-full">
+          {club.tagline}
+        </span>
+      </div>
+      <p className="text-sm text-gray-400 leading-relaxed">
+        {club.desc}
+      </p>
+    </div>
+
+    {/* Social Links Footer */}
+    <div className="mt-6 pt-4 border-t border-gray-800/50 flex items-center gap-3">
+      {club.socials.map((social, sIdx) => {
+        const Icon = social.icon;
+        return (
+          <a
+            key={sIdx}
+            href={social.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-500 hover:text-white transition-colors duration-200"
+          >
+            <Icon size={18} />
+          </a>
+        );
+      })}
+    </div>
+  </div>
+);
+
 const ClubSection = () => {
+  const scrollRef = React.useRef(null);
+  const [scrollProgress, setScrollProgress] = React.useState(0);
+  const [isDragging, setIsDragging] = React.useState(false);
+  const [startX, setStartX] = React.useState(0);
+  const [scrollLeft, setScrollLeft] = React.useState(0);
+
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      const progress = (scrollLeft / (scrollWidth - clientWidth)) * 100;
+      setScrollProgress(progress);
+    }
+  };
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeft(scrollRef.current.scrollLeft);
+  };
+
   return (
     <section className="relative bg-[#080012] py-16 px-4 sm:px-6 overflow-hidden border-t border-purple-500/10">
       <div className="container mx-auto relative z-10 max-w-6xl">
@@ -92,63 +154,38 @@ const ClubSection = () => {
           <p className="text-sm text-gray-400">The creative and technical minds behind PROVENANCE 6.0</p>
         </div>
 
-        {/* Scrollable Layout */}
         <div className="relative">
-          {/* Fading Edges for Scroll indication */}
-          <div className="absolute top-0 left-0 w-4 sm:w-8 h-full bg-gradient-to-r from-[#080012] to-transparent pointer-events-none z-10" />
-          <div className="absolute top-0 right-0 w-4 sm:w-8 h-full bg-gradient-to-l from-[#080012] to-transparent pointer-events-none z-10" />
+          <div className="absolute top-0 left-0 w-8 sm:w-16 h-full bg-gradient-to-r from-[#080012] to-transparent pointer-events-none z-10" />
+          <div className="absolute top-0 right-0 w-8 sm:w-16 h-full bg-gradient-to-l from-[#080012] to-transparent pointer-events-none z-10" />
 
-          <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-12 pt-4 px-4 sm:px-0 -mx-4 sm:mx-0 snap-x snap-mandatory scrollbar-hide items-stretch overscroll-x-contain">
+          <div
+            ref={scrollRef}
+            onScroll={handleScroll}
+            onMouseDown={handleMouseDown}
+            onMouseLeave={() => setIsDragging(false)}
+            onMouseUp={() => setIsDragging(false)}
+            onMouseMove={(e) => {
+              if (!isDragging) return;
+              e.preventDefault();
+              const x = e.pageX - scrollRef.current.offsetLeft;
+              const walk = (x - startX) * 2;
+              scrollRef.current.scrollLeft = scrollLeft - walk;
+            }}
+            className={`flex gap-4 sm:gap-6 overflow-x-auto pb-8 pt-4 px-4 sm:px-0 -mx-4 sm:mx-0 snap-x snap-mandatory scrollbar-hide items-stretch overscroll-x-contain ${isDragging ? 'cursor-grabbing snap-none' : 'cursor-grab'}`}
+          >
             {clubs.map((club, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1, duration: 0.4 }}
-                viewport={{ once: true }}
-                className={`snap-start shrink-0 w-[270px] sm:w-[320px] group relative bg-[#0d051a] border border-gray-800 rounded-xl p-6 sm:p-7 flex flex-col transition-all duration-300 hover:border-gray-500 hover:-translate-y-2 ${club.borderGlow}`}
-              >
-                {/* Colored Top Bar */}
-                <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${club.color} rounded-t-xl opacity-70 group-hover:opacity-100 transition-opacity`}></div>
-
-                <div className="flex-grow">
-                  <h3 className={`text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${club.color} mb-1 pb-1 inline-block`}>
-                    {club.name}
-                  </h3>
-                  <div className="mb-3">
-                    <span className="inline-block text-[10px] font-semibold tracking-wider text-gray-300 bg-gray-800/80 px-2 py-0.5 rounded-full">
-                      {club.tagline}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-400 leading-relaxed">
-                    {club.desc}
-                  </p>
-                </div>
-
-                {/* Social Links Footer */}
-                <div className="mt-6 pt-4 border-t border-gray-800/50 flex items-center gap-3">
-                  {club.socials.map((social, sIdx) => {
-                    const Icon = social.icon;
-                    return (
-                      <a
-                        key={sIdx}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-500 hover:text-white transition-colors duration-200"
-                      >
-                        <Icon size={18} />
-                      </a>
-                    );
-                  })}
-                </div>
-              </motion.div>
+              <ClubCard key={idx} club={club} />
             ))}
+          </div>
+
+          <div className="mt-8 max-w-md mx-auto h-1.5 bg-gray-900 rounded-full overflow-hidden border border-white/5">
+            <div 
+              className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full transition-all duration-150 ease-out shadow-[0_0_10px_rgba(168,85,247,0.5)]"
+              style={{ width: `${Math.max(5, scrollProgress)}%` }}
+            />
           </div>
         </div>
       </div>
-
-      {/* Hide scrollbar utility */}
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }

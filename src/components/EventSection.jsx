@@ -66,7 +66,7 @@ const categories = [
   {
     id: 'circuitron',
     name: 'CIRCUITRON',
-    label: 'IoT Club',
+    label: 'Robotics & IoT Club',
     color: '#4ade80',
     events: [
       { title: 'IoT Design', desc: 'Design and prototype an innovative IoT solution.', icon: '🌐', prize: 'Exciting Prizes', time: 'Day 1 — 10:00 AM - 11:30 AM', venue: 'IoT Lab', rules: ['Team of 2-4', 'Hardware + Software', 'Working prototype needed'] },
@@ -246,8 +246,8 @@ const EventCard = ({ event, category, onClick }) => {
 
           <div className="mt-4 flex items-center justify-between">
             <span className="text-[10px] text-white/30 tracking-wide">{event.time}</span>
-            <span 
-              className="text-[10px] font-medium tracking-wider uppercase" 
+            <span
+              className="text-[10px] font-medium tracking-wider uppercase"
               style={{ color: `${category.color}cc` }}
             >
               Details →
