@@ -128,14 +128,30 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* ✅ Mobile Toggle (UPDATED ONLY THIS) */}
+        {/* ✅ Mobile Quick Actions & Toggle */}
         {!mobileMenuOpen && (
-          <div className="lg:hidden">
+          <div className="lg:hidden flex items-center gap-3">
+            {isLoggedIn ? (
+              <button
+                onClick={() => navigate('/dashboard')}
+                className="text-white p-2 rounded-full border border-[#7c3aed]/50 bg-[#7c3aed]/20 backdrop-blur-md flex items-center justify-center"
+              >
+                <LayoutDashboard className="w-6 h-6 text-purple-200" />
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate('/login')}
+                className="text-white px-4 py-2 text-sm font-medium border border-white/20 rounded-full backdrop-blur-md"
+              >
+                Login
+              </button>
+            )}
+            
             <button
               onClick={() => setMobileMenuOpen(true)}
               className="text-white p-2 rounded-full border border-white/10 bg-white/10 backdrop-blur-md"
             >
-              <Menu className="w-8 h-8" />
+              <Menu className="w-6 h-6" />
             </button>
           </div>
         )}

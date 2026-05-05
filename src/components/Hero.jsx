@@ -16,24 +16,39 @@ const Hero = () => {
   const videoRef = useRef(null);
 
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      // Parallax effect: Move video downwards as user scrolls down
-      // This creates the "slow moving" background effect
-      gsap.to(videoRef.current, {
-        yPercent: 30, // Adjust this percentage for more or less "lag"
-        ease: "none",
-        scale: 1.2,
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-    }, heroRef);
+  const ctx = gsap.context(() => {
 
-    return () => ctx.revert(); // Cleanup GSAP on unmount
-  }, []);
+    ScrollTrigger.matchMedia({
+
+      // ✅ Desktop only (lg screens)
+      "(min-width: 1024px)": () => {
+        gsap.to(videoRef.current, {
+          yPercent: 30,
+          scale: 1.2,
+          ease: "none",
+          scrollTrigger: {
+            trigger: heroRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+      },
+
+      // ✅ Mobile (disable animation)
+      "(max-width: 1023px)": () => {
+        gsap.set(videoRef.current, {
+          yPercent: 0,
+          scale: 1,
+        });
+      }
+
+    });
+
+  }, heroRef);
+
+  return () => ctx.revert();
+}, []);
 
   return (
     <div

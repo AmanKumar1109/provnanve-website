@@ -1,7 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Clock, MapPin, Trophy, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, Clock, MapPin, Trophy, ChevronLeft, ChevronRight, Loader } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { doc, setDoc, updateDoc, arrayUnion, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase';
 
 import eminanceInPromptImg from '../assets/event thumbnails/EminenceInPrompt_Promptathon_Helix.png';
 import shinobiScriptImg from '../assets/event thumbnails/ShinobiScript_DSA_Helix.png';
@@ -136,6 +140,57 @@ const categories = [
     EVENT MODAL
    ═══════════════════════════════════ */
 const EventModal = ({ event, category, onClose }) => {
+  const { isLoggedIn, user, login } = useAuth();
+  const navigate = useNavigate();
+  const [isEnrolling, setIsEnrolling] = useState(false);
+  const [enrollError, setEnrollError] = useState('');
+
+  // Check if user is already enrolled by looking at the context
+  const isEnrolled = user?.registeredEvents?.includes(event.title);
+
+  const handleEnroll = async () => {
+    if (!isLoggedIn) {
+      onClose();
+      navigate('/register');
+      return;
+    }
+
+    if (isEnrolled) return;
+
+    setIsEnrolling(true);
+    setEnrollError('');
+
+    try {
+      // 1. Create document in the collection named after the event
+      // Path: <event.title> / <user.uid>
+      const eventDocRef = doc(db, event.title, user.uid);
+      await setDoc(eventDocRef, {
+        uid: user.uid,
+        name: user.name || 'Unknown',
+        email: user.email || 'Unknown',
+        mobile: user.mobile || 'Unknown',
+        registerationId: user.registerationId || 'Unknown',
+        enrolledAt: serverTimestamp()
+      });
+
+      // 2. Update the user's document in the 'users' collection
+      const userDocRef = doc(db, 'users', user.uid);
+      await updateDoc(userDocRef, {
+        registeredEvents: arrayUnion(event.title)
+      });
+
+      // 3. Update the local context so the UI reflects the change immediately
+      const updatedEvents = user.registeredEvents ? [...user.registeredEvents, event.title] : [event.title];
+      login({ ...user, registeredEvents: updatedEvents });
+
+    } catch (err) {
+      console.error("Enrollment error:", err);
+      setEnrollError('Failed to enroll. Please try again.');
+    } finally {
+      setIsEnrolling(false);
+    }
+  };
+
   useEffect(() => {
     // Prevent background scrolling when modal is open
     document.body.style.overflow = 'hidden';
@@ -155,7 +210,7 @@ const EventModal = ({ event, category, onClose }) => {
   if (!event || !category) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[99999] flex items-center justify-center px-4 sm:px-6">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4 sm:px-6">
       {/* Dark Blurred Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -189,7 +244,7 @@ const EventModal = ({ event, category, onClose }) => {
         </button>
 
         {/* Scrollable Content Area */}
-        <div 
+        <div
           className="overflow-y-auto p-6 sm:p-8 custom-scrollbar"
           data-lenis-prevent="true"
         >
@@ -269,15 +324,29 @@ const EventModal = ({ event, category, onClose }) => {
           )}
 
           {/* CTA */}
-          <div className="mt-auto pt-4">
+          <div className="mt-auto pt-4 flex flex-col gap-2">
+            {enrollError && <p className="text-red-400 text-xs text-center">{enrollError}</p>}
             <button
-              className="w-full py-3.5 sm:py-4 rounded-xl text-sm font-black tracking-widest uppercase text-white transition-all hover:scale-[1.02] active:scale-[0.98]"
-              style={{ 
+              onClick={handleEnroll}
+              disabled={isEnrolling || isEnrolled}
+              className={`w-full py-3.5 sm:py-4 rounded-xl text-sm font-black tracking-widest uppercase text-white transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:scale-100 flex items-center justify-center gap-2`}
+              style={isEnrolled ? {
+                background: '#22c55e', // Green for success
+                boxShadow: `0 8px 25px rgba(34, 197, 94, 0.4)`
+              } : {
                 background: `linear-gradient(135deg, ${category.color}, ${category.color}99)`,
                 boxShadow: `0 8px 25px ${category.color}40`
               }}
             >
-              Register Now
+              {isEnrolling ? (
+                <><Loader className="w-4 h-4 animate-spin" /> Enrolling...</>
+              ) : isEnrolled ? (
+                'Already Enrolled'
+              ) : isLoggedIn ? (
+                'Enrol Now'
+              ) : (
+                'Register'
+              )}
             </button>
           </div>
         </div>

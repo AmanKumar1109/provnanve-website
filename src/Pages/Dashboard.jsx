@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft, User, Mail, Phone, GraduationCap, Hash, Shirt, CheckCircle, Clock, Calendar, Building2, LogOut, ShieldCheck, ShieldX } from 'lucide-react';
+import { ArrowLeft, User, Mail, Phone, GraduationCap, Hash, Shirt, CheckCircle, Clock, Calendar, Building2, LogOut, ShieldCheck, ShieldX, Copy, Check } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { doc, getDoc } from 'firebase/firestore';
@@ -10,6 +10,7 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [copied, setCopied] = useState(false);
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -97,11 +98,10 @@ const Dashboard = () => {
                     <div className="space-y-6">
 
                         {/* Verification Status Banner */}
-                        <div className={`flex items-center gap-4 rounded-xl px-5 py-4 border ${
-                            profile?.isVerified
+                        <div className={`flex items-center gap-4 rounded-xl px-5 py-4 border ${profile?.isVerified
                                 ? 'bg-green-500/10 border-green-500/30'
                                 : 'bg-yellow-500/10 border-yellow-500/30'
-                        }`}>
+                            }`}>
                             {profile?.isVerified ? (
                                 <>
                                     <ShieldCheck className="w-6 h-6 text-green-400 shrink-0" />
@@ -120,6 +120,36 @@ const Dashboard = () => {
                                 </>
                             )}
                         </div>
+
+                        {/* Registration ID Card */}
+                        {profile?.registerationId && (
+                            <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl px-5 py-4">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-xs font-bold tracking-widest uppercase text-purple-400 mb-1">Your Registration ID</p>
+                                        <p className="text-2xl font-bold font-mono text-white tracking-[0.3em]">{profile.registerationId}</p>
+                                    </div>
+                                    <button
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(profile.registrationId);
+                                            setCopied(true);
+                                            setTimeout(() => setCopied(false), 2000);
+                                        }}
+                                        className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${copied
+                                                ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                                                : 'bg-white/5 text-white/60 border border-white/10 hover:bg-purple-500/20 hover:text-purple-400 hover:border-purple-500/30'
+                                            }`}
+                                    >
+                                        {copied ? (
+                                            <><Check className="w-4 h-4" /> Copied!</>
+                                        ) : (
+                                            <><Copy className="w-4 h-4" /> Copy</>
+                                        )}
+                                    </button>
+                                </div>
+                                <p className="text-xs text-white/40 mt-2">Keep this ID safe. You will need it for event check-in.</p>
+                            </div>
+                        )}
 
                         {/* Profile Details Card */}
                         <div className="bg-[#0e0018] border border-white/10 rounded-xl overflow-hidden">
@@ -248,11 +278,10 @@ const Dashboard = () => {
                                 <div className="flex items-center gap-4 px-6 py-4">
                                     <div className="flex-1 flex items-center justify-between">
                                         <span className="text-white/40 text-sm">Payment Status</span>
-                                        <span className={`text-sm font-semibold px-3 py-1 rounded-full ${
-                                            profile?.isVerified
+                                        <span className={`text-sm font-semibold px-3 py-1 rounded-full ${profile?.isVerified
                                                 ? 'text-green-400 bg-green-500/10'
                                                 : 'text-yellow-400 bg-yellow-500/10'
-                                        }`}>
+                                            }`}>
                                             {profile?.isVerified ? 'Verified' : 'Pending Review'}
                                         </span>
                                     </div>

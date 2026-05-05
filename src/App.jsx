@@ -20,7 +20,7 @@ function App() {
         smoothWheel: true,
         wheelMultiplier: 0.9,
         smoothTouch: true,       // ✅ REQUIRED for mobile
-        touchMultiplier: 1.2,    // increase for noticeable effect
+        touchMultiplier: 0.9,    // increase for noticeable effect
         syncTouch: true
       }}
     >
