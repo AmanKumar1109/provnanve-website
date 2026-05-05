@@ -98,7 +98,7 @@ const EventModal = ({ event, category, onClose }) => {
   if (!event || !category) return null;
 
   return (
-    <div className="fixed inset-0 z-9999 flex items-center justify-center px-4 overflow-y-auto">
+    <div className="fixed inset-0 z-9999 flex items-center justify-center px-4 overflow-y-hidden">
 
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
@@ -280,13 +280,19 @@ const EventSection = () => {
 
   useEffect(() => {
     if (selectedEvent) {
+      // Get the width of the scrollbar to prevent layout shift
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = `${scrollBarWidth}px`;
     } else {
       document.body.style.overflow = "";
+      document.body.style.paddingRight = "0px";
     }
 
+    // Cleanup function to re-enable scroll if component unmounts
     return () => {
       document.body.style.overflow = "";
+      document.body.style.paddingRight = "0px";
     };
   }, [selectedEvent]);
 
@@ -384,13 +390,18 @@ const EventSection = () => {
       </div>
 
       {/* ── Modal ── */}
-      {selectedEvent && (
-        <EventModal
-          event={selectedEvent}
-          category={currentCategory}
-          onClose={() => setSelectedEvent(null)}
-        />
-      )}
+      <section id="event" className="relative py-20 sm:py-28 px-4 sm:px-6 bg-[#0a0014]">
+        {/* ... existing header and category bar ... */}
+
+        {/* Modal */}
+        {selectedEvent && (
+          <EventModal
+            event={selectedEvent}
+            category={currentCategory}
+            onClose={() => setSelectedEvent(null)}
+          />
+        )}
+      </section>
 
       {/* Hide scrollbar utility */}
       <style>{`
