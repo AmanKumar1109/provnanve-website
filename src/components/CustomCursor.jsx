@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { gsap } from 'gsap';
 
 const KunaiSVG = ({ className }) => (
@@ -141,7 +142,7 @@ const CustomCursor = () => {
     };
   }, []);
 
-  return (
+  return createPortal(
     <>
       <style>{`
         body, button, a, select, input { cursor: none !important; }
@@ -151,7 +152,7 @@ const CustomCursor = () => {
         }
       `}</style>
 
-      <div ref={containerRef} className="kunai-cursor-wrapper pointer-events-none fixed inset-0 z-[9999]">
+      <div ref={containerRef} className="kunai-cursor-wrapper pointer-events-none fixed inset-0 z-[99999]">
         {/* Main Kunai Group */}
         <div ref={cursorRef} className="fixed">
           {/* Aura Glow */}
@@ -166,7 +167,8 @@ const CustomCursor = () => {
           </div>
         </div>
       </div>
-    </>
+    </>,
+    document.body
   );
 };
 
