@@ -144,7 +144,7 @@ const EventModal = ({ event, category, onClose }) => {
   const navigate = useNavigate();
   const [isEnrolling, setIsEnrolling] = useState(false);
   const [enrollError, setEnrollError] = useState('');
-  
+
   // Team Registration States
   const [teamName, setTeamName] = useState('');
   const [memberIds, setMemberIds] = useState([]);
@@ -225,13 +225,19 @@ const EventModal = ({ event, category, onClose }) => {
     if (isEnrolled) return;
 
     // Validate Team Info
+    const activeMemberIds = memberIds.filter(id => id.trim() !== '');
+
     if (isTeamEvent) {
       if (!teamName.trim()) {
         setEnrollError('Please enter a Team Name.');
         return;
       }
-      if (memberIds.some(id => id.length !== 6)) {
-        setEnrollError('Please enter valid 6-digit Registration IDs for all teammates.');
+      if (activeMemberIds.length === 0) {
+        setEnrollError('Please enter at least one teammate Registration ID.');
+        return;
+      }
+      if (activeMemberIds.some(id => id.length !== 6)) {
+        setEnrollError('Any entered Registration ID must be exactly 6 digits.');
         return;
       }
     }
@@ -253,7 +259,7 @@ const EventModal = ({ event, category, onClose }) => {
 
       if (isTeamEvent) {
         enrollmentData.teamName = teamName;
-        enrollmentData.teamMembers = memberIds;
+        enrollmentData.teamMembers = activeMemberIds;
         enrollmentData.role = 'Leader';
       }
 
@@ -266,10 +272,10 @@ const EventModal = ({ event, category, onClose }) => {
         enrolledAt: new Date().toISOString(),
         isTeamEntry: isTeamEvent
       };
-      
+
       if (isTeamEvent) {
         eventDetail.teamName = teamName;
-        eventDetail.teamMembers = memberIds.map(id => ({
+        eventDetail.teamMembers = activeMemberIds.map(id => ({
           id,
           name: memberNames[id] || 'Unknown'
         }));
@@ -423,7 +429,7 @@ const EventModal = ({ event, category, onClose }) => {
 
           {/* Team Registration Form */}
           {!isEnrolled && isTeamEvent && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               className="mb-8 p-6 bg-purple-500/5 border border-purple-500/20 rounded-2xl space-y-4"
@@ -431,7 +437,7 @@ const EventModal = ({ event, category, onClose }) => {
               <h4 className="text-sm font-bold text-purple-400 flex items-center gap-2 mb-4 uppercase tracking-widest">
                 <Users className="w-4 h-4" /> Team Registration
               </h4>
-              
+
               <div className="space-y-4">
                 {/* Team Name */}
                 <div className="relative group">
@@ -464,10 +470,9 @@ const EventModal = ({ event, category, onClose }) => {
                           newIds[index] = e.target.value.replace(/\D/g, '');
                           setMemberIds(newIds);
                         }}
-                        className={`w-full bg-black/40 border rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none transition-all ${
-                          memberNames[id] === 'NOT_FOUND' ? 'border-red-500/50' : 
-                          memberNames[id] ? 'border-green-500/50' : 'border-white/10 focus:border-purple-500/50'
-                        }`}
+                        className={`w-full bg-black/40 border rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none transition-all ${memberNames[id] === 'NOT_FOUND' ? 'border-red-500/50' :
+                            memberNames[id] ? 'border-green-500/50' : 'border-white/10 focus:border-purple-500/50'
+                          }`}
                       />
                       {id.length === 6 && (
                         <div className="mt-1 ml-1">

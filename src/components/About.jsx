@@ -14,7 +14,7 @@ import img7 from '../assets/gallaryImages/7.jpeg';
 import img8 from '../assets/gallaryImages/8.jpeg';
 import imgLogo from '../assets/logo.png';
 import imgPicon from '../assets/picon.png';
-import celeb from '../assets/image.png';
+import celeb from '../assets/image_copy.png';
 import imgRvs from '../assets/RVS_Logo_Coloured_White_bg.png';
 
 gsap.registerPlugin(ScrollTrigger);
