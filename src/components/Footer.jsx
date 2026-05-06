@@ -47,7 +47,10 @@ const Footer = () => {
       return;
     }
 
-    const el = document.getElementById(id === "home" ? "hero-section" : id);
+    let targetId = id === "home" ? "hero-section" : id;
+    if (targetId === "events") targetId = "event"; // Map plural to singular if needed
+
+    const el = document.getElementById(targetId);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -72,11 +75,11 @@ const Footer = () => {
   const quickLinks = ["Home", "Events", "Register", "Schedule", "Contact"];
 
   const categories = [
-    { name: "HELIX", desc: "Tech & AI" },
-    { name: "TARANGINI", desc: "Cultural" },
-    { name: "XPECTRA", desc: "Media" },
-    { name: "RVS PANTHERS", desc: "Sports" },
-    { name: "CIRCUITRON", desc: "Robotics & IoT" },
+    { name: "HELIX", desc: "Tech & AI", id: "helix" },
+    { name: "TARANGINI", desc: "Cultural", id: "tarangini" },
+    { name: "XPECTRA", desc: "Media", id: "xpectra" },
+    { name: "RVS PANTHERS", desc: "Sports", id: "panthers" },
+    { name: "CIRCUITRON", desc: "Robotics & IoT", id: "circuitron" },
   ];
 
   const rvscetLinks = [
@@ -128,7 +131,14 @@ const Footer = () => {
             <div className="space-y-3 text-sm text-zinc-400">
               <div className="flex items-center gap-3">
                 <MapPin size={16} />
-                <span>RVSCET, Jamshedpur</span>
+                <a 
+                  href="https://www.google.com/maps/search/RVSCET+Jamshedpur" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  RVSCET, Jamshedpur
+                </a>
               </div>
 
               <div className="flex items-center gap-3">
@@ -170,7 +180,18 @@ const Footer = () => {
             <h3 className="text-white mb-4">Event Categories</h3>
             <ul className="space-y-2">
               {categories.map(cat => (
-                <li key={cat.name}>{cat.name} — {cat.desc}</li>
+                <li key={cat.name}>
+                  <button
+                    onClick={() => {
+                      window.dispatchEvent(new CustomEvent('changeEventCategory', { detail: cat.id }));
+                    }}
+                    className="text-zinc-400 hover:text-white transition-colors text-left"
+                  >
+                    <span className="text-white font-medium">{cat.name}</span>
+                    <span className="mx-2 text-zinc-600">—</span>
+                    <span className="text-xs text-zinc-500">{cat.desc}</span>
+                  </button>
+                </li>
               ))}
             </ul>
           </div>

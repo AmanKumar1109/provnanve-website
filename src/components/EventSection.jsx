@@ -558,6 +558,24 @@ const EventSection = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const scrollRef = useRef(null);
 
+  useEffect(() => {
+    const handleCategoryChange = (e) => {
+      const categoryId = e.detail;
+      if (categories.find(c => c.id === categoryId)) {
+        setActiveCategory(categoryId);
+        const el = document.getElementById('event');
+        if (el) {
+          const yOffset = -80; // Offset for navbar
+          const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }
+    };
+
+    window.addEventListener('changeEventCategory', handleCategoryChange);
+    return () => window.removeEventListener('changeEventCategory', handleCategoryChange);
+  }, []);
+
   const currentCategory = categories.find(c => c.id === activeCategory);
   const currentEvents = currentCategory?.events || [];
 
