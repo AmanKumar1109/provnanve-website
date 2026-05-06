@@ -564,7 +564,7 @@ const EventSection = () => {
   const scrollCards = (direction) => {
     if (scrollRef.current) {
       const amount = 300;
-      scrollRef.current.scrollBy({ left: direction === 'left' ? -amount : amount });
+      scrollRef.current.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' });
     }
   };
 
@@ -605,8 +605,23 @@ const EventSection = () => {
         </div>
 
         {/* ── Category Bar (Horizontal Scroll) ── */}
-        <div className="mb-10">
-          <div className="flex gap-2 sm:gap-3 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory justify-start sm:justify-center">
+        <div className="mb-10 relative -mx-4 sm:mx-0">
+          {/* Left fade edge */}
+          <div className="absolute left-0 top-0 bottom-2 w-8 sm:hidden bg-gradient-to-r from-[#0a0014] to-transparent pointer-events-none z-10" />
+          {/* Right fade edge */}
+          <div className="absolute right-0 top-0 bottom-2 w-8 sm:hidden bg-gradient-to-l from-[#0a0014] to-transparent pointer-events-none z-10" />
+
+          <div
+            className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide sm:justify-center sm:flex-wrap sm:gap-3"
+            data-lenis-prevent="true"
+            style={{
+              WebkitOverflowScrolling: 'touch',
+              touchAction: 'pan-x',
+              scrollBehavior: 'smooth',
+              paddingLeft: '1rem',
+              paddingRight: '1rem',
+            }}
+          >
             {categories.map((cat) => {
               const isActive = activeCategory === cat.id;
               return (
@@ -614,24 +629,24 @@ const EventSection = () => {
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
                   className={`
-                    shrink-0 snap-start flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-sm font-medium border
+                    shrink-0 flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-sm font-medium border transition-all duration-200
                     ${isActive
                       ? 'text-white border-white/15 shadow-lg'
-                      : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/3'
+                      : 'text-white/40 border-transparent hover:text-white/70 hover:bg-white/5'
                     }
                   `}
                   style={isActive ? {
-                    background: `${cat.color}10`,
-                    borderColor: `${cat.color}25`,
-                    boxShadow: `0 4px 20px ${cat.color}10`,
+                    background: `${cat.color}15`,
+                    borderColor: `${cat.color}30`,
+                    boxShadow: `0 4px 20px ${cat.color}15`,
                   } : {}}
                 >
                   <span
-                    className="w-2 h-2 rounded-full"
+                    className="w-2 h-2 rounded-full shrink-0"
                     style={{ background: isActive ? cat.color : 'rgba(255,255,255,0.15)' }}
                   />
-                  <span>{cat.name}</span>
-                  <span className="text-[10px] text-white/25 hidden sm:inline">
+                  <span className="whitespace-nowrap">{cat.name}</span>
+                  <span className="text-[10px] text-white/25 hidden sm:inline whitespace-nowrap">
                     {cat.label}
                   </span>
                 </button>
@@ -659,10 +674,18 @@ const EventSection = () => {
           {/* Cards container */}
           <div
             ref={scrollRef}
-            className="flex gap-4 overflow-x-auto pb-8 pt-2 scrollbar-hide snap-x snap-mandatory -mx-4 px-4 sm:-mx-0 sm:px-0 overscroll-x-contain"
+            className="flex gap-4 overflow-x-auto pb-8 pt-2 scrollbar-hide -mx-4 px-4 sm:-mx-0 sm:px-0"
+            data-lenis-prevent="true"
+            style={{
+              WebkitOverflowScrolling: 'touch',
+              touchAction: 'pan-x',
+              scrollBehavior: 'smooth',
+              overscrollBehaviorX: 'contain',
+              scrollSnapType: 'x mandatory',
+            }}
           >
             {currentEvents.map((event) => (
-              <div key={event.title} className="snap-start py-2">
+              <div key={event.title} className="py-2" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
                 <EventCard
                   event={event}
                   category={currentCategory}
