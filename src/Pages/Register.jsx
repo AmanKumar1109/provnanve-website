@@ -1,3 +1,4 @@
+// UPDATED BRANCH LIST - VERSION 3
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, User, Mail, Phone, GraduationCap, Hash, Shirt, Lock, CheckCircle, AlertCircle, Loader, CreditCard, Wallet, HelpCircle, X, Info } from 'lucide-react';
@@ -430,41 +431,16 @@ const Register = () => {
                   icon={GraduationCap}
                   isSearchable={true}
                   options={[
-                    {
-                      category: 'Engineering (B.Tech)',
-                      options: [
-                        { value: 'cse', label: 'Computer Science & Engineering', keywords: 'cse computer science cs' },
-                        { value: 'cs-aiml', label: 'CS (AI & ML)', keywords: 'ai ml aiml artificial intelligence machine learning' },
-                        { value: 'it', label: 'Information Technology', keywords: 'it info tech' },
-                        { value: 'ece', label: 'Electronics & Communication', keywords: 'ece electronics communication' },
-                        { value: 'eee', label: 'Electrical & Electronics', keywords: 'eee electrical electronics' },
-                        { value: 'ee', label: 'Electrical Engineering', keywords: 'ee electrical' },
-                        { value: 'me', label: 'Mechanical Engineering', keywords: 'me mechanical' },
-                        { value: 'ce', label: 'Civil Engineering', keywords: 'ce civil' },
-                        { value: 'metallurgy', label: 'Metallurgical Engineering', keywords: 'metallurgy metal' },
-                        { value: 'production', label: 'Production Engineering', keywords: 'production prod' },
-                        { value: 'mining', label: 'Mining Engineering', keywords: 'mining mine' },
-                      ]
-                    },
-                    {
-                      category: 'Diploma',
-                      options: [
-                        { value: 'diploma-cse', label: 'Diploma (CSE)', keywords: 'diploma cse cs computer science' },
-                        { value: 'diploma-me', label: 'Diploma (Mechanical)', keywords: 'diploma me mechanical' },
-                        { value: 'diploma-ee', label: 'Diploma (Electrical)', keywords: 'diploma ee electrical' },
-                        { value: 'diploma-ce', label: 'Diploma (Civil)', keywords: 'diploma ce civil' },
-                      ]
-                    },
-                    {
-                      category: 'Professional & Others',
-                      options: [
-                        { value: 'bca', label: 'BCA', keywords: 'bca bachelor computer' },
-                        { value: 'mca', label: 'MCA', keywords: 'mca master computer' },
-                        { value: 'bba', label: 'BBA', keywords: 'bba business admin' },
-                        { value: 'mechatronics', label: 'Mechatronics', keywords: 'mecha tronics' },
-                        { value: 'other', label: 'Other', keywords: 'other miscellaneous' }
-                      ]
-                    }
+                    { value: 'bca', label: 'BCA (Bachelor of Computer Applications)', keywords: 'bca computer applications' },
+                    { value: 'bba', label: 'BBA (Bachelor of Business Administration)', keywords: 'bba business administration' },
+                    { value: 'mca', label: 'MCA (Master of Computer Applications)', keywords: 'mca computer applications' },
+                    { value: 'diploma', label: 'Diploma (Diploma in Engineering)', keywords: 'diploma engineering' },
+                    { value: 'cse', label: 'CSE (Computer Science & Engineering)', keywords: 'cse computer science engineering' },
+                    { value: 'aiml', label: 'AI/ML (Artificial Intelligence & Machine Learning)', keywords: 'ai ml aiml artificial intelligence machine learning' },
+                    { value: 'ece', label: 'ECE (Electronics & Communication Engineering)', keywords: 'ece electronics communication engineering' },
+                    { value: 'eee', label: 'EEE (Electrical & Electronics Engineering)', keywords: 'eee electrical electronics engineering' },
+                    { value: 'me', label: 'ME (Mechanical Engineering)', keywords: 'me mechanical engineering' },
+                    { value: 'civil', label: 'Civil Engineering', keywords: 'civil engineering' }
                   ]}
                 />
 

@@ -39,11 +39,16 @@ const Dashboard = () => {
     };
 
     const branchMap = {
-        cse: 'Computer Science',
-        ece: 'Electronics & Communication',
-        ee: 'Electrical Engineering',
-        me: 'Mechanical Engineering',
-        ce: 'Civil Engineering',
+        bca: 'BCA (Bachelor of Computer Applications)',
+        bba: 'BBA (Bachelor of Business Administration)',
+        mca: 'MCA (Master of Computer Applications)',
+        diploma: 'Diploma (Diploma in Engineering)',
+        cse: 'CSE (Computer Science & Engineering)',
+        aiml: 'AI/ML (Artificial Intelligence & Machine Learning)',
+        ece: 'ECE (Electronics & Communication Engineering)',
+        eee: 'EEE (Electrical & Electronics Engineering)',
+        me: 'ME (Mechanical Engineering)',
+        civil: 'Civil Engineering',
     };
 
     const tshirtMap = {
