@@ -227,9 +227,20 @@ const Footer = () => {
 
         </div>
 
-        <div className="pt-8 border-t border-white/10 flex justify-between text-sm text-zinc-500">
-          <span>© {new Date().getFullYear()} PROVENANCE 6.0 • RVSCET</span>
-          <span>Built with precision, performance, and intent.</span>
+        <div className="pt-8 border-t border-white/10 flex flex-col lg:flex-row justify-between text-sm text-zinc-500 gap-6">
+          <div className="flex flex-col gap-2">
+            <span>© {new Date().getFullYear()} PROVENANCE 6.0 • RVSCET</span>
+            <span>Built with precision, performance, and intent.</span>
+          </div>
+          
+          <div className="flex flex-col gap-2 text-xs text-zinc-400 lg:text-right">
+            <span className="text-zinc-300 font-medium text-sm">Developed by Team Helix</span>
+            <div className="flex flex-col gap-1">
+              <span><strong className="text-zinc-300">Tech Team:</strong> Satish Verma (Head), Priyanshu Ghosh (Co-Head), Aman Kumar (Tech Coordinator), Abhijeet Ghosh (Tech Coordinator)</span>
+              <span><strong className="text-zinc-300">Design Team:</strong> Sumit Ghosh (Lead Designer)</span>
+              <span><strong className="text-zinc-300">Media Team:</strong> Skasham Kumar (Head), T.Sasi Kiran (Co-Head)</span>
+            </div>
+          </div>
         </div>
 
       </div>

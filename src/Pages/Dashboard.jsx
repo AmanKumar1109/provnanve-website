@@ -103,11 +103,11 @@ const Dashboard = () => {
                     <div className="space-y-6">
 
                         {/* Verification Status Banner */}
-                        <div className={`flex items-center gap-4 rounded-xl px-5 py-4 border ${profile?.paymentStatus === 'approved'
+                        <div className={`flex items-center gap-4 rounded-xl px-5 py-4 border ${profile?.isVerified
                                 ? 'bg-green-500/10 border-green-500/30'
                                 : 'bg-yellow-500/10 border-yellow-500/30'
                             }`}>
-                            {profile?.paymentStatus === 'approved' ? (
+                            {profile?.isVerified ? (
                                 <>
                                     <ShieldCheck className="w-6 h-6 text-green-400 shrink-0" />
                                     <div>
@@ -245,39 +245,12 @@ const Dashboard = () => {
 
                             {profile?.registeredEvents && profile.registeredEvents.length > 0 ? (
                                 <div className="divide-y divide-white/5">
-                                    {profile.registeredEvents.map((eventTitle, idx) => {
-                                        const detail = profile.registeredEventsDetails?.find(d => d.title === eventTitle);
-                                        return (
-                                            <div key={idx} className="px-6 py-4 space-y-2">
-                                                <div className="flex items-center gap-4">
-                                                    <div className="w-2 h-2 rounded-full bg-purple-500 shrink-0" />
-                                                    <span className="text-white/80 text-sm font-medium">{eventTitle}</span>
-                                                </div>
-                                                
-                                                {detail?.isTeamEntry && (
-                                                    <div className="ml-6 pl-4 border-l border-white/10 space-y-1">
-                                                        <p className="text-xs text-purple-400 font-bold tracking-wider uppercase">
-                                                            Team: {detail.teamName}
-                                                        </p>
-                                                        <div className="flex flex-wrap gap-2">
-                                                            {detail.teamMembers?.map((member, i) => {
-                                                                const isObject = typeof member === 'object';
-                                                                const mId = isObject ? member.id : member;
-                                                                const mName = isObject ? member.name : '';
-                                                                
-                                                                return (
-                                                                    <div key={i} className="flex flex-col bg-white/5 px-2 py-1 rounded border border-white/5 min-w-[100px]">
-                                                                        {mName && <span className="text-[10px] text-white/80 font-medium truncate max-w-[150px]">{mName.split(' (')[0]}</span>}
-                                                                        <span className="text-[8px] text-white/30 uppercase tracking-tighter">ID: {mId}</span>
-                                                                    </div>
-                                                                );
-                                                            })}
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
+                                    {profile.registeredEvents.map((event, idx) => (
+                                        <div key={idx} className="flex items-center gap-4 px-6 py-4">
+                                            <div className="w-2 h-2 rounded-full bg-purple-500 shrink-0" />
+                                            <span className="text-white/80 text-sm">{event}</span>
+                                        </div>
+                                    ))}
                                 </div>
                             ) : (
                                 <div className="px-6 py-8 text-center">
@@ -310,11 +283,11 @@ const Dashboard = () => {
                                 <div className="flex items-center gap-4 px-6 py-4">
                                     <div className="flex-1 flex items-center justify-between">
                                         <span className="text-white/40 text-sm">Payment Status</span>
-                                        <span className={`text-sm font-semibold px-3 py-1 rounded-full capitalize ${profile?.paymentStatus === 'approved'
+                                        <span className={`text-sm font-semibold px-3 py-1 rounded-full ${profile?.isVerified
                                                 ? 'text-green-400 bg-green-500/10'
                                                 : 'text-yellow-400 bg-yellow-500/10'
                                             }`}>
-                                            {profile?.paymentStatus === 'approved' ? 'Verified' : profile?.paymentStatus || 'Pending Review'}
+                                            {profile?.isVerified ? 'Verified' : 'Pending Review'}
                                         </span>
                                     </div>
                                 </div>
