@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Clock, MapPin, Trophy, ChevronLeft, ChevronRight, Loader } from 'lucide-react';
+import { X, Clock, MapPin, Trophy, ChevronLeft, ChevronRight, Loader, Users, Hash } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { doc, setDoc, updateDoc, arrayUnion, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc, updateDoc, arrayUnion, serverTimestamp, query, collection, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 
 import eminanceInPromptImg from '../assets/event thumbnails/EminenceInPrompt_Promptathon_Helix.png';
@@ -144,9 +144,76 @@ const EventModal = ({ event, category, onClose }) => {
   const navigate = useNavigate();
   const [isEnrolling, setIsEnrolling] = useState(false);
   const [enrollError, setEnrollError] = useState('');
+  
+  // Team Registration States
+  const [teamName, setTeamName] = useState('');
+  const [memberIds, setMemberIds] = useState([]);
+  const [memberNames, setMemberNames] = useState({}); // To store { id: "Name (Branch)" }
 
-  // Check if user is already enrolled by looking at the context
+  // Check if user is already enrolled
   const isEnrolled = user?.registeredEvents?.includes(event.title);
+
+  // Define Team Sizes for specific events
+  const teamSizeMap = {
+    'Trigger-Point: BGMI Arena': 4,
+    'Frag-Ops: PC Gaming': 5,
+    'Bluelock': 9,
+    'Karasuno Smash': 6,
+    'Tug Of Titans': 5,
+    'Slam Dunk': 3,
+    'Food Wars': 3,
+    'Ai X Film': 3,
+    'Paper Dance': 2,
+    'Komic Can Paint': 2,
+    'Street Strikers': 6,
+    'Cyber-Runner: Edge': 2,
+    'Fullmetal Kick Off': 2,
+    'Gundam: Last Stand': 2,
+    'Finding One Piece': 5,
+    'Senku\'s Bridge': 3
+  };
+
+  const teamSize = teamSizeMap[event.title] || 1;
+  const isTeamEvent = teamSize > 1;
+
+  // Initialize member IDs array if it's a team event
+  useEffect(() => {
+    if (isTeamEvent && memberIds.length === 0) {
+      setMemberIds(new Array(teamSize - 1).fill(''));
+    }
+  }, [isTeamEvent, teamSize]);
+
+  // Resolve Names for IDs
+  useEffect(() => {
+    const resolveNames = async () => {
+      const newNames = { ...memberNames };
+      let changed = false;
+
+      for (let i = 0; i < memberIds.length; i++) {
+        const id = memberIds[i];
+        if (id.length === 6 && !newNames[id]) {
+          try {
+            const q = query(collection(db, 'users'), where('registerationId', '==', id));
+            const querySnapshot = await getDocs(q);
+            if (!querySnapshot.empty) {
+              const userData = querySnapshot.docs[0].data();
+              newNames[id] = `${userData.name} (${userData.branch?.toUpperCase() || 'Member'})`;
+            } else {
+              newNames[id] = 'NOT_FOUND';
+            }
+            changed = true;
+          } catch (err) {
+            console.error("Error resolving name:", err);
+          }
+        }
+      }
+
+      if (changed) setMemberNames(newNames);
+    };
+
+    const timer = setTimeout(resolveNames, 500); // Debounce
+    return () => clearTimeout(timer);
+  }, [memberIds]);
 
   const handleEnroll = async () => {
     if (!isLoggedIn) {
@@ -157,31 +224,66 @@ const EventModal = ({ event, category, onClose }) => {
 
     if (isEnrolled) return;
 
+    // Validate Team Info
+    if (isTeamEvent) {
+      if (!teamName.trim()) {
+        setEnrollError('Please enter a Team Name.');
+        return;
+      }
+      if (memberIds.some(id => id.length !== 6)) {
+        setEnrollError('Please enter valid 6-digit Registration IDs for all teammates.');
+        return;
+      }
+    }
+
     setIsEnrolling(true);
     setEnrollError('');
 
     try {
-      // 1. Create document in the collection named after the event
-      // Path: <event.title> / <user.uid>
       const eventDocRef = doc(db, event.title, user.uid);
-      await setDoc(eventDocRef, {
+      const enrollmentData = {
         uid: user.uid,
         name: user.name || 'Unknown',
         email: user.email || 'Unknown',
         mobile: user.mobile || 'Unknown',
         registerationId: user.registerationId || 'Unknown',
-        enrolledAt: serverTimestamp()
-      });
+        enrolledAt: serverTimestamp(),
+        isTeamEntry: isTeamEvent,
+      };
 
-      // 2. Update the user's document in the 'users' collection
+      if (isTeamEvent) {
+        enrollmentData.teamName = teamName;
+        enrollmentData.teamMembers = memberIds;
+        enrollmentData.role = 'Leader';
+      }
+
+      await setDoc(eventDocRef, enrollmentData);
+
+      // 2. Update the user's document with detailed info
       const userDocRef = doc(db, 'users', user.uid);
+      const eventDetail = {
+        title: event.title,
+        enrolledAt: new Date().toISOString(),
+        isTeamEntry: isTeamEvent
+      };
+      
+      if (isTeamEvent) {
+        eventDetail.teamName = teamName;
+        eventDetail.teamMembers = memberIds.map(id => ({
+          id,
+          name: memberNames[id] || 'Unknown'
+        }));
+      }
+
       await updateDoc(userDocRef, {
-        registeredEvents: arrayUnion(event.title)
+        registeredEvents: arrayUnion(event.title),
+        registeredEventsDetails: arrayUnion(eventDetail)
       });
 
-      // 3. Update the local context so the UI reflects the change immediately
+      // 3. Update the local context
       const updatedEvents = user.registeredEvents ? [...user.registeredEvents, event.title] : [event.title];
-      login({ ...user, registeredEvents: updatedEvents });
+      const updatedDetails = user.registeredEventsDetails ? [...user.registeredEventsDetails, eventDetail] : [eventDetail];
+      login({ ...user, registeredEvents: updatedEvents, registeredEventsDetails: updatedDetails });
 
     } catch (err) {
       console.error("Enrollment error:", err);
@@ -192,15 +294,11 @@ const EventModal = ({ event, category, onClose }) => {
   };
 
   useEffect(() => {
-    // Prevent background scrolling when modal is open
     document.body.style.overflow = 'hidden';
-
-    // Handle ESC key to close modal
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', handleKeyDown);
-
     return () => {
       document.body.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
@@ -321,6 +419,73 @@ const EventModal = ({ event, category, onClose }) => {
                 ))}
               </div>
             </div>
+          )}
+
+          {/* Team Registration Form */}
+          {!isEnrolled && isTeamEvent && (
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              className="mb-8 p-6 bg-purple-500/5 border border-purple-500/20 rounded-2xl space-y-4"
+            >
+              <h4 className="text-sm font-bold text-purple-400 flex items-center gap-2 mb-4 uppercase tracking-widest">
+                <Users className="w-4 h-4" /> Team Registration
+              </h4>
+              
+              <div className="space-y-4">
+                {/* Team Name */}
+                <div className="relative group">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-purple-400/50 group-focus-within:text-purple-400 transition-colors">
+                    <Users className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Enter Team Name"
+                    value={teamName}
+                    onChange={(e) => setTeamName(e.target.value)}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-purple-500/50 transition-all"
+                  />
+                </div>
+
+                {/* Member IDs */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {memberIds.map((id, index) => (
+                    <div key={index} className="relative group">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-purple-400/50 group-focus-within:text-purple-400 transition-colors">
+                        <Hash className="w-4 h-4" />
+                      </div>
+                      <input
+                        type="text"
+                        maxLength={6}
+                        placeholder={`Member ${index + 2} Reg ID`}
+                        value={id}
+                        onChange={(e) => {
+                          const newIds = [...memberIds];
+                          newIds[index] = e.target.value.replace(/\D/g, '');
+                          setMemberIds(newIds);
+                        }}
+                        className={`w-full bg-black/40 border rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none transition-all ${
+                          memberNames[id] === 'NOT_FOUND' ? 'border-red-500/50' : 
+                          memberNames[id] ? 'border-green-500/50' : 'border-white/10 focus:border-purple-500/50'
+                        }`}
+                      />
+                      {id.length === 6 && (
+                        <div className="mt-1 ml-1">
+                          {memberNames[id] === 'NOT_FOUND' ? (
+                            <p className="text-[10px] text-red-400">ID not found. Registration required.</p>
+                          ) : memberNames[id] ? (
+                            <p className="text-[10px] text-green-400 font-medium">Found: {memberNames[id]}</p>
+                          ) : (
+                            <p className="text-[10px] text-white/20 animate-pulse">Searching...</p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[10px] text-white/30 italic">Note: Your Registration ID is automatically included as Team Leader.</p>
+              </div>
+            </motion.div>
           )}
 
           {/* CTA */}

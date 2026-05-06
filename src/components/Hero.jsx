@@ -117,13 +117,16 @@ const Hero = () => {
           )}
 
           {/* Brochure */}
-          <button
+          <a
+            href="https://drive.google.com/drive/folders/1YlqRkomeO_mjPYULpM9WH00_V0kfhHW-?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group relative flex items-center justify-center gap-2 bg-white text-[#6d28d9] px-5 sm:px-8 py-3 rounded-xl font-semibold text-base sm:text-lg transition-all w-auto overflow-hidden hover:scale-105 active:scale-95 hover:shadow-[0_0_25px_rgba(255,255,255,0.4)]"
           >
             <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-purple-500/20 to-transparent group-hover:animate-shine" />
             <Download className="w-5 h-5 text-purple-500 z-10" />
             <span className="z-10">Brochure</span>
-          </button>
+          </a>
 
         </div>
       </div>
