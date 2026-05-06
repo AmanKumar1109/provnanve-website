@@ -131,9 +131,9 @@ const Footer = () => {
             <div className="space-y-3 text-sm text-zinc-400">
               <div className="flex items-center gap-3">
                 <MapPin size={16} />
-                <a 
-                  href="https://www.google.com/maps/search/RVSCET+Jamshedpur" 
-                  target="_blank" 
+                <a
+                  href="https://www.google.com/maps/search/RVSCET+Jamshedpur"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"
                 >
@@ -232,13 +232,13 @@ const Footer = () => {
             <span>© {new Date().getFullYear()} PROVENANCE 6.0 • RVSCET</span>
             <span>Built with precision, performance, and intent.</span>
           </div>
-          
+
           <div className="flex flex-col gap-2 text-xs text-zinc-400 lg:text-right">
-            <span className="text-zinc-300 font-medium text-sm">Developed by Team Helix</span>
+            <span className="text-zinc-300 font-medium text-sm">Developed by Helix</span>
             <div className="flex flex-col gap-1">
               <span><strong className="text-zinc-300">Tech Team:</strong> Satish Verma (Head), Priyanshu Ghosh (Co-Head), Aman Kumar (Tech Coordinator), Abhijeet Ghosh (Tech Coordinator)</span>
               <span><strong className="text-zinc-300">Design Team:</strong> Sumit Ghosh (Lead Designer)</span>
-              <span><strong className="text-zinc-300">Media Team:</strong> Skasham Kumar (Head), T.Sasi Kiran (Co-Head)</span>
+              <span><strong className="text-zinc-300">Media Team:</strong> Saksham Kumar (Head), T.Sasi Kiran (Co-Head)</span>
             </div>
           </div>
         </div>
