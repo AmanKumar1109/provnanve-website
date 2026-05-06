@@ -173,7 +173,7 @@ const About = () => {
     <section
       id="about"
       ref={containerRef}
-      className="relative py-32 px-6 overflow-hidden bg-[#0a0014]"
+      className="relative py-32 px-6 overflow-x-hidden bg-[#0a0014]"
     >
       {/* Background Gradients */}
       <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-[#0a0014] via-[#0a0014]/50 to-transparent z-10 -translate-y-full pointer-events-none" />
@@ -226,7 +226,7 @@ const About = () => {
           </div>
 
           {/* Visual Element / Card with Parallax Applied */}
-          <div ref={visualRef} className="relative will-change-transform">
+          <div ref={visualRef} className="relative will-change-transform overflow-visible">
             <div className="relative z-10 glass-panel p-2 rounded-[2.5rem] rotate-3 hover:rotate-0 transition-transform duration-700 shadow-[0_0_50px_rgba(168,85,247,0.2)]">
               <div className="aspect-square rounded-[2rem] bg-gradient-to-br from-purple-500/20 to-blue-500/20 relative overflow-hidden">
 
@@ -283,7 +283,7 @@ const About = () => {
             {/* Floating Badge */}
             <div
               ref={badgeRef}
-              className="absolute -top-6 -right-6 z-20 bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 rounded-full text-sm font-bold shadow-xl text-white"
+              className="absolute top-3 -right-6 z-20 bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 rounded-full text-sm font-bold shadow-xl text-white"
             >
               Our Guest- Pranav Sharma
             </div>

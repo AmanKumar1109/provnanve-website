@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import About from '../components/About';
+import CelebrityGuest from '../components/CelebrityGuest';
 import EventSection from '../components/EventSection';
 import GallerySection from '../components/GallerySection';
 import ClubSection from '../components/ClubSection';
@@ -15,6 +16,7 @@ const Home = () => {
       <main>
         <Hero />
         <About />
+        <CelebrityGuest />
         <div className="-mt-12"><EventSection /></div>
         <div className="-mt-12"><GallerySection /></div>
         <div className="-mt-12"><ClubSection /></div>
