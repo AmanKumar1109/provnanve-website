@@ -51,7 +51,9 @@ const Register = () => {
     const isWithinCollege = form.collegeType === 'within';
     const hasRequiredFields = form.name && form.email && form.password && form.mobile && form.branch && form.year && form.tshirtSize;
     const hasConditionalFields = isWithinCollege ? form.rollNumber : form.collegeName;
-    const hasPaymentFields = form.paymentApp && form.transactionId && (form.paymentApp !== 'other' || form.otherPaymentApp);
+    const hasPaymentFields = isWithinCollege
+      ? (form.paymentApp && form.transactionId && (form.paymentApp !== 'other' || form.otherPaymentApp))
+      : true; // Outside college students don't need payment
 
     if (!hasRequiredFields || !hasConditionalFields || !hasPaymentFields) {
       setError('Please fill in all required fields.');
@@ -95,9 +97,9 @@ const Register = () => {
         branch: form.branch,
         year: form.year,
         tshirtSize: form.tshirtSize,
-        paymentApp: form.paymentApp === 'other' ? form.otherPaymentApp : form.paymentApp,
-        transactionId: form.transactionId,
-        paymentStatus: 'pending',
+        paymentApp: isWithinCollege ? (form.paymentApp === 'other' ? form.otherPaymentApp : form.paymentApp) : 'N/A',
+        transactionId: isWithinCollege ? form.transactionId : 'N/A',
+        paymentStatus: isWithinCollege ? 'pending' : 'outside-college',
         registeredAt: serverTimestamp(),
       });
 
@@ -476,7 +478,8 @@ const Register = () => {
                   ]}
                 />
 
-                {/* --- Payment Section --- */}
+                {/* --- Payment Section (only for within college) --- */}
+                {form.collegeType === 'within' && (
                 <div className="pt-6 border-t border-white/10 space-y-6">
                   <h3 className="text-xl font-bold text-white flex items-center gap-2">
                     <CreditCard className="w-6 h-6 text-purple-400" />
@@ -564,6 +567,7 @@ const Register = () => {
                     </div>
                   </div>
                 </div>
+                )}
 
                 {/* Transaction ID Help Modal */}
                 <AnimatePresence>
