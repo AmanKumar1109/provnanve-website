@@ -5,4 +5,20 @@ import tailwindcss from "@tailwindcss/vite";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  build: {
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react')) return 'vendor-react';
+            if (id.includes('firebase')) return 'vendor-firebase';
+            if (id.includes('framer-motion')) return 'vendor-framer-motion';
+            if (id.includes('lucide-react')) return 'vendor-lucide';
+            return 'vendor'; // all other node modules
+          }
+        }
+      }
+    }
+  }
 });

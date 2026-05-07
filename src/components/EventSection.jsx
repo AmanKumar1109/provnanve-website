@@ -7,44 +7,44 @@ import { useAuth } from '../contexts/AuthContext';
 import { doc, setDoc, updateDoc, arrayUnion, serverTimestamp, query, collection, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 
-import eminanceInPromptImg from '../assets/event thumbnails/EminenceInPrompt_Promptathon_Helix.png';
-import shinobiScriptImg from '../assets/event thumbnails/ShinobiScript_DSA_Helix.png';
-import mangakasEdgeImg from '../assets/event thumbnails/MangakasEdge_GraphicDesign_Helix.png';
-import hunterRankProImg from '../assets/event thumbnails/HunterRankPro_ResumeMaking_Helix.png';
-import fragOpsImg from '../assets/event thumbnails/FragOpsCSGOELite_EGamingPC_Helix.png';
-import triggerPointImg from '../assets/event thumbnails/TriggerPointBGMIArena_EGamingMobile_Helix.png';
-import colorsOfKonohaImg from '../assets/event thumbnails/ColorsOfKonoha_RangoliMaking_Helix.png';
-import sageModeImg from '../assets/event thumbnails/SageMode_Quiz_Helix.png';
+import eminanceInPromptImg from '../assets/event thumbnails/Website Assets/EminenceInPrompt_Promptathon_Helix.webp';
+import shinobiScriptImg from '../assets/event thumbnails/Website Assets/ShinobiScript_DSA_Helix.webp';
+import mangakasEdgeImg from '../assets/event thumbnails/Website Assets/MangakasEdge_GraphicDesign_Helix.webp';
+import hunterRankProImg from '../assets/event thumbnails/Website Assets/HunterRankPro_ResumeMaking_Helix.webp';
+import fragOpsImg from '../assets/event thumbnails/Website Assets/FragOpsCSGOELite_EGamingPC_Helix.webp';
+import triggerPointImg from '../assets/event thumbnails/Website Assets/TriggerPointBGMIArena_EGamingMobile_Helix.webp';
+import colorsOfKonohaImg from '../assets/event thumbnails/Website Assets/ColorsOfKonoha_RangoliMaking_Helix.webp';
+import sageModeImg from '../assets/event thumbnails/Website Assets/SageMode_Quiz_Helix.webp';
 
-import paperDanceImg from '../assets/event thumbnails/ORIGAMIRYTHM_PAPERDANCE_TARANGINI.png';
-import streetReloadedImg from '../assets/event thumbnails/DANDADANCE_STREETRELOADED_TARANGINI.png';
-import soloSongImg from '../assets/event thumbnails/KAROKE-ON_SOLO_DUOSinging_TARANGINI.png';
-import cutTheCrapImg from '../assets/event thumbnails/DRESSINGMYDARLING_PAPERDRESSMAKING_TARANGINI.png';
-import soloGroupDanceImg from '../assets/event thumbnails/MYDANCEACADEMIA_SOLOGROUPDANCE_TARANGINI.png';
-import facePaintingImg from '../assets/event thumbnails/KOMICANPAINT_FACEPAINTING_TARANGINI.png';
-import rampWalkImg from '../assets/event thumbnails/JOJOSBIZARREWALK_RAMPWALK_TARANGINI.png';
+import paperDanceImg from '../assets/event thumbnails/Website Assets/ORIGAMIRYTHM_PAPERDANCE_TARANGINI.webp';
+import streetReloadedImg from '../assets/event thumbnails/Website Assets/DANDADANCE_STREETRELOADED_TARANGINI.webp';
+import soloSongImg from '../assets/event thumbnails/Website Assets/KAROKE-ON_SOLO_DUOSinging_TARANGINI.webp';
+import cutTheCrapImg from '../assets/event thumbnails/Website Assets/DRESSINGMYDARLING_PAPERDRESSMAKING_TARANGINI.webp';
+import soloGroupDanceImg from '../assets/event thumbnails/Website Assets/MYDANCEACADEMIA_SOLOGROUPDANCE_TARANGINI.webp';
+import facePaintingImg from '../assets/event thumbnails/Website Assets/KOMICANPAINT_FACEPAINTING_TARANGINI.webp';
+import rampWalkImg from '../assets/event thumbnails/Website Assets/JOJOSBIZARREWALK_RAMPWALK_TARANGINI.webp';
 
-import photographyImg from '../assets/event thumbnails/SHARINGANLENS_PHOTOGRAPHYCOMPETITION_XPECTRA.png';
-import reelMakingImg from '../assets/event thumbnails/INFINITESCROLL_REELMAKINGCOMPETITION_XPECTRA.png';
-import aiFilmMakingImg from '../assets/event thumbnails/AIXFILM_AIFILMMAKING_XPECTRA.png';
-import khanaKhazanaImg from '../assets/event thumbnails/FOODWARS_KHANAKHAZANA_XPECTRA.png';
+import photographyImg from '../assets/event thumbnails/Website Assets/SHARINGANLENS_PHOTOGRAPHYCOMPETITION_XPECTRA.webp';
+import reelMakingImg from '../assets/event thumbnails/Website Assets/INFINITESCROLL_REELMAKINGCOMPETITION_XPECTRA.webp';
+import aiFilmMakingImg from '../assets/event thumbnails/Website Assets/AIXFILM_AIFILMMAKING_XPECTRA.webp';
+import khanaKhazanaImg from '../assets/event thumbnails/Website Assets/FOODWARS_KHANAKHAZANA_XPECTRA.webp';
 
-import gullyCricketImg from '../assets/event thumbnails/STREETSTRIKERS_GULLYCRICKET_RVSPANTHERS.png';
-import basketballImg from '../assets/event thumbnails/SLAMDUNK_BASKETBALL3X3_RVSPANTHERS.png';
-import volleyballImg from '../assets/event thumbnails/KARASUNOSMASH_VOLLEYBALL_RVSPANTHERS.png';
-import footballImg from '../assets/event thumbnails/BLUELOCK_FOOTBALL_RVSPANTHERS.png';
-import tugOfWarImg from '../assets/event thumbnails/TUGOFTITANS_TUGOFWAR_RVSPANTHERS.png';
-import armWrestlingImg from '../assets/event thumbnails/IRONGRIP_ARMWRESTLING_RVSPANTHERS.png';
-import musicalChairImg from '../assets/event thumbnails/ATTACKONCHAIRS_MUSICALCHAIR_RVSPANTHERS.png';
+import gullyCricketImg from '../assets/event thumbnails/Website Assets/STREETSTRIKERS_GULLYCRICKET_RVSPANTHERS.webp';
+import basketballImg from '../assets/event thumbnails/Website Assets/SLAMDUNK_BASKETBALL3X3_RVSPANTHERS.webp';
+import volleyballImg from '../assets/event thumbnails/Website Assets/KARASUNOSMASH_VOLLEYBALL_RVSPANTHERS.webp';
+import footballImg from '../assets/event thumbnails/Website Assets/BLUELOCK_FOOTBALL_RVSPANTHERS.webp';
+import tugOfWarImg from '../assets/event thumbnails/Website Assets/TUGOFTITANS_TUGOFWAR_RVSPANTHERS.webp';
+import armWrestlingImg from '../assets/event thumbnails/Website Assets/IRONGRIP_ARMWRESTLING_RVSPANTHERS.webp';
+import musicalChairImg from '../assets/event thumbnails/Website Assets/ATTACKONCHAIRS_MUSICALCHAIR_RVSPANTHERS.webp';
 
-import iotDesignImg from '../assets/event thumbnails/GUNDAMFRAMEARCHITECTURE_IOTDESIGN_CIRCUITRON.png';
-import rubiksCubeImg from '../assets/event thumbnails/SHIKAMARUSCUBE_RUBIKSCUBE_CIRCUITRON.png';
-import roboRaceImg from '../assets/event thumbnails/CYBERRUNNEREDGE_ROBORACE_CIRCUITRON.png';
-import roboSoccerImg from '../assets/event thumbnails/FULLMETALKICKOFF_ROBOSOCCER_CIRCUITRON.png';
-import roboWarImg from '../assets/event thumbnails/GUNDAMLASTSTAND_ROBOWAR_CIRCUITRON.png';
-import balloonPopImg from '../assets/event thumbnails/SHINOBIBALLOONSMASH_BALLOONPOP_CIRCUITRON.png';
-import treasureHuntImg from '../assets/event thumbnails/FINDINGONEPIECE_TREASUREHUNT_CIRCUITRON.png';
-import bridgeTheGapImg from '../assets/event thumbnails/SENKUSBRIDGE_BRIDGETHEGAP_CIRCUITRON.png';
+import iotDesignImg from '../assets/event thumbnails/Website Assets/GUNDAMFRAMEARCHITECTURE_IOTDESIGN_CIRCUITRON.webp';
+import rubiksCubeImg from '../assets/event thumbnails/Website Assets/SHIKAMARUSCUBE_RUBIKSCUBE_CIRCUITRON.webp';
+import roboRaceImg from '../assets/event thumbnails/Website Assets/CYBERRUNNEREDGE_ROBORACE_CIRCUITRON.webp';
+import roboSoccerImg from '../assets/event thumbnails/Website Assets/FULLMETALKICKOFF_ROBOSOCCER_CIRCUITRON.webp';
+import roboWarImg from '../assets/event thumbnails/Website Assets/GUNDAMLASTSTAND_ROBOWAR_CIRCUITRON.webp';
+import balloonPopImg from '../assets/event thumbnails/Website Assets/SHINOBIBALLOONSMASH_BALLOONPOP_CIRCUITRON.webp';
+import treasureHuntImg from '../assets/event thumbnails/Website Assets/FINDINGONEPIECE_TREASUREHUNT_CIRCUITRON.webp';
+import bridgeTheGapImg from '../assets/event thumbnails/Website Assets/SENKUSBRIDGE_BRIDGETHEGAP_CIRCUITRON.webp';
 
 /* ═══════════════════════════════════
     EVENT DATA
@@ -471,7 +471,7 @@ const EventModal = ({ event, category, onClose }) => {
                           setMemberIds(newIds);
                         }}
                         className={`w-full bg-black/40 border rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none transition-all ${memberNames[id] === 'NOT_FOUND' ? 'border-red-500/50' :
-                            memberNames[id] ? 'border-green-500/50' : 'border-white/10 focus:border-purple-500/50'
+                          memberNames[id] ? 'border-green-500/50' : 'border-white/10 focus:border-purple-500/50'
                           }`}
                       />
                       {id.length === 6 && (
