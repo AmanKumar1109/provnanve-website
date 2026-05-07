@@ -21,7 +21,7 @@ const galleryImages = [
   { id: 8, src: galleryImg8, alt: "Collaboration", height: "h-[400px]" },
 ];
 
-const SpotlightCard = ({ img, onImageClick, parentTimeline }) => {
+const SpotlightCard = ({ img, onImageClick, parentTimeline, isMobile = false }) => {
   const cardRef = useRef(null);
   const imgRef = useRef(null);
   const lightRef = useRef(null);
@@ -63,20 +63,20 @@ const SpotlightCard = ({ img, onImageClick, parentTimeline }) => {
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onClick={() => onImageClick(img)}
-      className={`relative w-full ${img.height} rounded-3xl overflow-hidden bg-black border border-white/[0.06] hover:border-pink-500/40 transition-colors duration-500 cursor-pointer group [--mouse-x:50%] [--mouse-y:50%]`}
+      className={`relative w-full ${isMobile ? 'h-full' : img.height} rounded-2xl md:rounded-3xl overflow-hidden bg-black border border-white/[0.06] hover:border-pink-500/40 transition-colors duration-500 cursor-pointer group [--mouse-x:50%] [--mouse-y:50%]`}
     >
-      {/* 1. Base Image: Grayscale and Dim */}
+      {/* 1. Base Image: Grayscale and Dim on desktop, full color on mobile */}
       <img
         ref={imgRef}
         src={img.src}
         alt={img.alt}
-        className="absolute inset-0 w-full h-[125%] object-cover grayscale brightness-[0.2] transition-all duration-700 will-change-transform"
+        className="absolute inset-0 w-full h-[125%] object-cover grayscale-0 brightness-100 md:grayscale md:brightness-[0.2] transition-all duration-700 will-change-transform"
       />
 
-      {/* 2. Spotlight Layer: Full Color and Bright */}
+      {/* 2. Spotlight Layer: Full Color and Bright (Desktop only) */}
       <div
         ref={lightRef}
-        className="absolute inset-0 w-full h-[125%] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 will-change-transform"
+        className="absolute inset-0 w-full h-[125%] pointer-events-none hidden md:block opacity-0 group-hover:opacity-100 transition-opacity duration-500 will-change-transform"
         style={{
           backgroundImage: `url(${img.src})`,
           backgroundSize: 'cover',
@@ -91,15 +91,17 @@ const SpotlightCard = ({ img, onImageClick, parentTimeline }) => {
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
 
       {/* Hover Content */}
-      <div className="absolute inset-0 p-6 flex flex-col justify-end translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-        <div className="flex justify-between items-end">
+      <div className={`absolute inset-0 ${isMobile ? 'p-3' : 'p-6'} flex flex-col justify-end translate-y-0 opacity-100 md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500`}>
+        <div className="flex justify-between items-end gap-2">
           <div>
-            <h3 className="text-white font-bold text-lg">{img.alt}</h3>
-            <p className="text-pink-500 text-[10px] font-black tracking-[0.2em] uppercase">Archive 01</p>
+            <h3 className={`text-white font-bold ${isMobile ? 'text-[10px] leading-tight' : 'text-lg'}`}>{img.alt}</h3>
+            {!isMobile && <p className="text-pink-500 text-[10px] font-black tracking-[0.2em] uppercase mt-1">Archive 01</p>}
           </div>
-          <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
-            <Maximize2 className="w-4 h-4 text-white" />
-          </div>
+          {!isMobile && (
+            <div className="w-10 h-10 shrink-0 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
+              <Maximize2 className="w-4 h-4 text-white" />
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -186,10 +188,20 @@ const GallerySection = () => {
         </p>
       </div>
 
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6 h-[75vh] gallery-mask">
-        <ScrollingColumn images={galleryImages.slice(0, 3)} speed={baseSpeed} onImageClick={setSelectedImage} />
-        <ScrollingColumn images={galleryImages.slice(3, 6)} speed={baseSpeed * 0.8} reverse={true} onImageClick={setSelectedImage} />
-        <ScrollingColumn images={[...galleryImages.slice(6, 8), galleryImages[0]]} speed={baseSpeed * 1.2} onImageClick={setSelectedImage} />
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 md:px-6 h-[75vh]">
+        {/* Mobile View: Static Dense Grid (No Scroll) */}
+        <div className="md:hidden grid grid-cols-2 grid-rows-4 gap-2 h-full pb-2">
+          {galleryImages.map((img) => (
+            <SpotlightCard key={img.id} img={img} onImageClick={setSelectedImage} isMobile={true} />
+          ))}
+        </div>
+
+        {/* Desktop View: Scrolling Columns */}
+        <div className="hidden md:grid grid-cols-3 gap-6 h-full gallery-mask">
+          <ScrollingColumn images={galleryImages.slice(0, 3)} speed={baseSpeed} onImageClick={setSelectedImage} />
+          <ScrollingColumn images={galleryImages.slice(3, 6)} speed={baseSpeed * 0.8} reverse={true} onImageClick={setSelectedImage} />
+          <ScrollingColumn images={[...galleryImages.slice(6, 8), galleryImages[0]]} speed={baseSpeed * 1.2} onImageClick={setSelectedImage} />
+        </div>
       </div>
 
       {selectedImage && (
