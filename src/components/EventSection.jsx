@@ -164,13 +164,14 @@ const EventModal = ({ event, category, onClose }) => {
     'Food Wars': 3,
     'Ai X Film': 3,
     'Paper Dance': 2,
-    'Komic Can Paint': 2,
+    'Komi Can Paint': 2,
     'Street Strikers': 6,
     'Cyber-Runner: Edge': 2,
     'Fullmetal Kick Off': 2,
     'Gundam: Last Stand': 2,
     'Finding One Piece': 5,
-    'Senku\'s Bridge': 3
+    'Senku\'s Bridge': 3,
+    'My Dance Academia — Group Dance': 10
   };
 
   const teamSize = teamSizeMap[event.title] || 1;
