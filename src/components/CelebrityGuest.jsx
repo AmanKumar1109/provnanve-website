@@ -309,7 +309,7 @@ const CelebrityGuest = () => {
             {/* Social Links */}
             <div className="flex items-center gap-4 pt-2">
               <a
-                href="https://www.instagram.com/pranavsharma27/"
+                href="https://www.instagram.com/pranavsharm_a/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/20 hover:border-pink-500/50 transition-all duration-300 hover:shadow-[0_0_20px_rgba(236,72,153,.2)]"

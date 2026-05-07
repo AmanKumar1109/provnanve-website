@@ -8,7 +8,7 @@ gsap.registerPlugin(useGSAP);
 function PageTransition({ children }) {
   const [done, setDone] = useState(false);
   const [percentage, setPercentage] = useState(0);
-  
+
   // Refs for animation targets
   const panelsRef = useRef([]);
   const containerRef = useRef(null);
@@ -17,7 +17,7 @@ function PageTransition({ children }) {
 
   useGSAP(() => {
     const counter = { value: 0 };
-    
+
     const tl = gsap.timeline({
       defaults: { ease: "expo.inOut" },
       onComplete: () => setDone(true),
@@ -27,8 +27,7 @@ function PageTransition({ children }) {
     gsap.set(panelsRef.current, { y: "0%" });
     gsap.set(percentTextRef.current, { y: "100%", opacity: 0 });
     gsap.set(contentRef.current, {
-      scale: 1.5,
-      filter: "blur(20px)",
+      scale: 1.05,
       opacity: 0,
     });
 
@@ -41,39 +40,39 @@ function PageTransition({ children }) {
       duration: 0.8,
       ease: "expo.out"
     })
-    // Animate the counter object from 0 to 100
-    .to(counter, {
-      value: 100,
-      duration: 2,
-      ease: "power2.inOut",
-      onUpdate: () => {
-        setPercentage(Math.floor(counter.value));
-      },
-    })
-    // Fade the percentage text out
-    .to(percentTextRef.current, {
-      y: "-20%",
-      opacity: 0,
-      duration: 0.5,
-      ease: "power2.in"
-    })
-    // Lift the black columns (staggered from the center column out)
-    .to(panelsRef.current, {
-      y: "-100%",
-      duration: 1.2,
-      stagger: {
-        amount: 0.4,
-        from: "center",
-      },
-    }, "-=0.2")
-    // Reveal the main page content (zoom in and clear blur)
-    .to(contentRef.current, {
-      scale: 1,
-      filter: "blur(0px)",
-      opacity: 1,
-      duration: 1.5,
-      ease: "expo.out",
-    }, "-=1");
+      // Animate the counter object from 0 to 100
+      .to(counter, {
+        value: 100,
+        duration: 2,
+        ease: "power2.inOut",
+        onUpdate: () => {
+          setPercentage(Math.floor(counter.value));
+        },
+      })
+      // Fade the percentage text out
+      .to(percentTextRef.current, {
+        y: "-20%",
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.in"
+      })
+      // Lift the black columns (staggered from the center column out)
+      .to(panelsRef.current, {
+        y: "-100%",
+        duration: 1.2,
+        stagger: {
+          amount: 0.4,
+          from: "center",
+        },
+      }, "-=0.2")
+      // Reveal the main page content (zoom in)
+      .to(contentRef.current, {
+        scale: 1,
+        opacity: 1,
+        duration: 1.5,
+        ease: "expo.out",
+        clearProps: "all"
+      }, "-=1");
 
     // Cleanup timeline on unmount
     return () => tl.kill();
@@ -96,7 +95,7 @@ function PageTransition({ children }) {
           </div>
 
           {/* Large Background Percentage Text */}
-          <div 
+          <div
             ref={percentTextRef}
             className="absolute bottom-8 left-8 md:bottom-12 md:left-12 z-10"
           >
@@ -108,7 +107,7 @@ function PageTransition({ children }) {
       )}
 
       {/* ACTUAL PAGE CONTENT */}
-      <div ref={contentRef} className="will-change-transform">
+      <div ref={contentRef}>
         {children}
       </div>
     </main>

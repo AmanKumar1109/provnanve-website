@@ -1,12 +1,12 @@
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import Home from './Pages/Home';
 import PageTransition from './components/PageTransition';
 import ReactLenis from 'lenis/react';
 import ScrollProgress from './components/ScrollProgress';
 
 // Lazy loading the page components
-const Home = lazy(() => import('./Pages/Home'));
 const Register = lazy(() => import('./Pages/Register'));
 const Login = lazy(() => import('./Pages/Login'));
 const Dashboard = lazy(() => import('./Pages/Dashboard'));

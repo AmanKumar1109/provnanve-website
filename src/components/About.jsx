@@ -54,37 +54,39 @@ const About = () => {
 
   /* ── Stacked cards scroll handler ── */
   const handleScroll = useCallback(() => {
-    const box = scrollBoxRef.current;
-    if (!box) return;
+    requestAnimationFrame(() => {
+      const box = scrollBoxRef.current;
+      if (!box) return;
 
-    const containerH = box.clientHeight;
-    const scrollTop = box.scrollTop;
+      const containerH = box.clientHeight;
+      const scrollTop = box.scrollTop;
 
-    cardRefs.current.forEach((card, idx) => {
-      if (!card) return;
+      cardRefs.current.forEach((card, idx) => {
+        if (!card) return;
 
-      // How far this card's "section" has been scrolled past
-      const cardStart = idx * containerH;
-      const progress = (scrollTop - cardStart) / containerH; // 0 = just arrived, 1 = fully scrolled past
+        // How far this card's "section" has been scrolled past
+        const cardStart = idx * containerH;
+        const progress = (scrollTop - cardStart) / containerH; // 0 = just arrived, 1 = fully scrolled past
 
-      if (progress < 0) {
-        // Card hasn't been reached yet — it sits below, fully normal
-        card.style.transform = 'scale(1) translateY(0)';
-        card.style.opacity = '1';
-        card.style.boxShadow = 'none';
-      } else if (progress >= 0 && progress < 1) {
-        // Card is currently being scrolled past — scale it down, push it back
-        const scale = 1 - progress * 0.08; // shrinks to 0.92
-        const yShift = progress * 12;       // pushes down slightly
-        card.style.transform = `scale(${scale}) translateY(${yShift}px)`;
-        card.style.opacity = `${1 - progress * 0.3}`;
-        card.style.boxShadow = `0 ${4 + progress * 10}px ${20 + progress * 20}px rgba(0,0,0,${0.2 + progress * 0.3})`;
-      } else {
-        // Card is fully scrolled past — small and behind
-        card.style.transform = 'scale(0.92) translateY(12px)';
-        card.style.opacity = '0.7';
-        card.style.boxShadow = '0 14px 40px rgba(0,0,0,0.5)';
-      }
+        if (progress < 0) {
+          // Card hasn't been reached yet — it sits below, fully normal
+          card.style.transform = 'scale(1) translateY(0)';
+          card.style.opacity = '1';
+          card.style.boxShadow = 'none';
+        } else if (progress >= 0 && progress < 1) {
+          // Card is currently being scrolled past — scale it down, push it back
+          const scale = 1 - progress * 0.08; // shrinks to 0.92
+          const yShift = progress * 12;       // pushes down slightly
+          card.style.transform = `scale(${scale}) translateY(${yShift}px)`;
+          card.style.opacity = `${1 - progress * 0.3}`;
+          card.style.boxShadow = `0 ${4 + progress * 10}px ${20 + progress * 20}px rgba(0,0,0,${0.2 + progress * 0.3})`;
+        } else {
+          // Card is fully scrolled past — small and behind
+          card.style.transform = 'scale(0.92) translateY(12px)';
+          card.style.opacity = '0.7';
+          card.style.boxShadow = '0 14px 40px rgba(0,0,0,0.5)';
+        }
+      });
     });
   }, []);
 
@@ -181,8 +183,8 @@ const About = () => {
       <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-purple-900/10 to-transparent pointer-events-none opacity-60" />
 
       {/* Decorative Elements */}
-      <div className="absolute -top-48 -left-24 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[150px] opacity-30" />
-      <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] opacity-30" />
+      <div className="absolute -top-48 -left-24 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[80px] opacity-30 pointer-events-none" />
+      <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-600/10 rounded-full blur-[80px] opacity-30 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
