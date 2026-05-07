@@ -50,6 +50,8 @@ const CelebrityGuest = () => {
   const decorRef = useRef([]);
 
   useLayoutEffect(() => {
+    if (!headingRef.current) return;
+
     const ctx = gsap.context(() => {
       /* Heading entrance */
       gsap.from(headingRef.current, {
@@ -59,6 +61,25 @@ const CelebrityGuest = () => {
         ease: 'power3.out',
         scrollTrigger: { trigger: headingRef.current, start: 'top 88%', once: true },
       });
+
+      /* Celebrity Guest character stagger - 3D pop-out effect */
+      const chars = headingRef.current.querySelectorAll('.celeb-char');
+      if (chars.length > 0) {
+        gsap.from(chars, {
+          scale: 0.5,
+          y: 20,
+          rotateX: -90,
+          opacity: 0,
+          stagger: 0.05,
+          duration: 0.8,
+          ease: 'back.out(2)',
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: 'top 92%',
+            once: true,
+          }
+        });
+      }
 
       /* Image reveal */
       gsap.from(imageRef.current, {
@@ -126,6 +147,9 @@ const CelebrityGuest = () => {
           });
         },
       });
+
+      /* Refresh ScrollTrigger to ensure correct positions */
+      ScrollTrigger.refresh();
     }, sectionRef);
 
     return () => ctx.revert();
@@ -184,14 +208,28 @@ const CelebrityGuest = () => {
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight">
             Meet Our{' '}
             <span
-              className="text-transparent bg-clip-text"
-              style={{
-                backgroundImage: 'linear-gradient(135deg, #a855f7, #ec4899, #f97316)',
-                backgroundSize: '200% auto',
-                animation: 'celebrity-gradient-shift 3s ease infinite',
-              }}
+              className="celeb-guest-text inline-block"
+              style={{ perspective: '1000px' }}
             >
-              Celebrity Guest
+              {"Celebrity Guest".split("").map((char, i) => (
+                <span 
+                  key={i} 
+                  className="celeb-char inline-block"
+                  style={{
+                    background: 'linear-gradient(135deg, #a855f7, #ec4899, #f97316)',
+                    WebkitBackgroundClip: 'text',
+                    backgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    color: 'transparent',
+                    display: 'inline-block',
+                    animation: 'celebrity-gradient-shift 3s ease infinite',
+                    animationDelay: `${i * 0.1}s`,
+                    backgroundSize: '200% auto',
+                  }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </span>
+              ))}
             </span>
           </h2>
         </div>
