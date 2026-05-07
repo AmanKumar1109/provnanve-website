@@ -49,13 +49,14 @@ const Register = () => {
 
     // Basic validation
     const isWithinCollege = form.collegeType === 'within';
-    const hasRequiredFields = form.name && form.email && form.password && form.mobile && form.branch && form.year && form.tshirtSize;
+    const hasRequiredFields = form.name && form.email && form.password && form.mobile && form.branch && form.year;
+    const hasTshirtField = isWithinCollege ? form.tshirtSize : true;
     const hasConditionalFields = isWithinCollege ? form.rollNumber : form.collegeName;
     const hasPaymentFields = isWithinCollege
       ? (form.paymentApp && form.transactionId && (form.paymentApp !== 'other' || form.otherPaymentApp))
       : true; // Outside college students don't need payment
 
-    if (!hasRequiredFields || !hasConditionalFields || !hasPaymentFields) {
+    if (!hasRequiredFields || !hasTshirtField || !hasConditionalFields || !hasPaymentFields) {
       setError('Please fill in all required fields.');
       return;
     }
@@ -96,7 +97,7 @@ const Register = () => {
         collegeName: form.collegeType === 'outside' ? form.collegeName : 'RVSCET',
         branch: form.branch,
         year: form.year,
-        tshirtSize: form.tshirtSize,
+        tshirtSize: isWithinCollege ? form.tshirtSize : 'N/A',
         paymentApp: isWithinCollege ? (form.paymentApp === 'other' ? form.otherPaymentApp : form.paymentApp) : 'N/A',
         transactionId: isWithinCollege ? form.transactionId : 'N/A',
         paymentStatus: isWithinCollege ? 'pending' : 'outside-college',
@@ -462,21 +463,23 @@ const Register = () => {
                   ]}
                 />
 
-                {/* T-Shirt Size */}
-                <CustomSelect
-                  label="Select T-Shirt Size"
-                  name="tshirtSize"
-                  value={form.tshirtSize}
-                  onChange={handleChange}
-                  icon={Shirt}
-                  options={[
-                    { value: 's', label: 'Small (S)' },
-                    { value: 'm', label: 'Medium (M)' },
-                    { value: 'l', label: 'Large (L)' },
-                    { value: 'xl', label: 'Extra Large (XL)' },
-                    { value: 'xxl', label: 'XXL' }
-                  ]}
-                />
+                {/* T-Shirt Size - Only for within college */}
+                {form.collegeType === 'within' && (
+                  <CustomSelect
+                    label="Select T-Shirt Size"
+                    name="tshirtSize"
+                    value={form.tshirtSize}
+                    onChange={handleChange}
+                    icon={Shirt}
+                    options={[
+                      { value: 's', label: 'Small (S)' },
+                      { value: 'm', label: 'Medium (M)' },
+                      { value: 'l', label: 'Large (L)' },
+                      { value: 'xl', label: 'Extra Large (XL)' },
+                      { value: 'xxl', label: 'XXL' }
+                    ]}
+                  />
+                )}
 
                 {/* --- Payment Section (only for within college) --- */}
                 {form.collegeType === 'within' && (
