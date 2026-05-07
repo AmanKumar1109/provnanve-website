@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
-import About from '../components/About';
-import CelebrityGuest from '../components/CelebrityGuest';
-import EventSection from '../components/EventSection';
-import GallerySection from '../components/GallerySection';
-import ClubSection from '../components/ClubSection';
-import Footer from '../components/Footer';
-import ScrollToTop from '../components/ScrollToTop';
+
+// Lazy load components
+const About = lazy(() => import('../components/About'));
+const CelebrityGuest = lazy(() => import('../components/CelebrityGuest'));
+const EventSection = lazy(() => import('../components/EventSection'));
+const GallerySection = lazy(() => import('../components/GallerySection'));
+const ClubSection = lazy(() => import('../components/ClubSection'));
+const Footer = lazy(() => import('../components/Footer'));
+const ScrollToTop = lazy(() => import('../components/ScrollToTop'));
 
 const Home = () => {
   return (
@@ -15,16 +17,21 @@ const Home = () => {
       <Navbar />
       <main>
         <Hero />
-        <About />
-        <CelebrityGuest />
-        <div className="-mt-12"><EventSection /></div>
-        <div className="-mt-12"><GallerySection /></div>
-        <div className="-mt-12"><ClubSection /></div>
+        <Suspense fallback={null}>
+          <About />
+          <CelebrityGuest />
+          <div className="-mt-12"><EventSection /></div>
+          <div className="-mt-12"><GallerySection /></div>
+          <div className="-mt-12"><ClubSection /></div>
+        </Suspense>
       </main>
-      <ScrollToTop />
-      <Footer />
+      <Suspense fallback={null}>
+        <ScrollToTop />
+        <Footer />
+      </Suspense>
     </div>
   );
 };
 
 export default Home;
+

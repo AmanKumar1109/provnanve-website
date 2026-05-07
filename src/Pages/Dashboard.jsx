@@ -222,16 +222,18 @@ const Dashboard = () => {
                                     </div>
                                 </div>
 
-                                {/* T-Shirt Size */}
-                                <div className="flex items-center gap-4 px-6 py-4">
-                                    <Shirt className="w-4 h-4 text-purple-400/60 shrink-0" />
-                                    <div className="flex-1 flex items-center justify-between">
-                                        <span className="text-white/40 text-sm">T-Shirt Size</span>
-                                        <span className="text-white text-sm font-medium">
-                                            {tshirtMap[profile?.tshirtSize] || profile?.tshirtSize || '—'}
-                                        </span>
+                                {/* T-Shirt Size - Only for within college */}
+                                {profile?.collegeType === 'within' && (
+                                    <div className="flex items-center gap-4 px-6 py-4">
+                                        <Shirt className="w-4 h-4 text-purple-400/60 shrink-0" />
+                                        <div className="flex-1 flex items-center justify-between">
+                                            <span className="text-white/40 text-sm">T-Shirt Size</span>
+                                            <span className="text-white text-sm font-medium">
+                                                {tshirtMap[profile?.tshirtSize] || profile?.tshirtSize || '—'}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
 
                             </div>
                         </div>

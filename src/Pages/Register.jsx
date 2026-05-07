@@ -483,93 +483,92 @@ const Register = () => {
 
                 {/* --- Payment Section (only for within college) --- */}
                 {form.collegeType === 'within' && (
-                <div className="pt-6 border-t border-white/10 space-y-6">
-                  <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                    <CreditCard className="w-6 h-6 text-purple-400" />
-                    Payment Verification
-                  </h3>
+                  <div className="pt-6 border-t border-white/10 space-y-6">
+                    <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                      <CreditCard className="w-6 h-6 text-purple-400" />
+                      Payment Verification
+                    </h3>
 
-                  {/* Admin QR Code Display */}
-                  <div className="flex flex-col items-center justify-center space-y-4 py-4 bg-white/5 rounded-2xl border border-white/10">
-                    <span className="text-sm font-bold tracking-widest text-purple-400 uppercase">Scan & Pay</span>
-                    <div className="relative p-3 bg-white rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-                      {/* Stylized QR Placeholder - User can replace src with their actual QR asset */}
-                      <div className="w-40 h-40 bg-zinc-200 flex items-center justify-center rounded overflow-hidden">
-                        <img
-                          src={qrcode}
-                          className="w-full h-full object-contain"
-                        />
+                    {/* Admin QR Code Display */}
+                    <div className="flex flex-col items-center justify-center space-y-4 py-4 bg-white/5 rounded-2xl border border-white/10">
+                      <span className="text-sm font-bold tracking-widest text-purple-400 uppercase">Scan & Pay</span>
+                      <div className="relative p-3 bg-white rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                        <div className="w-40 h-40 bg-zinc-200 flex items-center justify-center rounded overflow-hidden">
+                          <img
+                            src={qrcode}
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+                        <div className="absolute -inset-1 border-2 border-purple-500/20 rounded-xl pointer-events-none animate-pulse" />
                       </div>
-                      <div className="absolute -inset-1 border-2 border-purple-500/20 rounded-xl pointer-events-none animate-pulse" />
-                    </div>
-                    <p className="text-xs text-white/50 text-center px-4 italic">
-                      Scan this QR using any UPI app to make your payment.
-                    </p>
-
-                    {/* Registration Fee */}
-                    <div className="flex flex-col items-center gap-1 pt-2">
-                      <div className="flex items-center gap-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-xl px-5 py-2">
-                        <span className="text-2xl font-extrabold text-white tracking-wide">₹900</span>
-                        <span className="text-xs font-semibold text-purple-300 uppercase tracking-widest">Registration Fee</span>
-                      </div>
-                      <p className="text-xs text-yellow-400/80 flex items-center gap-1 mt-1">
-                        <span>🎁</span>
-                        <span>This Registration fee includes a <span className="font-bold text-yellow-300">Welcome Kit</span></span>
+                      <p className="text-xs text-white/50 text-center px-4 italic">
+                        Scan this QR using any UPI app to make your payment.
                       </p>
+
+                      {/* Registration Fee */}
+                      <div className="flex flex-col items-center gap-1 pt-2">
+                        <div className="flex items-center gap-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-xl px-5 py-2">
+                          <span className="text-2xl font-extrabold text-white tracking-wide">₹900</span>
+                          <span className="text-xs font-semibold text-purple-300 uppercase tracking-widest">Registration Fee</span>
+                        </div>
+                        <p className="text-xs text-yellow-400/80 flex items-center gap-1 mt-1 text-center px-4">
+                          <span>🎁</span>
+                          <span>
+                            This Registration fee includes a <span className="font-bold text-yellow-300">Welcome Kit & T-Shirt</span>
+                          </span>
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-
-                  {/* Payment App Dropdown & Details */}
-                  <div className="space-y-6">
                     {/* Payment App Dropdown & Details */}
-                    <CustomSelect
-                      label="Select Payment App Used"
-                      name="paymentApp"
-                      value={form.paymentApp}
-                      onChange={handleChange}
-                      icon={Wallet}
-                      options={[
-                        { value: 'gpay', label: 'Google Pay' },
-                        { value: 'phonepe', label: 'PhonePe' },
-                        { value: 'paytm', label: 'Paytm' },
-                        { value: 'bhim', label: 'BHIM' },
-                        { value: 'amazonpay', label: 'Amazon Pay' },
-                        { value: 'other', label: 'Other' }
-                      ]}
-                    />
-
-                    {form.paymentApp === 'other' && (
-                      <div className="relative group">
-                        <Wallet className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
-                        <input name="otherPaymentApp" type="text" placeholder="Enter Payment App Name" value={form.otherPaymentApp} onChange={handleChange} className={inputClass} />
-                      </div>
-                    )}
-
-                    <div className="relative group">
-                      <Hash className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
-                      <input
-                        name="transactionId"
-                        type="text"
-                        placeholder="Enter Transaction ID (e.g. TXN123456...)"
-                        value={form.transactionId}
+                    <div className="space-y-6">
+                      <CustomSelect
+                        label="Select Payment App Used"
+                        name="paymentApp"
+                        value={form.paymentApp}
                         onChange={handleChange}
-                        className={inputClass}
+                        icon={Wallet}
+                        options={[
+                          { value: 'gpay', label: 'Google Pay' },
+                          { value: 'phonepe', label: 'PhonePe' },
+                          { value: 'paytm', label: 'Paytm' },
+                          { value: 'bhim', label: 'BHIM' },
+                          { value: 'amazonpay', label: 'Amazon Pay' },
+                          { value: 'other', label: 'Other' }
+                        ]}
                       />
-                      <div className="flex flex-col mt-2 px-1">
-                        <span className="text-[10px] text-white/40 italic">You can find this in your payment app history</span>
-                        <button
-                          type="button"
-                          onClick={() => setShowHelp(true)}
-                          className="text-[11px] text-purple-400 hover:text-purple-300 underline mt-1 text-left flex items-center gap-1 transition-colors"
-                        >
-                          <HelpCircle className="w-3 h-3" />
-                          Don't know Transaction ID? Click here
-                        </button>
+
+                      {form.paymentApp === 'other' && (
+                        <div className="relative group">
+                          <Wallet className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
+                          <input name="otherPaymentApp" type="text" placeholder="Enter Payment App Name" value={form.otherPaymentApp} onChange={handleChange} className={inputClass} />
+                        </div>
+                      )}
+
+                      <div className="relative group">
+                        <Hash className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
+                        <input
+                          name="transactionId"
+                          type="text"
+                          placeholder="Enter Transaction ID (e.g. TXN123456...)"
+                          value={form.transactionId}
+                          onChange={handleChange}
+                          className={inputClass}
+                        />
+                        <div className="flex flex-col mt-2 px-1">
+                          <span className="text-[10px] text-white/40 italic">You can find this in your payment app history</span>
+                          <button
+                            type="button"
+                            onClick={() => setShowHelp(true)}
+                            className="text-[11px] text-purple-400 hover:text-purple-300 underline mt-1 text-left flex items-center gap-1 transition-colors"
+                          >
+                            <HelpCircle className="w-3 h-3" />
+                            Don't know Transaction ID? Click here
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
                 )}
 
                 {/* Transaction ID Help Modal */}

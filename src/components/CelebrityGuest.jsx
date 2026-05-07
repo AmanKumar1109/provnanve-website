@@ -267,6 +267,7 @@ const CelebrityGuest = () => {
                     <img
                       src={celebImg}
                       alt="Pranav Sharma — Stand-Up Comedian"
+                      loading="lazy"
                       className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                     />
                     {/* Shine overlay */}
@@ -389,6 +390,7 @@ const CelebrityGuest = () => {
                   <img
                     src={posterImg}
                     alt="PS I Love You — Pranav Sharma Stand-Up Comedy Show at Provenance 6.0"
+                    loading="lazy"
                     className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                   />
                   {/* Dark overlay text */}

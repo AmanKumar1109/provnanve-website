@@ -357,7 +357,7 @@ const EventModal = ({ event, category, onClose }) => {
           <div className="flex items-center gap-5 sm:gap-6 mb-6">
             {event.image ? (
               <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-2xl overflow-hidden shrink-0 border border-white/10 shadow-lg">
-                <img src={event.image} alt={event.title} className="w-full h-full object-cover" />
+                <img src={event.image} alt={event.title} loading="lazy" className="w-full h-full object-cover" />
               </div>
             ) : (
               <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-4xl sm:text-5xl shrink-0 shadow-lg">
@@ -572,15 +572,16 @@ const EventCard = ({ event, category, onClick }) => {
         {/* ── FULL-BLEED POSTER IMAGE ── */}
         <div className="absolute inset-0 z-0">
           {event.image ? (
-            <img
-              src={event.image}
-              alt={event.title}
-              className="w-full h-full object-cover"
-              style={{
-                transform: isHovering ? 'scale(1.12)' : 'scale(1.01)',
-                transition: 'transform 0.75s cubic-bezier(0.4,0,0.2,1)',
-              }}
-            />
+              <img
+                src={event.image}
+                alt={event.title}
+                loading="lazy"
+                className="w-full h-full object-cover"
+                style={{
+                  transform: isHovering ? 'scale(1.12)' : 'scale(1.01)',
+                  transition: 'transform 0.75s cubic-bezier(0.4,0,0.2,1)',
+                }}
+              />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-8xl"
               style={{ background: `radial-gradient(circle at 50% 40%, ${category.color}25, #080808 70%)` }}>

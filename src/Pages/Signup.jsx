@@ -60,6 +60,7 @@ const Signup = () => {
                 loop
                 muted
                 playsInline
+                preload="auto"
                 className="absolute inset-0 w-full h-full object-cover z-0 opacity-40"
             >
                 <source src={heroVideo} type="video/mp4" />

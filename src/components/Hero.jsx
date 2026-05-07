@@ -66,6 +66,7 @@ const Hero = () => {
           loop
           muted
           playsInline
+          preload="auto"
           className="absolute inset-0 w-full h-[130%] object-cover" // Height set to 130% to account for y-movement
         >
           <source src={heroVideo} type="video/mp4" />

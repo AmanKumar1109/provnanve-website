@@ -85,6 +85,7 @@ const GalleryCard = ({ img, onImageClick, index }) => {
         <img
           src={img.src}
           alt={img.alt}
+          loading="lazy"
           className="gallery-card-img"
           draggable={false}
         />
