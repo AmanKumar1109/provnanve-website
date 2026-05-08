@@ -79,7 +79,13 @@ const Navbar = () => {
           {navItems.map((item) => (
             <a
               key={item}
-              href={item === 'Home' ? '/' : `#${item.toLowerCase()}`}
+              href={item === 'Home' ? '/' : item === 'Committee' ? '/committee' : `#${item.toLowerCase()}`}
+              onClick={(e) => {
+                if (item === 'Committee') {
+                  e.preventDefault();
+                  navigate('/committee');
+                }
+              }}
               className="relative block h-[20px] overflow-hidden group"
             >
               {/* Container that moves on hover */}
@@ -185,8 +191,14 @@ const Navbar = () => {
             {navItems.map((item, index) => (
               <div key={item} ref={(el) => (linksRef.current[index] = el)}>
                 <a
-                  href={item === 'Home' ? '/' : `#${item.toLowerCase()}`}
-                  onClick={() => setMobileMenuOpen(false)}
+                  href={item === 'Home' ? '/' : item === 'Committee' ? '/committee' : `#${item.toLowerCase()}`}
+                  onClick={(e) => {
+                    if (item === 'Committee') {
+                      e.preventDefault();
+                      navigate('/committee');
+                    }
+                    setMobileMenuOpen(false);
+                  }}
                 >
                   {item}
                 </a>

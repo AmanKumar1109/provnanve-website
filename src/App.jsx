@@ -10,6 +10,7 @@ import ScrollProgress from './components/ScrollProgress';
 const Register = lazy(() => import('./Pages/Register'));
 const Login = lazy(() => import('./Pages/Login'));
 const Dashboard = lazy(() => import('./Pages/Dashboard'));
+const Committee = lazy(() => import('./Pages/Committee'));
 
 
 // Simple loading fallback
@@ -42,6 +43,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/committee" element={<Committee />} />
             </Routes>
           </Suspense>
         </PageTransition>
