@@ -6,6 +6,7 @@ import PageTransition from './components/PageTransition';
 import ReactLenis from 'lenis/react';
 import ScrollProgress from './components/ScrollProgress';
 
+
 // Lazy loading the page components
 const Register = lazy(() => import('./Pages/Register'));
 const Login = lazy(() => import('./Pages/Login'));
