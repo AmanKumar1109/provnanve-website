@@ -65,14 +65,14 @@ const GUESTS = [
     hasPoster: true
   },
   {
-    id: 'vdj-shan',
-    name: 'VDJ Shan',
-    lastName: 'Shan',
+    id: 'vdj-shaan',
+    name: 'VDJ Shaan',
+    lastName: 'Shaan',
     role: 'Visual DJ &middot; Electronic Artist &middot; Music Producer',
     image: djImg,
-    badge: '🎧 VDJ Shan',
+    badge: '🎧 VDJ Shaan',
     bio: [
-      'VDJ Shan is a master of the decks, blending high-energy beats with immersive visual experiences. Known for his explosive sets and futuristic soundscapes, he turns every performance into a multisensory journey.',
+      'VDJ Shaan is a master of the decks, blending high-energy beats with immersive visual experiences. Known for his explosive sets and futuristic soundscapes, he turns every performance into a multisensory journey.',
       'Experience the pulse of the night as he electrifies the Provenance 6.0 main stage with his signature cyber-vibes!'
     ],
     highlights: [
