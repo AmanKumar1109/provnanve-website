@@ -1,29 +1,43 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ScrollProgress = () => {
-  const { scrollYProgress } = useScroll();
-  
-  // Create a spring-animated value for the scroll progress
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
+  const barRef = useRef(null);
 
-  // Fade in the bar only when the user has scrolled a little bit
-  const opacity = useTransform(scrollYProgress, [0, 0.005], [0, 1]);
+  useEffect(() => {
+    const bar = barRef.current;
+    if (!bar) return;
+
+    // Start hidden
+    gsap.set(bar, { scaleX: 0, opacity: 0, transformOrigin: 'left center' });
+
+    const st = ScrollTrigger.create({
+      start: 0,
+      end: 'max',
+      onUpdate: (self) => {
+        const progress = self.progress;
+
+        gsap.set(bar, {
+          scaleX: progress,
+          // Mirror framer-motion fade: visible only after 0.5% scroll
+          opacity: Math.min(progress / 0.005, 1),
+        });
+      },
+    });
+
+    return () => st.kill();
+  }, []);
 
   if (typeof document === 'undefined') return null;
 
   return createPortal(
-    <motion.div
-      className="fixed top-0 left-0 right-0 h-[3px] md:h-[4px] z-[2147483647] theme-bar origin-left"
-      style={{ 
-        scaleX,
-        opacity 
-      }}
+    <div
+      ref={barRef}
+      className="fixed top-0 left-0 right-0 h-[3px] md:h-[4px] z-[2147483647] theme-bar"
     />,
     document.body
   );

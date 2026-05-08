@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
 import { ArrowLeft, Mail, Lock, Loader, AlertCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -16,8 +16,49 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
+    // Refs for GSAP targets
+    const cardRef = useRef(null);
+    const errorRef = useRef(null);
+    const submitRef = useRef(null);
+
+    // ── Card entrance ──────────────────────────────────────────────────────────
+    useEffect(() => {
+        gsap.fromTo(
+            cardRef.current,
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }
+        );
+    }, []);
+
+    // ── Error banner slide-in / slide-out ──────────────────────────────────────
+    useEffect(() => {
+        const el = errorRef.current;
+        if (!el) return;
+        if (error) {
+            gsap.set(el, { display: 'flex' });
+            gsap.fromTo(el,
+                { opacity: 0, y: -8 },
+                { opacity: 1, y: 0, duration: 0.25, ease: 'power2.out' }
+            );
+        } else {
+            gsap.to(el, {
+                opacity: 0,
+                duration: 0.15,
+                ease: 'power1.in',
+                onComplete: () => gsap.set(el, { display: 'none' }),
+            });
+        }
+    }, [error]);
+
+    // ── Submit button hover / tap ──────────────────────────────────────────────
+    const onEnter = () => { if (!loading) gsap.to(submitRef.current, { scale: 1.02, boxShadow: '0 0 20px rgba(124,58,237,0.5)', duration: 0.2 }); };
+    const onLeave = () => { if (!loading) gsap.to(submitRef.current, { scale: 1, boxShadow: '0 0 0px rgba(124,58,237,0)', duration: 0.2 }); };
+    const onDown = () => { if (!loading) gsap.to(submitRef.current, { scale: 0.97, duration: 0.1 }); };
+    const onUp = () => { if (!loading) gsap.to(submitRef.current, { scale: 1.02, duration: 0.1 }); };
+
+    // ── Handlers ───────────────────────────────────────────────────────────────
     const handleChange = (e) => {
-        setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+        setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
         setError('');
     };
 
@@ -33,36 +74,30 @@ const Login = () => {
             const userCredential = await signInWithEmailAndPassword(auth, form.email, form.password);
             const firebaseUser = userCredential.user;
 
-            // Fetch full profile from Firestore
             let profileData = {};
             try {
                 const docSnap = await getDoc(doc(db, 'users', firebaseUser.uid));
-                if (docSnap.exists()) {
-                    profileData = docSnap.data();
-                }
-            } catch (_) {}
+                if (docSnap.exists()) profileData = docSnap.data();
+            } catch (_) { }
 
-            // Store in auth context
             login({
                 email: firebaseUser.email,
                 uid: firebaseUser.uid,
                 displayName: firebaseUser.displayName,
                 ...profileData,
             });
+
             navigate('/dashboard');
         } catch (err) {
             switch (err.code) {
                 case 'auth/user-not-found':
                 case 'auth/wrong-password':
                 case 'auth/invalid-credential':
-                    setError('Invalid email or password. Please try again.');
-                    break;
+                    setError('Invalid email or password. Please try again.'); break;
                 case 'auth/invalid-email':
-                    setError('Please enter a valid email address.');
-                    break;
+                    setError('Please enter a valid email address.'); break;
                 case 'auth/too-many-requests':
-                    setError('Too many failed attempts. Please try again later.');
-                    break;
+                    setError('Too many failed attempts. Please try again later.'); break;
                 default:
                     setError(err.message || 'Login failed. Please try again.');
             }
@@ -76,13 +111,14 @@ const Login = () => {
 
     return (
         <div className="relative min-h-screen flex items-center justify-center p-6 overflow-hidden bg-black">
+            {/* Background Video */}
             <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
                 <source src={heroVideo} type="video/mp4" />
             </video>
-
             <div className="absolute inset-0 bg-gradient-to-b from-[#0a0014]/90 via-[#0a0014]/70 to-[#0a0014]/90 z-0" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-500/10 via-transparent to-transparent z-0" />
 
+            {/* Back Button */}
             <Link to="/" className="fixed top-8 left-8 z-50 flex items-center gap-2 text-white/70 hover:text-white transition-colors group">
                 <div className="p-2 rounded-full bg-white/5 border border-white/10 group-hover:bg-purple-500/20 group-hover:border-purple-500/50 transition-all">
                     <ArrowLeft className="w-5 h-5" />
@@ -90,13 +126,11 @@ const Login = () => {
                 <span className="font-medium">Back to Home</span>
             </Link>
 
-            <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="relative z-10 w-full max-w-2xl"
-            >
+            {/* Card */}
+            <div ref={cardRef} style={{ opacity: 0 }} className="relative z-10 w-full max-w-2xl">
                 <div className="glass-panel p-8 md:p-12 rounded-[2rem] border-purple-500/20 shadow-[0_0_50px_rgba(124,58,237,0.15)] overflow-hidden">
+
+                    {/* Header */}
                     <div className="text-center mb-10">
                         <h1
                             style={{ fontFamily: "'Luckiest Guy', system-ui" }}
@@ -111,68 +145,51 @@ const Login = () => {
                     </div>
 
                     {/* Error Banner */}
-                    {error && (
-                        <motion.div
-                            initial={{ opacity: 0, y: -8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="flex items-center gap-3 bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 mb-6 text-red-300 text-sm"
-                        >
-                            <AlertCircle className="w-5 h-5 shrink-0" />
-                            {error}
-                        </motion.div>
-                    )}
+                    <div
+                        ref={errorRef}
+                        style={{ display: 'none' }}
+                        className="items-center gap-3 bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 mb-6 text-red-300 text-sm"
+                    >
+                        <AlertCircle className="w-5 h-5 shrink-0" />
+                        {error}
+                    </div>
 
+                    {/* Form */}
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="relative group">
                             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
-                            <input
-                                name="email"
-                                type="email"
-                                placeholder="Enter Email"
-                                value={form.email}
-                                onChange={handleChange}
-                                className={inputClass}
-                            />
+                            <input name="email" type="email" placeholder="Enter Email" value={form.email} onChange={handleChange} className={inputClass} />
                         </div>
 
                         <div className="relative group">
                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400/50 group-focus-within:text-purple-400 transition-colors" />
-                            <input
-                                name="password"
-                                type="password"
-                                placeholder="Enter Password"
-                                value={form.password}
-                                onChange={handleChange}
-                                className={inputClass}
-                            />
+                            <input name="password" type="password" placeholder="Enter Password" value={form.password} onChange={handleChange} className={inputClass} />
                         </div>
 
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                            <motion.button
-                                whileHover={{ scale: loading ? 1 : 1.02, boxShadow: loading ? 'none' : '0 0 20px rgba(124,58,237,0.5)' }}
-                                whileTap={{ scale: loading ? 1 : 0.97 }}
+                            <button
+                                ref={submitRef}
                                 type="submit"
                                 disabled={loading}
+                                onMouseEnter={onEnter}
+                                onMouseLeave={onLeave}
+                                onMouseDown={onDown}
+                                onMouseUp={onUp}
                                 className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-4 px-10 rounded-xl shadow-[0_0_20px_rgba(124,58,237,0.3)] hover:from-purple-500 hover:to-pink-500 transition-all text-lg disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                             >
                                 {loading ? (
-                                    <>
-                                        <Loader className="w-5 h-5 animate-spin" />
-                                        Logging in…
-                                    </>
+                                    <><Loader className="w-5 h-5 animate-spin" /> Logging in…</>
                                 ) : (
                                     'LOGIN'
                                 )}
-                            </motion.button>
-                            <Link
-                                to="/register"
-                                className="inline-flex items-center justify-center text-sm font-medium text-purple-200 hover:text-white transition-colors"
-                            >
+                            </button>
+                            <Link to="/register" className="inline-flex items-center justify-center text-sm font-medium text-purple-200 hover:text-white transition-colors">
                                 New here? Register instead
                             </Link>
                         </div>
                     </form>
 
+                    {/* Help Box */}
                     <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6 text-white/80 shadow-[0_0_40px_rgba(124,58,237,0.12)]">
                         <h2 className="text-xl font-semibold text-white mb-3">Need help logging in?</h2>
                         <p className="text-sm leading-6">
@@ -182,8 +199,9 @@ const Login = () => {
                             Forgot your password? Please contact the event coordinator to reset it.
                         </p>
                     </div>
+
                 </div>
-            </motion.div>
+            </div>
         </div>
     );
 };
