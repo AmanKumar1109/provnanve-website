@@ -16,11 +16,12 @@ import imgLogo from '../assets/logo.png';
 import imgPicon from '../assets/picon.png';
 import celeb from '../assets/vdj shan.jpg';
 import imgRvs from '../assets/RVS_Logo_Coloured_White_bg.png';
+import stageHero from '../assets/about_hero_stage.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const sliderImages = [
-  celeb, img1, img2, img3, img4, img5, img6, img7, img8,
+  stageHero, celeb, img1, img2, img3, img4, img5, img6, img7, img8,
   imgLogo, imgPicon, imgRvs,
 ];
 
@@ -202,7 +203,7 @@ const About = () => {
 
             <div className="space-y-6 text-white/70 text-lg leading-relaxed">
               <p>
-                Provenance 6.0, <span className="text-white font-semibold">R.V.S. College of Engineering and Technology's</span> annual techno-cultural fest, stands as one of the most anticipated events in Jharkhand. With an impressive turnout of over <span className="text-purple-400 font-bold">5,000+ attendees</span>.
+                Provenance 6.0, <span className="text-white font-semibold">R.V.S. College of Engineering and Technology's</span> annual techno-cultural fest, stands as one of the most anticipated events in Jharkhand, coming to life on <span className="text-purple-400 font-bold">May 14-15</span>. With an impressive turnout of over <span className="text-purple-400 font-bold">5,000+ attendees</span>.
               </p>
               <p>
                 This edition is a celebration of technology, creativity, and culture, offering a platform for innovation and artistic expression.

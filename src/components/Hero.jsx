@@ -88,10 +88,18 @@ const Hero = () => {
           />
         </div>
 
-        {/* Subtitle */}
-        <p className="text-xl md:text-2xl text-white/90 font-medium max-w-3xl mx-auto mb-10 drop-shadow-md">
-          The Techno-Cultural Fest of RVSCET, Jamshedpur.
-        </p>
+        {/* Subtitle & Date/Location */}
+        <div className="flex flex-col items-center space-y-6 mb-10">
+          <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md animate-bounce-slow">
+            <span className="flex h-2 w-2 rounded-full bg-purple-500 animate-pulse"></span>
+            <span className="text-white font-bold text-sm md:text-base tracking-[0.2em] uppercase">
+              14 - 15 MAY &middot; RVSCET, JAMSHEDPUR
+            </span>
+          </div>
+          <p className="text-xl md:text-3xl text-white/90 font-medium max-w-3xl mx-auto drop-shadow-md">
+            The Techno-Cultural Fest of RVSCET, Jamshedpur.
+          </p>
+        </div>
 
         {/* Buttons */}
         <div className="flex flex-row items-center justify-center gap-3 sm:gap-6">
