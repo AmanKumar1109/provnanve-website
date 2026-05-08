@@ -9,6 +9,12 @@ import galleryImg5 from '../assets/gallaryImages/5.jpeg';
 import galleryImg6 from '../assets/gallaryImages/6.jpeg';
 import galleryImg7 from '../assets/gallaryImages/7.jpeg';
 import galleryImg8 from '../assets/gallaryImages/8.jpeg';
+import galleryImg9 from '../assets/gallaryImages/9.jpeg';
+import galleryImg10 from '../assets/gallaryImages/10.jpeg';
+import galleryImg11 from '../assets/gallaryImages/11.jpeg';
+import galleryImg12 from '../assets/gallaryImages/12.jpeg';
+import galleryImg13 from '../assets/gallaryImages/13.jpeg';
+
 
 const galleryImages = [
   { id: 1, src: galleryImg1, alt: "Main Stage Crowd" },
@@ -19,6 +25,11 @@ const galleryImages = [
   { id: 6, src: galleryImg6, alt: "Cyber Security" },
   { id: 7, src: galleryImg7, alt: "Infrastructure" },
   { id: 8, src: galleryImg8, alt: "Collaboration" },
+  { id: 9, src: galleryImg9, alt: "Collaboration" },
+  { id: 10, src: galleryImg10, alt: "Collaboration" },
+  { id: 11, src: galleryImg11, alt: "Collaboration" },
+  { id: 12, src: galleryImg12, alt: "Collaboration" },
+  { id: 13, src: galleryImg13, alt: "Collaboration" },
 ];
 
 /* ─── Single Gallery Card with 3D Tilt + Spotlight ─── */
