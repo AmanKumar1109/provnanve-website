@@ -64,6 +64,7 @@ const categories = [
       { title: 'Trigger-Point: BGMI Arena', desc: 'Trigger-Point is a high-stakes Battle Royale survival sprint designed for the elite mobile squads of the campus. Dropping into a hostile environment, your team must demonstrate unparalleled tactical superiority and survival instincts to secure victory. Every decision—from your drop location to your final rotation—must be calculated with precision. Only those with the fastest fingers will prevail.', icon: '📱', image: triggerPointImg, prize: 'Exciting Prizes', time: '2 hrs', venue: 'TCS Lab, 1st Floor, B2 Block', rules: ['Platform: Mobile smartphones only', 'Strictly no emulators, iPads, or gaming tablets allowed', 'External triggers, cooling fans with software integration, or GFX tools are banned', 'Points system: Survival (Placement) points + Finish (Kill) points', 'Teams must maintain a stable internet connection; organizers are not responsible for lag'], coordinators: [{ 'name': 'Aman Kumar Jha', 'contact': '6206804326' }, { 'name': 'Asish Karan Soren', 'contact': '7294906845' }, { 'name': 'Aman Kumar', 'contact': '6206939304' }] },
       { title: 'Colors of Konoha', desc: 'Experience a stunning fusion of Indian heritage and the Anime Protocol in Colors of Konoha. This traditional Rangoli competition challenges teams of artists to blend intricate cultural patterns with iconic anime visual elements. It is a celebration of creativity where the floor becomes your canvas and colored powders become your medium. Teams must work within a strict time limit and boundary size, manifesting a vision that bridges two different worlds.', icon: '🌸', image: colorsOfKonohaImg, prize: 'Exciting Prizes', time: '90 min', venue: 'TBA', rules: ['Theme: Fusion of Traditional Indian Patterns and Anime Lore', 'Participants must bring their own colors, stencils, and cleaning materials', 'Use of printed references is allowed, but direct tracing is prohibited'], coordinators: [{ 'name': 'Khushboo Kumari', 'contact': '9142406515' }, { 'name': 'Jyoti Kumari', 'contact': '7368961922' }, { 'name': 'Keshav Raj', 'contact': '6201479730' }] },
       { title: 'Sage Mode: Trivia', desc: 'Enter the ultimate realm of knowledge in Sage Mode: Trivia. This comprehensive tech quiz is designed to test your deep understanding of IT, Artificial Intelligence, Hardware history, and Anime lore. The competition begins with a grueling written preliminary round, filtering out all but the most enlightened minds for the high-speed buzzer finals. Prove that your wisdom transcends the ordinary and achieve the coveted S-Rank status.', icon: '🧠', image: sageModeImg, prize: 'Exciting Prizes', time: '90 min', venue: 'TBA', rules: ['Rounds: Written Prelims followed by Stage-based Buzzer Finals', 'Strictly no smartwatches or smartphones allowed during the quiz', "Topics: IT Trends, Computer History, AI, Hardware, and 'Otaku' Tech Lore", "The Quizmaster's decision is final in all scoring disputes"], coordinators: [{ 'name': 'Satish Verma', 'contact': '6204477023' }, { 'name': 'Gaurav Singh', 'contact': '7857024380' }, { 'name': 'Priya Mandal', 'contact': '9934750671' }, { 'name': 'Swati Kumari', 'contact': '7858992104' }, { 'name': 'Shaiqua Parween', 'contact': '9608447769' }] },
+      { title: 'Talk-no-Jutsu', desc: 'High-stakes intellectual warfare testing logic and verbal persuasion. Dismantle opponents through strategic cross-questioning and rebuttals. Command the floor with your "Verbal Geass" to emerge as the ultimate strategic orator of the arena.', icon: '🗣️', prize: 'Exciting Prizes', time: '60 Minutes', venue: 'TBA', rules: ['Spot topics revealed 10 mins before start.', 'Judging based on cross-questioning/rebuttals.', 'Team size 3-5; strictly 8 teams (First-to-register).', 'Every member must contribute; silence leads to penalty.', 'Zero delay disqualification.', 'Fees: Transaction details must be maintained by P/I and Coordinators.'], coordinators: [{ 'name': 'Sumit Ghosh', 'contact': '6207036484' }, { 'name': 'Prayog Priyanshu', 'contact': '7870114888' }] },
     ],
   },
   {
@@ -106,6 +107,7 @@ const categories = [
       { title: 'Tug Of Titans', desc: 'Tug of War is a pure test of raw power, grip strength, and synchronized teamwork, pitting squads of five against each other on the main ground. Teams must stay behind the centerline and drag the center flag past their designated line to win. A unified, rhythmic pull often defeats disorganized strength, making coordination just as crucial as physical power.', icon: '🪢', image: tugOfWarImg, prize: 'Exciting Prizes', time: '90 min', venue: 'Main Ground', rules: ['Each team has 5 members', 'Teams pull the rope to drag the center flag past their designated side', 'Do not let go of the rope; no sitting or lying down', 'Stay behind the centerline before the game starts', "Boys' team weight limit: 430–450 kg total", "Girls' team weight limit: 280–300 kg total"], coordinators: [{ 'name': 'Prithwi Raj', 'contact': '6200105529' }, { 'name': 'Rajeev Kumar Mahakur', 'contact': '9123190112' }] },
       { title: 'Iron Grip', desc: "Arm Wrestling is an intense one-on-one test of upper body strength, leverage, and technique. Competitors in the 65–75 kg weight class lock hands, plant their elbows, and battle to pin their opponent's arm to the table. Strategy and form are just as vital as brute force. The first player to pin their opponent's hand wins.", icon: '💪', image: armWrestlingImg, prize: 'Exciting Prizes', time: '90 min', venue: 'Near the Main Stage', rules: ["Weight class: Participants' weight must be between 65 to 75 kg", "Both players sit facing each other, place one elbow on the table, and grip each other's hand", 'The other hand must stay behind the back or on the table', 'No lifting the elbow off the table', 'No using the other hand for assistance', 'No sudden jerks or dangerous moves', 'Referee decides the winner in case of a foul'], coordinators: [{ 'name': 'Keshav Raj', 'contact': '6201479730' }, { 'name': 'Raju Kumar Chouhan', 'contact': '9341122651' }, { 'name': 'Sujal Modak', 'contact': '6201383233' }] },
       { title: 'Attack On Chairs', desc: 'Musical Chairs brings a lighthearted yet fiercely competitive vibe to the stage ground, blending speed, focus, and sharp musical anticipation. Players continuously circle a shrinking arrangement of chairs, keeping their ears sharp for the sudden halt of the music. Pushing, pulling, or reserving chairs is strictly forbidden, and backward steps are not allowed once the music stops.', icon: '🪑', image: musicalChairImg, prize: 'Exciting Prizes', time: '90 min', venue: 'Stage Ground', rules: ['Chairs arranged in a circle with one less than the number of players', 'Players must keep moving while music is playing', 'No backward steps when the music stops', 'No pushing, pulling, or reserving a chair before the music stops', "The referee's decision is final if two players reach a chair simultaneously"], coordinators: [{ 'name': 'Shikha Swaroop', 'contact': '8854879791' }, { 'name': 'Smriti Murmu', 'contact': '9508790561' }, { 'name': 'Priyanka Tudu', 'contact': '6200935495' }] },
+      { title: 'Kaminari-Strike: (Supersixes)', desc: 'Unleash explosive power in this lightning-paced cricket challenge. Face lethal machine deliveries and execute perfect connections. Hit the longest boundary-clearing strike to claim the title of the undisputed monarch of the swing.', icon: '⚡', prize: 'Exciting Prizes', time: '5 Minutes/Player', venue: 'Main Stage Ground', rules: ['3 machine-balls per player.', 'Winner decided by longest six.', 'Mandatory helmets while batting.', 'Separate groups: Kaminari-Strike (Boys) and Kaminari-Strike (Girls).', 'Fees: Transaction details must be maintained by P/I and Coordinators.'], coordinators: [{ 'name': 'Sonal Kumar', 'contact': '8603349261' }, { 'name': 'Aadarsh Shaheb Singh', 'contact': '8789212641' }] },
     ],
   },
   {
@@ -130,7 +132,6 @@ const categories = [
     label: 'Open Events',
     color: '#eab308',
     events: [
-      { title: 'Debate Competition', desc: 'Test your oratory and analytical skills against the best minds.', icon: '🗣️', prize: 'Exciting Prizes', time: 'Day 2 — 1:00 PM - 3:00 PM', venue: 'Seminar Hall', rules: ['Individual/Team', 'Topics provided prior', 'Not managed by any club'], coordinators: [] },
       { title: 'Flip & Win', desc: 'A fun game of chance and skill.', icon: '🎲', prize: 'Exciting Prizes', time: 'Day 2 — 3:30 PM - 4:30 PM', venue: 'Open Ground', rules: ['Individual', 'On-spot registration', 'Not managed by any club'], coordinators: [] },
     ],
   },
@@ -171,7 +172,8 @@ const EventModal = ({ event, category, onClose }) => {
     'Gundam: Last Stand': 2,
     'Finding One Piece': 5,
     'Senku\'s Bridge': 3,
-    'My Dance Academia — Group Dance': 10
+    'My Dance Academia — Group Dance': 10,
+    'Talk-no-Jutsu': 5
   };
 
   const teamSize = teamSizeMap[event.title] || 1;
@@ -572,16 +574,16 @@ const EventCard = ({ event, category, onClick }) => {
         {/* ── FULL-BLEED POSTER IMAGE ── */}
         <div className="absolute inset-0 z-0">
           {event.image ? (
-              <img
-                src={event.image}
-                alt={event.title}
-                loading="lazy"
-                className="w-full h-full object-cover"
-                style={{
-                  transform: isHovering ? 'scale(1.12)' : 'scale(1.01)',
-                  transition: 'transform 0.75s cubic-bezier(0.4,0,0.2,1)',
-                }}
-              />
+            <img
+              src={event.image}
+              alt={event.title}
+              loading="lazy"
+              className="w-full h-full object-cover"
+              style={{
+                transform: isHovering ? 'scale(1.12)' : 'scale(1.01)',
+                transition: 'transform 0.75s cubic-bezier(0.4,0,0.2,1)',
+              }}
+            />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-8xl"
               style={{ background: `radial-gradient(circle at 50% 40%, ${category.color}25, #080808 70%)` }}>
