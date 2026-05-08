@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import gsap from 'gsap';
 import { X, Clock, MapPin, Trophy, ChevronLeft, ChevronRight, Loader, Users, Hash } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { doc, setDoc, updateDoc, arrayUnion, serverTimestamp, query, collection, where, getDocs } from 'firebase/firestore';
@@ -316,25 +316,33 @@ const EventModal = ({ event, category, onClose }) => {
 
   if (!event || !category) return null;
 
+  const backdropRef = useRef(null);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    // Animate in
+    gsap.fromTo(backdropRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+    gsap.fromTo(containerRef.current,
+      { opacity: 0, scale: 0.95, y: 15 },
+      { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: 'power2.out' }
+    );
+  }, []);
+
   return createPortal(
     <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4 sm:px-6">
       {/* Dark Blurred Backdrop */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
+      <div
+        ref={backdropRef}
         className="absolute inset-0 bg-black/80 backdrop-blur-md"
+        style={{ opacity: 0 }}
         onClick={onClose}
       />
 
       {/* Modal Content container (centered, fixed) */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 15 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 15 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
+      <div
+        ref={containerRef}
         className="relative w-full max-w-2xl bg-zinc-950 border border-white/10 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] sm:max-h-[90vh]"
+        style={{ opacity: 0 }}
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
         onWheel={(e) => e.stopPropagation()} // Stop wheel event from reaching Lenis
         onTouchMove={(e) => e.stopPropagation()} // Stop touch event from reaching Lenis
@@ -432,11 +440,7 @@ const EventModal = ({ event, category, onClose }) => {
 
           {/* Team Registration Form */}
           {!isEnrolled && isTeamEvent && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              className="mb-8 p-6 bg-purple-500/5 border border-purple-500/20 rounded-2xl space-y-4"
-            >
+            <TeamSection>
               <h4 className="text-sm font-bold text-purple-400 flex items-center gap-2 mb-4 uppercase tracking-widest">
                 <Users className="w-4 h-4" /> Team Registration
               </h4>
@@ -493,7 +497,7 @@ const EventModal = ({ event, category, onClose }) => {
                 </div>
                 <p className="text-[10px] text-white/30 italic">Note: Your Registration ID is automatically included as Team Leader.</p>
               </div>
-            </motion.div>
+            </TeamSection>
           )}
 
           {/* CTA */}
@@ -523,7 +527,7 @@ const EventModal = ({ event, category, onClose }) => {
             </button>
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>,
     document.body
   );
@@ -895,15 +899,13 @@ const EventSection = () => {
       </div>
 
       {/* ── Modal ── */}
-      <AnimatePresence>
-        {selectedEvent && (
-          <EventModal
-            event={selectedEvent}
-            category={currentCategory}
-            onClose={() => setSelectedEvent(null)}
-          />
-        )}
-      </AnimatePresence>
+      {selectedEvent && (
+        <EventModal
+          event={selectedEvent}
+          category={currentCategory}
+          onClose={() => setSelectedEvent(null)}
+        />
+      )}
 
       {/* Hide scrollbar utility */}
       <style>{`
