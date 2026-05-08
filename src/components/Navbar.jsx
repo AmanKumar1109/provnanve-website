@@ -146,7 +146,7 @@ const Navbar = () => {
                 Login
               </button>
             )}
-            
+
             <button
               onClick={() => setMobileMenuOpen(true)}
               className="text-white p-2 rounded-full border border-white/10 bg-white/10 backdrop-blur-md"
