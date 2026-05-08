@@ -106,7 +106,7 @@ const GalleryCard = ({ img, onImageClick, index }) => {
         <div className="gallery-card-content">
           <div className="gallery-card-content-inner">
             <div>
-              <h3 className="gallery-card-title">{img.alt}</h3>
+              {/* <h3 className="gallery-card-title">{img.alt}</h3> */}
               <p className="gallery-card-subtitle">Provenance Archive</p>
             </div>
             <div className="gallery-card-icon">
