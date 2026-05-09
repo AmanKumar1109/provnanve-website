@@ -18,39 +18,39 @@ const Hero = () => {
   const videoRef = useRef(null);
 
   useLayoutEffect(() => {
-  const ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
 
-    ScrollTrigger.matchMedia({
+      ScrollTrigger.matchMedia({
 
-      // ✅ Desktop only (lg screens)
-      "(min-width: 1024px)": () => {
-        gsap.to(videoRef.current, {
-          yPercent: 30,
-          scale: 1.2,
-          ease: "none",
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-      },
+        // ✅ Desktop only (lg screens)
+        "(min-width: 1024px)": () => {
+          gsap.to(videoRef.current, {
+            y: 30,
+            scale: 1.2,
+            ease: "none",
+            scrollTrigger: {
+              trigger: heroRef.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: true,
+            },
+          });
+        },
 
-      // ✅ Mobile (disable animation)
-      "(max-width: 1023px)": () => {
-        gsap.set(videoRef.current, {
-          yPercent: 0,
-          scale: 1,
-        });
-      }
+        // ✅ Mobile (disable animation)
+        "(max-width: 1023px)": () => {
+          gsap.set(videoRef.current, {
+            yPercent: 0,
+            scale: 1,
+          });
+        }
 
-    });
+      });
 
-  }, heroRef);
+    }, heroRef);
 
-  return () => ctx.revert();
-}, []);
+    return () => ctx.revert();
+  }, []);
 
   return (
     <div
@@ -84,7 +84,8 @@ const Hero = () => {
           <img
             src={titleImage}
             alt="PROVENANCE 6.0"
-            className="w-full h-auto drop-shadow-[0_0_15px_rgba(168,85,247,0.8)] object-contain"
+            className="w-full h-auto drop-shadow-[0_0_15px_rgba(168,85,247,0.8)] object-contain transform-gpu"
+            style={{ willChange: "filter, transform" }}
           />
         </div>
 

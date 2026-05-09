@@ -809,7 +809,6 @@ const EventSection = () => {
 
           <div
             className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide sm:justify-center sm:flex-wrap sm:gap-3"
-            data-lenis-prevent="true"
             style={{
               WebkitOverflowScrolling: 'touch',
               scrollBehavior: 'smooth',
@@ -866,11 +865,9 @@ const EventSection = () => {
             <ChevronRight className="w-5 h-5" />
           </button>
 
-          {/* Cards container */}
           <div
             ref={scrollRef}
             className="flex gap-4 overflow-x-auto pb-8 pt-2 scrollbar-hide -mx-4 px-4 sm:-mx-0 sm:px-0"
-            data-lenis-prevent="true"
             style={{
               WebkitOverflowScrolling: 'touch',
               scrollBehavior: 'smooth',
