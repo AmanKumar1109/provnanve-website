@@ -440,7 +440,7 @@ const EventModal = ({ event, category, onClose }) => {
 
           {/* Team Registration Form */}
           {!isEnrolled && isTeamEvent && (
-            <TeamSection>
+            <div className="mt-6 p-5 sm:p-6 rounded-2xl bg-white/5 border border-white/10">
               <h4 className="text-sm font-bold text-purple-400 flex items-center gap-2 mb-4 uppercase tracking-widest">
                 <Users className="w-4 h-4" /> Team Registration
               </h4>
@@ -497,7 +497,7 @@ const EventModal = ({ event, category, onClose }) => {
                 </div>
                 <p className="text-[10px] text-white/30 italic">Note: Your Registration ID is automatically included as Team Leader.</p>
               </div>
-            </TeamSection>
+            </div>
           )}
 
           {/* CTA */}
@@ -812,7 +812,6 @@ const EventSection = () => {
             data-lenis-prevent="true"
             style={{
               WebkitOverflowScrolling: 'touch',
-              touchAction: 'pan-x',
               scrollBehavior: 'smooth',
               paddingLeft: '1rem',
               paddingRight: '1rem',
@@ -874,7 +873,6 @@ const EventSection = () => {
             data-lenis-prevent="true"
             style={{
               WebkitOverflowScrolling: 'touch',
-              touchAction: 'pan-x',
               scrollBehavior: 'smooth',
               overscrollBehaviorX: 'contain',
               scrollSnapType: 'x mandatory',
