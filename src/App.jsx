@@ -5,6 +5,7 @@ import Home from './Pages/Home';
 import PageTransition from './components/PageTransition';
 import ReactLenis from 'lenis/react';
 import ScrollProgress from './components/ScrollProgress';
+import ScrollToHash from './components/ScrollToHash';
 
 
 // Lazy loading the page components
@@ -37,6 +38,7 @@ function App() {
     >
       <AuthProvider>
         <ScrollProgress />
+        <ScrollToHash />
         <PageTransition>
           <Suspense fallback={<PageLoader />}>
             <Routes>

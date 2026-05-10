@@ -1,20 +1,58 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Menu, ArrowLeft, LayoutDashboard, UserPlus } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLenis } from 'lenis/react';
 
 import provLogo from '../assets/Provenance_logo_icon.png';
 import rvsLogo from '../assets/RVS_Logo_Coloured_White_bg.png';
 import { useAuth } from '../contexts/AuthContext';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
-
+//gsap
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const lenis = useLenis();
   const { isLoggedIn } = useAuth();
+
+  const handleNavClick = (e, item) => {
+    const targetPath = item === 'Home' ? '/' : item === 'Committee' ? '/committee' : '/';
+    const targetHash = item === 'Home' || item === 'Committee' ? '' : `#${item.toLowerCase()}`;
+
+    setMobileMenuOpen(false);
+
+    if (location.pathname === targetPath) {
+      if (targetHash) {
+        e.preventDefault();
+        const id = targetHash.replace('#', '');
+        const element = document.getElementById(id);
+        if (element) {
+          if (lenis) {
+            lenis.scrollTo(element, { offset: 0, duration: 1.2 });
+          } else {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+          window.history.pushState(null, '', `${targetPath}${targetHash}`);
+        } else {
+          navigate(`${targetPath}${targetHash}`);
+        }
+      } else {
+        e.preventDefault();
+        if (lenis) {
+          lenis.scrollTo(0, { immediate: false, duration: 1.2 });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        if (location.hash) {
+          window.history.pushState(null, '', targetPath);
+        }
+      }
+    }
+  };
 
   const navItems = ['Home', 'Event', 'Gallery', 'Committee', 'Sponsor', 'Contact'];
 
@@ -80,6 +118,7 @@ const Navbar = () => {
             <Link
               key={item}
               to={item === 'Home' ? '/' : item === 'Committee' ? '/committee' : `/#${item.toLowerCase()}`}
+              onClick={(e) => handleNavClick(e, item)}
               className="relative block h-[20px] overflow-hidden group"
             >
               {/* Container that moves on hover */}
@@ -186,7 +225,7 @@ const Navbar = () => {
               <div key={item} ref={(el) => (linksRef.current[index] = el)}>
                 <Link
                   to={item === 'Home' ? '/' : item === 'Committee' ? '/committee' : `/#${item.toLowerCase()}`}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => handleNavClick(e, item)}
                 >
                   {item}
                 </Link>

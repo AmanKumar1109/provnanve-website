@@ -114,7 +114,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="border-[#7c3aed]/50 bg-[#7c3aed]/20 text-zinc-200 overflow-hidden rounded-t-xl sm:rounded-t-[10rem] md:rounded-t-[14rem] pt-10 relative">
+    <footer id="contact" className="border-[#7c3aed]/50 bg-[#7c3aed]/20 text-zinc-200 overflow-hidden rounded-t-xl sm:rounded-t-[10rem] md:rounded-t-[14rem] pt-10 relative">
 
       <div id="spotlight-text" className="text-center text-[10vw] font-bold tracking-tight bg-[url('/noise.png')] bg-repeat bg-size-[180px] bg-clip-text text-transparent pointer-events-none select-none">
         PROVENANCE 6.0
