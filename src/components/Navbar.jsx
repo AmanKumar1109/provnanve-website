@@ -100,7 +100,7 @@ const Navbar = () => {
 
   return (
     <div ref={bar}>
-      <nav className="fixed top-10 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between">
+      <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between">
 
         {/* Logos */}
         <div className="flex items-center gap-4">

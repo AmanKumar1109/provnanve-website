@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import AnnouncementPopup from './AnnouncementBar';
 
 import heroVideo from '../assets/hero.mp4';
 import titleImage from '../assets/PROVENANCE_WHITE_TEXT_LOGO_PURPLE_GLOW.png';
@@ -138,6 +139,11 @@ const Hero = () => {
             <span className="z-10">Brochure</span>
           </a>
 
+        </div>
+
+        {/* Announcement Popup — pops in with GSAP animation */}
+        <div className="mt-8 md:mt-10">
+          <AnnouncementPopup />
         </div>
       </div>
     </div>

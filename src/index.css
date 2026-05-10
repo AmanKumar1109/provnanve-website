@@ -45,43 +45,33 @@
     animation: gradient-move 3s linear infinite;
   }
 
-  /* ── Announcement Bar ── */
-  @keyframes announcement-scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+  /* ── Announcement Popup ── */
+  .announcement-popup {
+    position: relative;
+    z-index: 20;
+    display: inline-flex;
+    will-change: transform, opacity;
+    transform-style: preserve-3d;
   }
 
-  .announcement-scroll {
-    animation: announcement-scroll 30s linear infinite;
-  }
-
-  .announcement-scroll:hover {
-    animation-play-state: paused;
-  }
-
-  .announcement-bar-bg {
-    background: linear-gradient(135deg, #0c0118 0%, #1a0533 40%, #0f0a1f 70%, #120826 100%);
-    border-bottom: 1px solid rgba(139, 92, 246, 0.15);
-  }
-
-  @keyframes announcement-shimmer {
+  @keyframes announcement-popup-shimmer {
     0% { transform: translateX(-100%); }
     100% { transform: translateX(100%); }
   }
 
-  .announcement-shimmer::before {
+  .announcement-popup-shimmer::before {
     content: '';
     position: absolute;
     inset: 0;
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(139, 92, 246, 0.06) 40%,
-      rgba(217, 70, 239, 0.08) 50%,
-      rgba(139, 92, 246, 0.06) 60%,
+      rgba(139, 92, 246, 0.08) 40%,
+      rgba(217, 70, 239, 0.1) 50%,
+      rgba(139, 92, 246, 0.08) 60%,
       transparent 100%
     );
-    animation: announcement-shimmer 4s ease-in-out infinite;
+    animation: announcement-popup-shimmer 3s ease-in-out infinite;
   }
 
   @keyframes announcement-ping {

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
 
 const WhatsAppIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 md:w-5 md:h-5 shrink-0">
@@ -6,65 +7,160 @@ const WhatsAppIcon = () => (
   </svg>
 );
 
-const AnnouncementContent = () => (
-  <a
-    href="https://chat.whatsapp.com/Fpoi8MOrwxr5F3ul0PrjZ9"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex items-center gap-2 md:gap-3 text-white/95 text-xs md:text-sm font-medium tracking-wide hover:text-white transition-colors group cursor-pointer"
-  >
-    {/* Pulsing dot */}
-    <span className="relative flex h-2 w-2 shrink-0">
-      <span className="announcement-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
-    </span>
+const AnnouncementPopup = () => {
+  const popupRef = useRef(null);
+  const contentRef = useRef(null);
+  const glowRef = useRef(null);
+  const [dismissed, setDismissed] = useState(false);
 
-    <span className="uppercase tracking-[0.15em] font-semibold text-purple-300 text-[10px] md:text-xs shrink-0">New</span>
+  useEffect(() => {
+    if (dismissed) return;
 
-    <span className="w-px h-3.5 bg-white/20 shrink-0"></span>
+    const popup = popupRef.current;
+    const content = contentRef.current;
+    const glow = glowRef.current;
 
-    <span>Follow this link to join Provenance WhatsApp community</span>
+    // Set initial state — hidden, scaled down, slightly below
+    gsap.set(popup, {
+      opacity: 0,
+      scale: 0.3,
+      y: 40,
+      rotateX: 15,
+    });
+    gsap.set(glow, { opacity: 0, scale: 0.5 });
 
-    <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-full px-3 py-1 text-[11px] md:text-xs font-semibold text-green-300 group-hover:bg-green-500/20 group-hover:border-green-400/30 transition-all duration-300 shrink-0">
-      <WhatsAppIcon />
-      <span className="hidden sm:inline">Join Now</span>
-    </span>
+    // Create the pop-out entrance timeline
+    const tl = gsap.timeline({ delay: 1.5 });
 
-    <span className="w-px h-3.5 bg-white/20 shrink-0"></span>
+    // 1. Pop in with elastic bounce
+    tl.to(popup, {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      rotateX: 0,
+      duration: 0.8,
+      ease: 'back.out(1.7)',
+    })
+    // 2. Glow pulse behind
+    .to(glow, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.5,
+      ease: 'power2.out',
+    }, '-=0.4')
+    // 3. Subtle attention-grabbing pulse
+    .to(popup, {
+      scale: 1.03,
+      duration: 0.3,
+      ease: 'power2.inOut',
+      yoyo: true,
+      repeat: 1,
+    }, '+=0.3');
 
-    <span className="text-white/40 mx-4 shrink-0">✦</span>
-  </a>
-);
+    // Continuous floating animation
+    gsap.to(popup, {
+      y: -6,
+      duration: 2,
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1,
+      delay: 3,
+    });
 
-const AnnouncementBar = () => {
+    // Continuous glow pulsing
+    gsap.to(glow, {
+      opacity: 0.5,
+      scale: 1.1,
+      duration: 1.8,
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1,
+      delay: 3,
+    });
+
+    return () => {
+      tl.kill();
+    };
+  }, [dismissed]);
+
+  const handleDismiss = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const popup = popupRef.current;
+    gsap.to(popup, {
+      opacity: 0,
+      scale: 0.5,
+      y: 30,
+      duration: 0.4,
+      ease: 'back.in(2)',
+      onComplete: () => setDismissed(true),
+    });
+  };
+
+  if (dismissed) return null;
+
   return (
     <div
-      id="announcement-bar"
-      className="fixed top-0 left-0 right-0 h-10 z-[60] flex items-center overflow-hidden announcement-bar-bg select-none"
+      ref={popupRef}
+      className="announcement-popup"
+      style={{ perspective: '800px' }}
     >
-      {/* Animated shimmer overlay */}
-      <div className="absolute inset-0 announcement-shimmer pointer-events-none"></div>
+      {/* Glow effect behind the popup */}
+      <div
+        ref={glowRef}
+        className="absolute -inset-3 rounded-2xl opacity-0"
+        style={{
+          background: 'radial-gradient(ellipse at center, rgba(139, 92, 246, 0.3) 0%, rgba(217, 70, 239, 0.15) 40%, transparent 70%)',
+          filter: 'blur(15px)',
+          zIndex: -1,
+        }}
+      />
 
-      {/* Bottom border glow */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-400/50 to-transparent"></div>
+      {/* Close button */}
+      <button
+        onClick={handleDismiss}
+        className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition-all duration-200 z-20 text-xs"
+        aria-label="Dismiss announcement"
+      >
+        ✕
+      </button>
 
-      {/* Scrolling content — duplicated for seamless loop */}
-      <div className="flex whitespace-nowrap announcement-scroll">
-        <div className="flex items-center shrink-0">
-          <AnnouncementContent />
-          <AnnouncementContent />
-          <AnnouncementContent />
-          <AnnouncementContent />
-        </div>
-        <div className="flex items-center shrink-0" aria-hidden="true">
-          <AnnouncementContent />
-          <AnnouncementContent />
-          <AnnouncementContent />
-          <AnnouncementContent />
-        </div>
-      </div>
+      {/* Inner content */}
+      <a
+        ref={contentRef}
+        href="https://chat.whatsapp.com/Fpoi8MOrwxr5F3ul0PrjZ9"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="relative flex items-center gap-2.5 md:gap-3 px-4 py-2.5 md:px-5 md:py-3 rounded-xl text-white/95 text-xs md:text-sm font-medium tracking-wide hover:text-white transition-all duration-300 group cursor-pointer overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, rgba(12, 1, 24, 0.9) 0%, rgba(26, 5, 51, 0.9) 40%, rgba(15, 10, 31, 0.9) 70%, rgba(18, 8, 38, 0.9) 100%)',
+          border: '1px solid rgba(139, 92, 246, 0.3)',
+          backdropFilter: 'blur(16px)',
+        }}
+      >
+        {/* Shimmer overlay */}
+        <div className="absolute inset-0 announcement-popup-shimmer pointer-events-none rounded-xl" />
+
+        {/* Pulsing dot */}
+        <span className="relative flex h-2 w-2 shrink-0">
+          <span className="announcement-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
+        </span>
+
+        <span className="uppercase tracking-[0.15em] font-semibold text-purple-300 text-[10px] md:text-xs shrink-0">New</span>
+
+        <span className="w-px h-3.5 bg-white/20 shrink-0"></span>
+
+        <span className="hidden sm:inline">Join Provenance WhatsApp community</span>
+        <span className="sm:hidden">Join WhatsApp</span>
+
+        <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-full px-3 py-1 text-[11px] md:text-xs font-semibold text-green-300 group-hover:bg-green-500/20 group-hover:border-green-400/30 transition-all duration-300 shrink-0">
+          <WhatsAppIcon />
+          <span className="hidden sm:inline">Join Now</span>
+        </span>
+      </a>
     </div>
   );
 };
 
-export default AnnouncementBar;
+export default AnnouncementPopup;
