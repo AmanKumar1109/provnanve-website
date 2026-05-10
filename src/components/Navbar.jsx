@@ -77,15 +77,9 @@ const Navbar = () => {
         {/* Desktop Navigation (UPDATED) */}
         <div className="hidden lg:flex items-center bg-[#150b2e]/60 backdrop-blur-md rounded-full px-8 py-3 gap-8 border border-purple-500/20">
           {navItems.map((item) => (
-            <a
+            <Link
               key={item}
-              href={item === 'Home' ? '/' : item === 'Committee' ? '/committee' : `#${item.toLowerCase()}`}
-              onClick={(e) => {
-                if (item === 'Committee') {
-                  e.preventDefault();
-                  navigate('/committee');
-                }
-              }}
+              to={item === 'Home' ? '/' : item === 'Committee' ? '/committee' : `/#${item.toLowerCase()}`}
               className="relative block h-[20px] overflow-hidden group"
             >
               {/* Container that moves on hover */}
@@ -99,7 +93,7 @@ const Navbar = () => {
                   {item}
                 </span>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -190,18 +184,12 @@ const Navbar = () => {
           <div className="flex flex-col gap-4 text-4xl font-bold">
             {navItems.map((item, index) => (
               <div key={item} ref={(el) => (linksRef.current[index] = el)}>
-                <a
-                  href={item === 'Home' ? '/' : item === 'Committee' ? '/committee' : `#${item.toLowerCase()}`}
-                  onClick={(e) => {
-                    if (item === 'Committee') {
-                      e.preventDefault();
-                      navigate('/committee');
-                    }
-                    setMobileMenuOpen(false);
-                  }}
+                <Link
+                  to={item === 'Home' ? '/' : item === 'Committee' ? '/committee' : `/#${item.toLowerCase()}`}
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   {item}
-                </a>
+                </Link>
               </div>
             ))}
           </div>
