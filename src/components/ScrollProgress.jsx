@@ -37,7 +37,7 @@ const ScrollProgress = () => {
   return createPortal(
     <div
       ref={barRef}
-      className="fixed top-0 left-0 right-0 h-[3px] md:h-[4px] z-[2147483647] theme-bar"
+      className="fixed top-10 left-0 right-0 h-[3px] md:h-[4px] z-[2147483647] theme-bar"
     />,
     document.body
   );
