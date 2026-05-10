@@ -48,7 +48,7 @@ const GUESTS = [
     lastName: 'Sharma',
     role: 'Deadpan Comedy Maestro &middot; Viral Sensation &middot; Relatable Humorist',
     image: celebImg,
-    badge: '🎤 India\'s Sharpest Comic',
+    badge: 'India\'s Sharpest Comic',
     bio: [
       'Known for his brilliant deadpan delivery and razor-sharp observational humor, Pranav Sharma has taken the Indian comedy scene by storm. From his hit live show "Taaza Phool" to his viral reels, he masterfully tackles middle-class quirks and Gen-Z absurdities.',
       'Get ready for an unforgettable night of unapologetically honest and relatable laughter as he takes the stage LIVE at Provenance 6.0!'
@@ -70,7 +70,7 @@ const GUESTS = [
     lastName: 'Shaan',
     role: 'India\'s No. 1 VDJ &middot; Mirage Music Founder &middot; Visual Artist',
     image: djImg,
-    badge: '🎧 India\'s Biggest VDJ',
+    badge: 'India\'s Biggest VDJ',
     bio: [
       'Officially recognized by the Times Group as India\'s No. 1 VDJ, Shaan is a pioneer of audiovisual performances. He uniquely blends Bollywood nostalgia with high-energy global electronic genres like Afro-house and club rhythms.',
       'With over 300 spectacular live acts and his groundbreaking "Mirage" series, experience the pulse of the night as he electrifies the Provenance 6.0 main stage with an unforgettable multisensory journey!'
@@ -340,7 +340,19 @@ const CelebrityGuest = () => {
                     </span>
                   </h3>
                   <div className="h-1 w-20 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full" />
-                  <p className="text-white/40 text-sm md:text-base font-bold uppercase tracking-[0.3em]" dangerouslySetInnerHTML={{ __html: guest.role }} />
+                  <p
+                    className="text-sm md:text-base font-bold uppercase tracking-[0.3em]"
+                    style={{
+                      background: 'linear-gradient(90deg, #c084fc, #f472b6, #fb923c)',
+                      backgroundSize: '200% auto',
+                      WebkitBackgroundClip: 'text',
+                      backgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      animation: 'celebrity-gradient-shift 3s ease infinite',
+                      filter: 'drop-shadow(0 0 8px rgba(168, 85, 247, 0.5))',
+                    }}
+                    dangerouslySetInnerHTML={{ __html: guest.role }}
+                  />
                 </div>
 
                 <div className="space-y-4 text-white/70 text-lg md:text-xl leading-relaxed font-light">
