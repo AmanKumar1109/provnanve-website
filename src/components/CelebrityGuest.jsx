@@ -46,12 +46,12 @@ const GUESTS = [
     id: 'pranav-sharma',
     name: 'Pranav Sharma',
     lastName: 'Sharma',
-    role: 'Stand-Up Comedian &middot; Content Creator &middot; Live Performer',
+    role: 'Deadpan Comedy Maestro &middot; Viral Sensation &middot; Relatable Humorist',
     image: celebImg,
-    badge: '🎤 Pranav Sharma',
+    badge: '🎤 India\'s Sharpest Comic',
     bio: [
-      'Pranav Sharma is an Indian stand-up comedian known for his relatable humor and everyday life observations. His content blends simple storytelling with desi experiences, making it fun, engaging, and easy to connect with.',
-      'Get ready for an unforgettable night of laughter as he takes the stage LIVE at Provenance 6.0!'
+      'Known for his brilliant deadpan delivery and razor-sharp observational humor, Pranav Sharma has taken the Indian comedy scene by storm. From his hit live show "Taaza Phool" to his viral reels, he masterfully tackles middle-class quirks and Gen-Z absurdities.',
+      'Get ready for an unforgettable night of unapologetically honest and relatable laughter as he takes the stage LIVE at Provenance 6.0!'
     ],
     highlights: [
       { icon: <Mic className="w-4 h-4" />, text: 'Stand-Up Comedian' },
@@ -68,12 +68,12 @@ const GUESTS = [
     id: 'vdj-shaan',
     name: 'VDJ Shaan',
     lastName: 'Shaan',
-    role: 'Visual DJ &middot; Electronic Artist &middot; Music Producer',
+    role: 'India\'s No. 1 VDJ &middot; Mirage Music Founder &middot; Visual Artist',
     image: djImg,
-    badge: '🎧 VDJ Shaan',
+    badge: '🎧 India\'s Biggest VDJ',
     bio: [
-      'VDJ Shaan is a master of the decks, blending high-energy beats with immersive visual experiences. Known for his explosive sets and futuristic soundscapes, he turns every performance into a multisensory journey.',
-      'Experience the pulse of the night as he electrifies the Provenance 6.0 main stage with his signature cyber-vibes!'
+      'Officially recognized by the Times Group as India\'s No. 1 VDJ, Shaan is a pioneer of audiovisual performances. He uniquely blends Bollywood nostalgia with high-energy global electronic genres like Afro-house and club rhythms.',
+      'With over 300 spectacular live acts and his groundbreaking "Mirage" series, experience the pulse of the night as he electrifies the Provenance 6.0 main stage with an unforgettable multisensory journey!'
     ],
     highlights: [
       { icon: <Music className="w-4 h-4" />, text: 'Visual DJ' },
