@@ -200,7 +200,7 @@ const EventModal = ({ event, category, onClose }) => {
 
   // Define Team Sizes for specific events { min, max }
   const teamSizeMap = {
-    'Trigger-Point: BGMI Arena': { min: 1, max: 4 },
+    'Trigger-Point: BGMI Arena': { min: 2, max: 4 },
     'Frag-Ops: PC Gaming': { min: 1, max: 5 },
     'Bluelock': { min: 12, max: 12 },
     'Karasuno Smash': { min: 6, max: 6 },
@@ -658,22 +658,20 @@ const EventModal = ({ event, category, onClose }) => {
                 <button
                   type="button"
                   onClick={() => setTeamType('boys')}
-                  className={`py-3 rounded-xl text-sm font-bold border transition-all ${
-                    teamType === 'boys'
+                  className={`py-3 rounded-xl text-sm font-bold border transition-all ${teamType === 'boys'
                       ? 'bg-blue-500/20 border-blue-500/50 text-blue-400'
                       : 'bg-white/5 border-white/10 text-white/50 hover:bg-white/10'
-                  }`}
+                    }`}
                 >
                   Boys Team — ₹{effectiveFee.boys}
                 </button>
                 <button
                   type="button"
                   onClick={() => setTeamType('girls')}
-                  className={`py-3 rounded-xl text-sm font-bold border transition-all ${
-                    teamType === 'girls'
+                  className={`py-3 rounded-xl text-sm font-bold border transition-all ${teamType === 'girls'
                       ? 'bg-pink-500/20 border-pink-500/50 text-pink-400'
                       : 'bg-white/5 border-white/10 text-white/50 hover:bg-white/10'
-                  }`}
+                    }`}
                 >
                   Girls Team — ₹{effectiveFee.girls}
                 </button>
