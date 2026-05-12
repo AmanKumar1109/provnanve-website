@@ -1062,13 +1062,11 @@ const EventSection = () => {
             className="flex gap-4 overflow-x-auto pb-8 pt-2 scrollbar-hide -mx-4 px-4 sm:-mx-0 sm:px-0"
             style={{
               WebkitOverflowScrolling: 'touch',
-              scrollBehavior: 'smooth',
               overscrollBehaviorX: 'contain',
-              scrollSnapType: 'x mandatory',
             }}
           >
             {currentEvents.map((event) => (
-              <div key={event.title} className="py-2" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
+              <div key={event.title} className="py-2" style={{ flexShrink: 0 }}>
                 <EventCard
                   event={event}
                   category={currentCategory}
