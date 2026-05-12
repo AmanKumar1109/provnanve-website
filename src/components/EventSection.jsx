@@ -343,15 +343,16 @@ const EventModal = ({ event, category, onClose }) => {
 
     // Validate Team Info
     const activeMemberIds = memberIds.filter(id => id.trim() !== '');
-    const requiredMembers = Math.max(1, minTeamSize - 1);
+    const totalMembersCount = activeMemberIds.length + 1;
 
     if (isTeamEvent) {
       if (!teamName.trim()) {
         setEnrollError('Please enter a Team Name.');
         return;
       }
-      if (activeMemberIds.length < requiredMembers) {
-        setEnrollError(`Please add at least ${requiredMembers} teammate(s). Team requires ${minTeamSize}–${maxTeamSize} members total (including you).`);
+      if (totalMembersCount < minTeamSize) {
+        const remainingNeeded = minTeamSize - totalMembersCount;
+        setEnrollError(`Team requires at least ${minTeamSize} members total (including you). You have added ${activeMemberIds.length} teammate(s) + yourself (${totalMembersCount} total). Please add ${remainingNeeded} more teammate(s).`);
         return;
       }
       if (activeMemberIds.some(id => id.length !== 6)) {
@@ -643,7 +644,7 @@ const EventModal = ({ event, category, onClose }) => {
                     </div>
                   ))}
                 </div>
-                <p className="text-[10px] text-white/30 italic">Note: Your Registration ID is automatically included as Team Leader. Team size: {teamSizeLabel} (min {minTeamSize}, max {maxTeamSize} including you).</p>
+                <p className="text-[10px] text-white/30 italic">Note: You are automatically counted as 1 member (Team Leader). Please add the remaining teammate(s) below. Total required: {minTeamSize} to {maxTeamSize} members (including you).</p>
               </div>
             </div>
           )}
@@ -659,8 +660,8 @@ const EventModal = ({ event, category, onClose }) => {
                   type="button"
                   onClick={() => setTeamType('boys')}
                   className={`py-3 rounded-xl text-sm font-bold border transition-all ${teamType === 'boys'
-                      ? 'bg-blue-500/20 border-blue-500/50 text-blue-400'
-                      : 'bg-white/5 border-white/10 text-white/50 hover:bg-white/10'
+                    ? 'bg-blue-500/20 border-blue-500/50 text-blue-400'
+                    : 'bg-white/5 border-white/10 text-white/50 hover:bg-white/10'
                     }`}
                 >
                   Boys Team — ₹{effectiveFee.boys}
@@ -669,8 +670,8 @@ const EventModal = ({ event, category, onClose }) => {
                   type="button"
                   onClick={() => setTeamType('girls')}
                   className={`py-3 rounded-xl text-sm font-bold border transition-all ${teamType === 'girls'
-                      ? 'bg-pink-500/20 border-pink-500/50 text-pink-400'
-                      : 'bg-white/5 border-white/10 text-white/50 hover:bg-white/10'
+                    ? 'bg-pink-500/20 border-pink-500/50 text-pink-400'
+                    : 'bg-white/5 border-white/10 text-white/50 hover:bg-white/10'
                     }`}
                 >
                   Girls Team — ₹{effectiveFee.girls}
