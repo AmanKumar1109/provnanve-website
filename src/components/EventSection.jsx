@@ -1043,16 +1043,16 @@ const EventSection = () => {
 
         {/* ── Event Cards (Horizontal Scroll) ── */}
         <div className="relative">
-          {/* Scroll arrows (desktop only) */}
+          {/* Scroll arrows (Mobile & Desktop) */}
           <button
             onClick={() => scrollCards('left')}
-            className="hidden lg:flex absolute -left-20 top-1/2 -translate-y-1/2 z-20 w-10 h-10 items-center justify-center rounded-full bg-zinc-900/90 border border-white/10 text-white/50 hover:text-white hover:border-white/20"
+            className="flex absolute left-2 lg:-left-20 top-1/2 -translate-y-1/2 z-20 w-10 h-10 items-center justify-center rounded-full bg-zinc-900/90 backdrop-blur-md border border-white/10 text-white/70 hover:text-white hover:border-white/20 shadow-lg"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={() => scrollCards('right')}
-            className="hidden lg:flex absolute -right-20 top-1/2 -translate-y-1/2 z-20 w-10 h-10 items-center justify-center rounded-full bg-zinc-900/90 border border-white/10 text-white/50 hover:text-white hover:border-white/20"
+            className="flex absolute right-2 lg:-right-20 top-1/2 -translate-y-1/2 z-20 w-10 h-10 items-center justify-center rounded-full bg-zinc-900/90 backdrop-blur-md border border-white/10 text-white/70 hover:text-white hover:border-white/20 shadow-lg"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
