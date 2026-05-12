@@ -22,6 +22,9 @@ const Dashboard = () => {
     const [paySuccess, setPaySuccess] = useState('');
     const [unrollingEvent, setUnrollingEvent] = useState(null);
 
+    // Highly robust fallback profile containing user object data or fetched profile
+    const currentProfile = profile || user || {};
+
     useEffect(() => {
         const fetchProfile = async () => {
             if (!user?.uid) {
@@ -33,9 +36,12 @@ const Dashboard = () => {
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     setProfile(docSnap.data());
+                } else {
+                    setProfile(user);
                 }
             } catch (err) {
                 console.error('Error fetching profile:', err);
+                setProfile(user);
             } finally {
                 setLoading(false);
             }
@@ -54,9 +60,12 @@ const Dashboard = () => {
         try {
             const userRef = doc(db, 'users', user.uid);
             
+            const currentEvts = currentProfile.registeredEvents || [];
+            const currentDetails = currentProfile.registeredEventsDetails || [];
+
             // Remove from local profile state arrays to compute new arrays
-            const newRegisteredEvents = profile.registeredEvents.filter(e => e !== eventDetail.title);
-            const newRegisteredEventsDetails = profile.registeredEventsDetails.filter(e => e.title !== eventDetail.title);
+            const newRegisteredEvents = currentEvts.filter(e => e !== eventDetail.title);
+            const newRegisteredEventsDetails = currentDetails.filter(e => e.title !== eventDetail.title);
             
             await updateDoc(userRef, {
                 registeredEvents: newRegisteredEvents,
@@ -66,7 +75,7 @@ const Dashboard = () => {
             // Delete from event collection
             await deleteDoc(doc(db, eventDetail.title, user.uid));
             
-            setProfile({ ...profile, registeredEvents: newRegisteredEvents, registeredEventsDetails: newRegisteredEventsDetails });
+            setProfile({ ...currentProfile, registeredEvents: newRegisteredEvents, registeredEventsDetails: newRegisteredEventsDetails });
             
             // Update auth context
             if (user) {
@@ -97,7 +106,8 @@ const Dashboard = () => {
             
             const finalPaymentApp = paymentApp === 'other' ? otherPaymentApp.trim() : paymentApp;
 
-            const updatedDetails = profile.registeredEventsDetails.map(evt => {
+            const currentDetails = currentProfile.registeredEventsDetails || [];
+            const updatedDetails = currentDetails.map(evt => {
                 if (evt.entryFee && evt.eventPaymentStatus === 'pending') {
                     return { ...evt, eventPaymentStatus: 'reviewing', transactionId, paymentApp: finalPaymentApp };
                 }
@@ -108,7 +118,7 @@ const Dashboard = () => {
                 registeredEventsDetails: updatedDetails
             });
 
-            setProfile({ ...profile, registeredEventsDetails: updatedDetails });
+            setProfile({ ...currentProfile, registeredEventsDetails: updatedDetails });
             setPaySuccess("Payment submitted for review.");
             setPaymentApp('');
             setOtherPaymentApp('');
@@ -128,8 +138,8 @@ const Dashboard = () => {
 
     const tshirtMap = { s: 'S', m: 'M', l: 'L', xl: 'XL', xxl: 'XXL' };
 
-    const paidEvents = profile?.registeredEventsDetails?.filter(e => e.entryFee) || [];
-    const freeEvents = profile?.registeredEventsDetails?.filter(e => !e.entryFee) || [];
+    const paidEvents = currentProfile?.registeredEventsDetails?.filter(e => e.entryFee) || [];
+    const freeEvents = currentProfile?.registeredEventsDetails?.filter(e => !e.entryFee) || [];
     
     const pendingPaidEvents = paidEvents.filter(e => e.eventPaymentStatus === 'pending');
     const totalAmountDue = pendingPaidEvents.reduce((acc, curr) => acc + (curr.entryFee || 0), 0);
@@ -149,9 +159,33 @@ const Dashboard = () => {
             </nav>
 
             <main className="max-w-4xl mx-auto px-6 py-10">
-                <div className="mb-8">
-                    <h1 className="text-2xl font-bold text-white mb-1">Member Dashboard</h1>
-                    <p className="text-white/40 text-sm">Welcome back, <span className="text-purple-400">{profile?.name || user?.email || 'Member'}</span></p>
+                <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                        <h1 className="text-2xl font-bold text-white mb-1">Member Dashboard</h1>
+                        <p className="text-white/40 text-sm">Welcome back, <span className="text-purple-400">{currentProfile?.name || user?.email || 'Member'}</span></p>
+                    </div>
+                    <button
+                        onClick={async () => {
+                            if (!user?.uid) return;
+                            setLoading(true);
+                            try {
+                                const docSnap = await getDoc(doc(db, 'users', user.uid));
+                                if (docSnap.exists()) {
+                                    setProfile(docSnap.data());
+                                    if (login && typeof login === 'function') {
+                                        login({ ...user, ...docSnap.data() });
+                                    }
+                                }
+                            } catch (err) {
+                                console.error('Refresh error:', err);
+                            } finally {
+                                setLoading(false);
+                            }
+                        }}
+                        className="self-start sm:self-auto text-xs bg-white/5 hover:bg-white/10 text-purple-300 border border-white/10 px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
+                    >
+                        <span>🔄</span> Refresh Details
+                    </button>
                 </div>
 
                 {loading ? (
@@ -162,13 +196,13 @@ const Dashboard = () => {
                     <div className="space-y-6">
                         
                         {/* Reg ID Card */}
-                        {profile?.registerationId && (
+                        {(currentProfile?.registerationId || currentProfile?.registrationId) && (
                             <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl px-5 py-4 flex items-center justify-between">
                                 <div>
                                     <p className="text-xs font-bold tracking-widest uppercase text-purple-400 mb-1">Registration ID</p>
-                                    <p className="text-2xl font-bold font-mono text-white tracking-[0.3em]">{profile.registerationId}</p>
+                                    <p className="text-2xl font-bold font-mono text-white tracking-[0.3em]">{currentProfile.registerationId || currentProfile.registrationId}</p>
                                 </div>
-                                <button onClick={() => { navigator.clipboard.writeText(profile.registerationId); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+                                <button onClick={() => { navigator.clipboard.writeText(currentProfile.registerationId || currentProfile.registrationId); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
                                     className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase transition-all ${copied ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-white/5 text-white/60 border border-white/10 hover:bg-purple-500/20 hover:text-purple-400'}`}>
                                     {copied ? <><Check className="w-4 h-4" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy</>}
                                 </button>
@@ -281,12 +315,12 @@ const Dashboard = () => {
                                 <h2 className="font-semibold text-white">Profile Information</h2>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-white/5">
-                                <div className="bg-[#0e0018] p-4 flex gap-3"><User className="w-4 h-4 text-purple-400/60" /><div className="text-sm"><p className="text-white/40">Name</p><p>{profile?.name}</p></div></div>
-                                <div className="bg-[#0e0018] p-4 flex gap-3"><Mail className="w-4 h-4 text-purple-400/60" /><div className="text-sm"><p className="text-white/40">Email</p><p>{profile?.email}</p></div></div>
-                                <div className="bg-[#0e0018] p-4 flex gap-3"><Phone className="w-4 h-4 text-purple-400/60" /><div className="text-sm"><p className="text-white/40">Mobile</p><p>{profile?.mobile}</p></div></div>
-                                <div className="bg-[#0e0018] p-4 flex gap-3"><Building2 className="w-4 h-4 text-purple-400/60" /><div className="text-sm"><p className="text-white/40">College</p><p>{profile?.collegeName}</p></div></div>
-                                <div className="bg-[#0e0018] p-4 flex gap-3"><GraduationCap className="w-4 h-4 text-purple-400/60" /><div className="text-sm"><p className="text-white/40">Branch</p><p>{branchMap[profile?.branch] || profile?.branch}</p></div></div>
-                                {profile?.collegeType === 'within' && <div className="bg-[#0e0018] p-4 flex gap-3"><Hash className="w-4 h-4 text-purple-400/60" /><div className="text-sm"><p className="text-white/40">Roll No</p><p>{profile?.rollNumber}</p></div></div>}
+                                <div className="bg-[#0e0018] p-4 flex gap-3"><User className="w-4 h-4 text-purple-400/60" /><div className="text-sm"><p className="text-white/40">Name</p><p>{currentProfile?.name || 'N/A'}</p></div></div>
+                                <div className="bg-[#0e0018] p-4 flex gap-3"><Mail className="w-4 h-4 text-purple-400/60" /><div className="text-sm"><p className="text-white/40">Email</p><p>{currentProfile?.email || 'N/A'}</p></div></div>
+                                <div className="bg-[#0e0018] p-4 flex gap-3"><Phone className="w-4 h-4 text-purple-400/60" /><div className="text-sm"><p className="text-white/40">Mobile</p><p>{currentProfile?.mobile || 'N/A'}</p></div></div>
+                                <div className="bg-[#0e0018] p-4 flex gap-3"><Building2 className="w-4 h-4 text-purple-400/60" /><div className="text-sm"><p className="text-white/40">College</p><p>{currentProfile?.collegeName || 'N/A'}</p></div></div>
+                                <div className="bg-[#0e0018] p-4 flex gap-3"><GraduationCap className="w-4 h-4 text-purple-400/60" /><div className="text-sm"><p className="text-white/40">Branch</p><p>{currentProfile?.branch ? (branchMap[currentProfile.branch?.toLowerCase()] || currentProfile.branch?.toUpperCase()) : 'N/A'}</p></div></div>
+                                {currentProfile?.collegeType === 'within' && <div className="bg-[#0e0018] p-4 flex gap-3"><Hash className="w-4 h-4 text-purple-400/60" /><div className="text-sm"><p className="text-white/40">Roll No</p><p>{currentProfile?.rollNumber || 'N/A'}</p></div></div>}
                             </div>
                         </div>
 
