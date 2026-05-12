@@ -21,7 +21,7 @@ const sliderImages = [
   stageHero, celeb, img1, img2, img3, img4, img5, img6, img7, img8,
 ];
 
-/* Hide scrollbar (injected once) */
+/* Hide scrollbar (injected once) once*/
 const SCROLLBAR_STYLE_ID = 'about-slider-scrollbar-hide';
 if (typeof document !== 'undefined' && !document.getElementById(SCROLLBAR_STYLE_ID)) {
   const style = document.createElement('style');
