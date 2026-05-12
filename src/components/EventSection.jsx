@@ -60,7 +60,7 @@ const categories = [
       { title: 'Shinobi Script', desc: "In the high-stakes world of competitive programming, only those with the swiftest logic and most refined 'syntax-jutsu' will survive. Shinobi Script is a grueling test of your Data Structures and Algorithms knowledge, requiring you to solve complex problems under immense pressure. Much like a ninja navigating a hidden village, you must choose the most efficient path—optimizing for time and space complexity to bypass logical traps. Plagiarism is the ultimate taboo here; only your individual logic and problem-solving prowess will lead you to victory.", icon: '🥷', image: shinobiScriptImg, prize: 'Exciting Prizes', time: '90 min', venue: 'TCS Lab, 1st Floor, B2 Block', rules: ['Supported Languages: C, C++, Java, and Python', 'All solutions must pass the hidden test cases within the specified time and memory limits', 'No internet access is allowed except for the official competition portal', 'Use of any AI-based coding assistants (GitHub Copilot, ChatGPT) results in instant ban', 'In case of a tie, the participant with the lowest total submission time wins'], coordinators: [{ 'name': 'Satish Verma', 'contact': '6204477023' }, { 'name': 'Subrata Paul', 'contact': '6206126172' }, { 'name': 'Shruti Sinha', 'contact': '7667560433' }, { 'name': 'Rohini Kumari', 'contact': '8825239918' }, { 'name': 'Aditi Kumari', 'contact': '9031494973' }] },
       { title: "Mangaka's Edge", desc: "Sharpen your digital pen and prepare to illustrate the future in Mangaka's Edge. This event is a high-stakes battle of brand identity and visual narrative, challenging designers to create viral posters and logos from an entirely blank canvas. Without the crutch of pre-made templates, you must rely solely on your understanding of Typography, Color Theory, and Composition. Every stroke must be intentional and every pixel must serve the story. Your work will be judged on its originality, impact, and its ability to capture the soul of the Anime theme.", icon: '🖌️', image: mangakasEdgeImg, prize: 'Exciting Prizes', time: '90 min', venue: 'AI Skills Lab, 2nd Floor, B2 Block', rules: ['Tools allowed: Adobe Creative Suite (Photoshop/Illustrator), Figma, or Canva (Empty Canvas only)', 'Direct copy-pasting of existing anime artwork is considered plagiarism', 'Final design must be submitted in PDF and PNG formats', 'Participants must be prepared to present their layer structure to verify authenticity', "Design must include the specific 'Provenance 6.0' branding elements provided"], coordinators: [{ 'name': 'Sumit Ghosh', 'contact': '6207036484' }, { 'name': 'T. Sasi Kiran', 'contact': '8000547922' }, { 'name': 'Abhijeet Ghosh', 'contact': '6299390773' }, { 'name': 'Syed Farhan Ali', 'contact': '6207941889' }] },
       { title: 'Hunter Rank: PRO', desc: 'Embark on a professional RPG quest to level up your career standing in Hunter Rank: PRO. Powered by the HireTip platform, this event challenges participants to build an S-Rank professional resume capable of defeating the most advanced Applicant Tracking Systems (ATS). Your resume is your primary weapon; mastering its keywords and structural formatting is essential for survival. Prove that you possess the technical qualifications and strategic mindset to stand out in the global talent marketplace.', icon: '📜', image: hunterRankProImg, prize: 'Exciting Prizes', time: '90 min', venue: 'AI Skills Lab, 2nd Floor, B2 Block', rules: ['Resumes must be generated or uploaded strictly through the HireTip platform', 'Evaluation is based on ATS compatibility score, keyword density, and professional layout', 'Participants must use their official college email ID for registration', 'Graphical resumes (heavy images/multiple columns) that are not ATS-friendly will be penalized'], coordinators: [{ 'name': 'Rupesh Mahakud', 'contact': '8709136459' }, { 'name': 'Murli Agarwal', 'contact': '9241992335' }, { 'name': 'Neha Kumari', 'contact': '6207177099' }, { 'name': 'Aryan Raj', 'contact': '8210113313' }] },
-      { title: 'Frag-Ops: PC Gaming', entryFee: 300, desc: 'Welcome to the tactical arena of Frag-Ops, a high-octane 5v5 FPS tournament where strategy meets lightning-fast reflexes. This is a battleground where squad coordination and map awareness are the only keys to survival. Under the cyberpunk atmosphere of Provenance 6.0, teams must navigate the competitive map pool, executing precise strategies to outmaneuver the opposition. Only raw skill and ironclad discipline will determine which squad remains the last one standing.', icon: '🔫', image: fragOpsImg, prize: 'Exciting Prizes', time: '2 hrs', venue: 'TCS Lab, 1st Floor, B2 Block', rules: ['Tournament Format: 5v5 Tactical (Competitive Settings)', 'Participants must provide their own Laptops, Mouse, and Headsets', 'Use of scripts, wall-hacks, aim-assist, or external overlays results in a permanent ban', 'Map pool: Dust II, Mirage, Inferno, Nuke, Overpass (Veto system applies)', 'Standard timeout and technical pause rules will be followed'], coordinators: [{ 'name': 'Aman Kumar Jha', 'contact': '6206804326' }, { 'name': 'Shubham Prajapati', 'contact': '9006099575' }, { 'name': 'Dharmender Singh', 'contact': '8409319947' }] },
+      { title: 'Frag-Ops: PC Gaming', entryFee: 300, desc: 'Enter the tactical battlefield of Frag-Ops, where precise gunplay meets supernatural abilities. In this high-octane 5v5 tactical shooter tournament, squad coordination and mastery of your Agent\'s kit are the only paths to victory. Teams must navigate the competitive map pool using a Veto system, executing precise strategies to outmaneuver the opposition. Only raw skill and ironclad discipline will determine which squad remains the last one standing.', icon: '🔫', image: fragOpsImg, prize: 'Exciting Prizes', time: '2 hrs', venue: 'TCS Lab, 1st Floor, B2 Block', rules: ['Participants must provide their own Laptops, Mouse, and Headsets', 'Hacks, scripts, aim-assist, or external overlays result in bans', 'Map pool follows a Veto system (Ascent, Bind, Haven, Icebox, etc.)', 'Standard timeout and technical pause rules apply'], coordinators: [{ 'name': 'Aman Kumar Jha', 'contact': '6206804326' }, { 'name': 'Shubham Prajapati', 'contact': '9006099575' }, { 'name': 'Dharmender Singh', 'contact': '8409319947' }] },
       { title: 'Trigger-Point: BGMI Arena', entryFee: 200, desc: 'Trigger-Point is a high-stakes Battle Royale survival sprint designed for the elite mobile squads of the campus. Dropping into a hostile environment, your team must demonstrate unparalleled tactical superiority and survival instincts to secure victory. Every decision—from your drop location to your final rotation—must be calculated with precision. Only those with the fastest fingers will prevail.', icon: '📱', image: triggerPointImg, prize: 'Exciting Prizes', time: '2 hrs', venue: 'TCS Lab, 1st Floor, B2 Block', rules: ['Platform: Mobile smartphones only', 'Strictly no emulators, iPads, or gaming tablets allowed', 'External triggers, cooling fans with software integration, or GFX tools are banned', 'Points system: Survival (Placement) points + Finish (Kill) points', 'Teams must maintain a stable internet connection; organizers are not responsible for lag'], coordinators: [{ 'name': 'Aman Kumar Jha', 'contact': '6206804326' }, { 'name': 'Asish Karan Soren', 'contact': '7294906845' }, { 'name': 'Aman Kumar', 'contact': '6206939304' }] },
       { title: 'Colors of Konoha', desc: 'Experience a stunning fusion of Indian heritage and the Anime Protocol in Colors of Konoha. This traditional Rangoli competition challenges teams of artists to blend intricate cultural patterns with iconic anime visual elements. It is a celebration of creativity where the floor becomes your canvas and colored powders become your medium. Teams must work within a strict time limit and boundary size, manifesting a vision that bridges two different worlds.', icon: '🌸', image: colorsOfKonohaImg, prize: 'Exciting Prizes', time: '90 min', venue: 'TBA', rules: ['Theme: Fusion of Traditional Indian Patterns and Anime Lore', 'Participants must bring their own colors, stencils, and cleaning materials', 'Use of printed references is allowed, but direct tracing is prohibited'], coordinators: [{ 'name': 'Khushboo Kumari', 'contact': '9142406515' }, { 'name': 'Jyoti Kumari', 'contact': '7368961922' }, { 'name': 'Keshav Raj', 'contact': '6201479730' }] },
       { title: 'Sage Mode: Trivia', desc: 'Enter the ultimate realm of knowledge in Sage Mode: Trivia. This comprehensive tech quiz is designed to test your deep understanding of IT, Artificial Intelligence, Hardware history, and Anime lore. The competition begins with a grueling written preliminary round, filtering out all but the most enlightened minds for the high-speed buzzer finals. Prove that your wisdom transcends the ordinary and achieve the coveted S-Rank status.', icon: '🧠', image: sageModeImg, prize: 'Exciting Prizes', time: '90 min', venue: 'TBA', rules: ['Rounds: Written Prelims followed by Stage-based Buzzer Finals', 'Strictly no smartwatches or smartphones allowed during the quiz', "Topics: IT Trends, Computer History, AI, Hardware, and 'Otaku' Tech Lore", "The Quizmaster's decision is final in all scoring disputes"], coordinators: [{ 'name': 'Satish Verma', 'contact': '6204477023' }, { 'name': 'Gaurav Singh', 'contact': '7857024380' }, { 'name': 'Priya Mandal', 'contact': '9934750671' }, { 'name': 'Swati Kumari', 'contact': '7858992104' }, { 'name': 'Shaiqua Parween', 'contact': '9608447769' }] },
@@ -138,6 +138,49 @@ const categories = [
 ];
 
 /* ═══════════════════════════════════
+    OUTSIDER ENTRY FEE MAP
+   ═══════════════════════════════════ */
+const outsiderFeeMap = {
+  'Colors of Konoha': 50,
+  'Hunter Rank: PRO': 50,
+  'Gundam Architecture': 50,
+  'Cyber-Runner: Edge': 50,
+  'Slam Dunk': { boys: 300, girls: 200 },
+  'Bluelock': 50,
+  'Karasuno Smash': { boys: 300, girls: 200 },
+  'Sage Mode: Trivia': 50,
+  'Food Wars': 50,
+  'Paper Dance': 50,
+  'Street Strikers': { boys: 300, girls: 200 },
+  'Shinobi Balloon Smash': 50,
+  'Gundam: Last Stand': 50,
+  'Iron Grip': 50,
+  'Shinobi Script': 50,
+  'Trigger-Point: BGMI Arena': 200,
+  'Fullmetal Kick Off': 50,
+  'Tug Of Titans': 300,
+  'Attack On Chairs': 50,
+  'DandaDance (Street Reloaded)': 300,
+  'Karaoke-ON \u2014 Solo Singing': 100,
+  'My Dance Academia \u2014 Group Dance': 500,
+  "Jojo's Bizarre Walk": 500,
+  'Infinite Scroll': 50,
+  'Sharingan Lens': 50,
+  'Kaminari-Strike: (Supersixes)': 50,
+  "Senku's Bridge": 50,
+  'Komi Can Paint': 50,
+  "Shikamaru's Cube": 50,
+  'Frag-Ops: PC Gaming': 300,
+  "Mangaka's Edge": 50,
+  'Dressing My Darling': 50,
+  'Eminence in Prompt': 50,
+  'Talk-no-Jutsu': 50,
+  'The Labyrinth': 50,
+  'Flip & Win': 50,
+  'Ai X Film': 50,
+};
+
+/* ═══════════════════════════════════
     EVENT MODAL
    ═══════════════════════════════════ */
 const EventModal = ({ event, category, onClose }) => {
@@ -155,48 +198,101 @@ const EventModal = ({ event, category, onClose }) => {
   // Check if user is already enrolled
   const isEnrolled = user?.registeredEvents?.includes(event.title);
 
-  // Define Team Sizes for specific events
+  // Define Team Sizes for specific events { min, max }
   const teamSizeMap = {
-    'Trigger-Point: BGMI Arena': 4,
-    'Frag-Ops: PC Gaming': 5,
-    'Bluelock': 9,
-    'Karasuno Smash': 6,
-    'Tug Of Titans': 5,
-    'Slam Dunk': 3,
-    'Food Wars': 3,
-    'Ai X Film': 3,
-    'Paper Dance': 2,
-    'Komi Can Paint': 2,
-    'Street Strikers': 6,
-    'Cyber-Runner: Edge': 2,
-    'Fullmetal Kick Off': 2,
-    'Gundam: Last Stand': 2,
-    'The Labyrinth': 2,
-    'Senku\'s Bridge': 3,
-    'My Dance Academia — Group Dance': 10,
-    'Talk-no-Jutsu': 5
+    'Trigger-Point: BGMI Arena': { min: 1, max: 4 },
+    'Frag-Ops: PC Gaming': { min: 1, max: 5 },
+    'Bluelock': { min: 12, max: 12 },
+    'Karasuno Smash': { min: 6, max: 6 },
+    'Tug Of Titans': { min: 5, max: 5 },
+    'Slam Dunk': { min: 5, max: 5 },
+    'Food Wars': { min: 3, max: 3 },
+    'Ai X Film': { min: 1, max: 3 },
+    'Paper Dance': { min: 2, max: 2 },
+    'Komi Can Paint': { min: 2, max: 2 },
+    'Street Strikers': { min: 6, max: 6 },
+    'Cyber-Runner: Edge': { min: 1, max: 4 },
+    'Fullmetal Kick Off': { min: 2, max: 4 },
+    'Gundam: Last Stand': { min: 2, max: 4 },
+    'The Labyrinth': { min: 2, max: 2 },
+    'Senku\'s Bridge': { min: 3, max: 4 },
+    'My Dance Academia — Group Dance': { min: 3, max: 10 },
+    'Talk-no-Jutsu': { min: 3, max: 5 },
+    'Colors of Konoha': { min: 1, max: 4 },
+    'Gundam Architecture': { min: 3, max: 3 },
+    'Dressing My Darling': { min: 2, max: 4 },
+    "Jojo's Bizarre Walk": { min: 4, max: 10 },
+    'Sage Mode: Trivia': { min: 1, max: 4 },
   };
 
-  const teamSize = teamSizeMap[event.title] || 1;
-  const isTeamEvent = teamSize > 1;
+  const teamSizeInfo = teamSizeMap[event.title] || { min: 1, max: 1 };
+  const maxTeamSize = teamSizeInfo.max;
+  const minTeamSize = teamSizeInfo.min;
+  const isTeamEvent = maxTeamSize > 1;
+  const teamSizeLabel = maxTeamSize === 1 ? 'Solo' : minTeamSize === maxTeamSize ? `${maxTeamSize} Members` : `${minTeamSize}–${maxTeamSize} Members`;
 
-  // Fee helpers
-  const isPaidEvent = !!event.entryFee;
-  const isGenderSplit = event.entryFee && typeof event.entryFee === 'object';
+  // Faculty PI Map
+  const facultyPIMap = {
+    'Shinobi Script': [{ name: 'Prof. Prabhat Purshottam', contact: '8210904268' }, { name: 'Prof. Yogendra Kumar', contact: '9334751248' }],
+    'Eminence in Prompt': [{ name: 'Prof. Deepak Tiwari', contact: '9155950814' }, { name: 'Prof. Shreyansh Prasad', contact: '9123447469' }],
+    "Mangaka's Edge": [{ name: 'Prof. Alisha Das', contact: '8826372434' }, { name: 'Prof. Kunal Sarkar', contact: '7903221107' }],
+    'Hunter Rank: PRO': [{ name: 'Prof. Deepak Tiwari', contact: '9155950814' }, { name: 'Prof. Shreyansh Prasad', contact: '9123447469' }],
+    'Trigger-Point: BGMI Arena': [{ name: 'Prof. Jeevan Kumar', contact: '7484900287' }, { name: 'Prof. Abhishek Kumar', contact: '7004068639' }],
+    'Frag-Ops: PC Gaming': [{ name: 'Dr. G.S. Paul', contact: '8252120357' }, { name: 'Prof. Sulekh Kumar', contact: '8252968232' }],
+    'Sage Mode: Trivia': [{ name: 'Dr. Vikash Kumar', contact: '8340529391' }, { name: 'Prof. G.S Paul', contact: '8252120357' }],
+    'Talk-no-Jutsu': [{ name: 'Prof. Smita Dash', contact: '9771040618' }, { name: 'Prof. Rashika Dadiyala', contact: '8280832772' }],
+    'Colors of Konoha': [{ name: 'Prof. Nisha Gupta', contact: '7489871570' }, { name: 'Prof. Sushmita Mandal', contact: '7667280119' }],
+    'Kaminari-Strike: (Supersixes)': [{ name: 'Prof. Prabhat Kumar (ME)', contact: '8319043527' }, { name: 'Prof. Abhishek Kumar (ME)', contact: '7004914073' }],
+    'The Labyrinth': [{ name: 'Dr. Anamika Das', contact: '9934300370' }, { name: 'Prof. Sonali Nag', contact: '7609953830' }],
+    'Gundam Architecture': [{ name: 'Dr. Rakesh Kumar', contact: '8674987001' }, { name: 'Prof. Ramswarup Kumar', contact: '9543378855' }],
+    "Shikamaru's Cube": [{ name: 'Prof. Amit Prasad', contact: '-' }, { name: 'Prof. Prakash Kumar', contact: '8789577463' }],
+    'Cyber-Runner: Edge': [{ name: 'Prof. Navneet', contact: '7903764831' }, { name: 'Prof. Amit Sinha', contact: '8969698435' }],
+    'Fullmetal Kick Off': [{ name: 'Prof. Amit Sinha', contact: '8969698435' }, { name: 'Prof. Navneet', contact: '7903764831' }],
+    'Gundam: Last Stand': [],
+    'Shinobi Balloon Smash': [{ name: 'Prof. Anand Mohan', contact: '9135177355' }, { name: 'Prof. Rahul Ranjan', contact: '8825312748' }],
+    "Senku's Bridge": [{ name: 'Prof. Shehnawaz Khan', contact: '7979802354' }, { name: 'Prof. Sudhanshu Mishra', contact: '9835327556' }],
+    'Paper Dance': [{ name: 'Prof. Navneet Keshav', contact: '7903764831' }, { name: 'Prof. Sweta Mukherjee', contact: '6207423073' }],
+    'DandaDance (Street Reloaded)': [{ name: 'Prof. Tulika Kumari', contact: '-' }, { name: 'Prof. Rohit Sharma', contact: '9598168940' }],
+    'Karaoke-ON \u2014 Solo Singing': [{ name: 'Dr. Kr. Surbhi', contact: '9608299009' }, { name: 'Prof. Archana Prasad', contact: '7371905995' }],
+    'Dressing My Darling': [{ name: 'Dr. Rekha Tiwari', contact: '9931286662' }, { name: 'Prof. Monalisa Bhadra', contact: '9040189837' }],
+    'My Dance Academia \u2014 Group Dance': [{ name: 'Prof. Nainika', contact: '6203924922' }, { name: 'Prof. Sushmita Das', contact: '7667280119' }],
+    'Komi Can Paint': [{ name: 'Prof. Sweta Mukherjee', contact: '6207423073' }, { name: 'Prof. Falak Neyaz', contact: '-' }],
+    "Jojo's Bizarre Walk": [{ name: 'Prof. Smita Dash', contact: '9771040618' }, { name: 'Dr. Subash Adikari', contact: '9470141078' }],
+    'Sharingan Lens': [{ name: 'Prof. Akansha Dhanjal', contact: '6206478871' }, { name: 'Prof. Pranshu Sinha', contact: '9693497240' }],
+    'Infinite Scroll': [{ name: 'Prof. Akansha Dhanjal', contact: '6206478871' }, { name: 'Prof. Pranshu Sinha', contact: '9693497240' }],
+    'Ai X Film': [{ name: 'Prof. Deepak Kr. Tiwari', contact: '9155950814' }, { name: 'Prof. Subham Kumar Deo', contact: '-' }],
+    'Food Wars': [{ name: 'Prof. Momita Kundu', contact: '-' }, { name: 'Prof. Puja Dutta', contact: '8102365023' }],
+    'Street Strikers': [{ name: 'Prof. Abhishek Kumar', contact: '7004914073' }, { name: 'Prof. Deepak Kumar', contact: '7004519261' }],
+    'Slam Dunk': [{ name: 'Dr. Raj Kumar Yadav', contact: '9523290053' }, { name: 'Prof. Kajal Kumari', contact: '6207297170' }],
+    'Karasuno Smash': [{ name: 'Prof. Ragini Sharma', contact: '6396830749' }, { name: 'Prof. Kundan Pathak', contact: '-' }],
+    'Bluelock': [{ name: 'Dr. Shamsher Alam', contact: '8340554732' }, { name: 'Prof. Yashraj Mahto', contact: '9776457764' }],
+    'Tug Of Titans': [{ name: 'Dr. Raj Kumar Yadav', contact: '9523290053' }, { name: 'Prof. Suman Sinha', contact: '7209439665' }],
+    'Iron Grip': [{ name: 'Prof. Ramswarup Kumar', contact: '9543378855' }, { name: 'Prof. Anamika Das', contact: '9934300370' }],
+    'Attack On Chairs': [{ name: 'Prof. Kamla Kumari', contact: '9973064338' }, { name: 'Prof. Vibha Kumari', contact: '6203947703' }],
+  };
+
+  const facultyPIs = facultyPIMap[event.title] || [];
+
+  // Fee helpers — outsiders pay outsiderFeeMap rates; within-college pays existing entryFee
+  const isOutsider = user?.collegeType === 'outside';
+  const outsiderFee = outsiderFeeMap[event.title];
+  const effectiveFee = isOutsider ? (outsiderFee || event.entryFee) : event.entryFee;
+  const isPaidEvent = !!effectiveFee;
+  const isGenderSplit = effectiveFee && typeof effectiveFee === 'object';
   const getEventFee = () => {
-    if (!event.entryFee) return 0;
-    if (typeof event.entryFee === 'object') {
-      return teamType === 'girls' ? event.entryFee.girls : event.entryFee.boys;
+    if (!effectiveFee) return 0;
+    if (typeof effectiveFee === 'object') {
+      return teamType === 'girls' ? effectiveFee.girls : effectiveFee.boys;
     }
-    return event.entryFee;
+    return effectiveFee;
   };
 
   // Initialize member IDs array if it's a team event
   useEffect(() => {
     if (isTeamEvent && memberIds.length === 0) {
-      setMemberIds(new Array(teamSize - 1).fill(''));
+      setMemberIds(new Array(maxTeamSize - 1).fill(''));
     }
-  }, [isTeamEvent, teamSize]);
+  }, [isTeamEvent, maxTeamSize]);
 
   // Resolve Names for IDs
   useEffect(() => {
@@ -247,14 +343,15 @@ const EventModal = ({ event, category, onClose }) => {
 
     // Validate Team Info
     const activeMemberIds = memberIds.filter(id => id.trim() !== '');
+    const requiredMembers = Math.max(1, minTeamSize - 1);
 
     if (isTeamEvent) {
       if (!teamName.trim()) {
         setEnrollError('Please enter a Team Name.');
         return;
       }
-      if (activeMemberIds.length === 0) {
-        setEnrollError('Please enter at least one teammate Registration ID.');
+      if (activeMemberIds.length < requiredMembers) {
+        setEnrollError(`Please add at least ${requiredMembers} teammate(s). Team requires ${minTeamSize}–${maxTeamSize} members total (including you).`);
         return;
       }
       if (activeMemberIds.some(id => id.length !== 6)) {
@@ -416,15 +513,20 @@ const EventModal = ({ event, category, onClose }) => {
                 {badge.text}
               </span>
             ))}
-            {event.entryFee && (
-              <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 font-bold">
+            {effectiveFee && (
+              <span className={`inline-flex items-center gap-1.5 text-xs sm:text-sm px-3 py-1.5 rounded-xl font-bold ${isOutsider ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
                 <span>💰</span>
-                {typeof event.entryFee === 'object'
-                  ? `₹${event.entryFee.boys} (Boys) / ₹${event.entryFee.girls} (Girls)`
-                  : `₹${event.entryFee}`
+                {typeof effectiveFee === 'object'
+                  ? `₹${effectiveFee.boys} (Boys) / ₹${effectiveFee.girls} (Girls)`
+                  : `₹${effectiveFee}`
                 }
+                {isOutsider && <span className="text-[10px] opacity-70 ml-1">(Outsider)</span>}
               </span>
             )}
+            <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm px-3 py-1.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 font-bold">
+              <Users className="w-4 h-4" />
+              {teamSizeLabel}
+            </span>
           </div>
 
           {/* Description */}
@@ -457,12 +559,27 @@ const EventModal = ({ event, category, onClose }) => {
           {/* Coordinators */}
           {event.coordinators && event.coordinators.length > 0 && (
             <div className="mb-8">
-              <h4 className="text-xs font-bold tracking-widest uppercase mb-2 sm:mb-3 text-white/40">Coordinators</h4>
+              <h4 className="text-xs font-bold tracking-widest uppercase mb-2 sm:mb-3 text-white/40">Student Coordinators</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {event.coordinators.map((coord, i) => (
                   <div key={i} className="flex flex-col bg-white/5 border border-white/10 rounded-xl p-3">
                     <span className="text-sm font-semibold text-white/90">{coord.name}</span>
                     <span className="text-xs text-white/50 mt-0.5">{coord.contact !== '—' ? coord.contact : 'N/A'}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Faculty PI */}
+          {facultyPIs.length > 0 && (
+            <div className="mb-8">
+              <h4 className="text-xs font-bold tracking-widest uppercase mb-2 sm:mb-3 text-white/40">Faculty PI</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {facultyPIs.map((pi, i) => (
+                  <div key={i} className="flex flex-col bg-indigo-500/5 border border-indigo-500/15 rounded-xl p-3">
+                    <span className="text-sm font-semibold text-indigo-300">{pi.name}</span>
+                    <span className="text-xs text-white/50 mt-0.5">{pi.contact !== '-' ? pi.contact : 'N/A'}</span>
                   </div>
                 ))}
               </div>
@@ -526,7 +643,7 @@ const EventModal = ({ event, category, onClose }) => {
                     </div>
                   ))}
                 </div>
-                <p className="text-[10px] text-white/30 italic">Note: Your Registration ID is automatically included as Team Leader.</p>
+                <p className="text-[10px] text-white/30 italic">Note: Your Registration ID is automatically included as Team Leader. Team size: {teamSizeLabel} (min {minTeamSize}, max {maxTeamSize} including you).</p>
               </div>
             </div>
           )}
@@ -547,7 +664,7 @@ const EventModal = ({ event, category, onClose }) => {
                       : 'bg-white/5 border-white/10 text-white/50 hover:bg-white/10'
                   }`}
                 >
-                  Boys Team — ₹{event.entryFee.boys}
+                  Boys Team — ₹{effectiveFee.boys}
                 </button>
                 <button
                   type="button"
@@ -558,7 +675,7 @@ const EventModal = ({ event, category, onClose }) => {
                       : 'bg-white/5 border-white/10 text-white/50 hover:bg-white/10'
                   }`}
                 >
-                  Girls Team — ₹{event.entryFee.girls}
+                  Girls Team — ₹{effectiveFee.girls}
                 </button>
               </div>
             </div>
@@ -600,7 +717,8 @@ const EventModal = ({ event, category, onClose }) => {
 /* ═══════════════════════════════════
     EVENT CARD
    ═══════════════════════════════════ */
-const EventCard = ({ event, category, onClick }) => {
+const EventCard = ({ event, category, onClick, isOutsider }) => {
+  const effectiveFee = isOutsider ? (outsiderFeeMap[event.title] || event.entryFee) : event.entryFee;
   const [overlayPos, setOverlayPos] = useState({ x: 0, y: 0 });
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
@@ -704,10 +822,10 @@ const EventCard = ({ event, category, onClick }) => {
         </div>
 
         {/* ── FEE BADGE (top-right, below emoji) ── */}
-        {event.entryFee && (
-          <div className="absolute top-16 right-4 z-10 px-2.5 py-1 rounded-lg text-[10px] font-black backdrop-blur-xl border border-amber-500/30 text-amber-400"
+        {effectiveFee && (
+          <div className={`absolute top-16 right-4 z-10 px-2.5 py-1 rounded-lg text-[10px] font-black backdrop-blur-xl border ${isOutsider ? 'border-red-500/30 text-red-400' : 'border-amber-500/30 text-amber-400'}`}
             style={{ background: 'rgba(0,0,0,0.6)' }}>
-            {typeof event.entryFee === 'object' ? `₹${event.entryFee.boys}/₹${event.entryFee.girls}` : `₹${event.entryFee}`}
+            {typeof effectiveFee === 'object' ? `₹${effectiveFee.boys}/₹${effectiveFee.girls}` : `₹${effectiveFee}`}
           </div>
         )}
 
@@ -804,6 +922,8 @@ const EventCard = ({ event, category, onClick }) => {
     MAIN: EVENT SECTION
    ═══════════════════════════════════ */
 const EventSection = () => {
+  const { user } = useAuth();
+  const isOutsider = user?.collegeType === 'outside';
   const [activeCategory, setActiveCategory] = useState('helix');
   const [selectedEvent, setSelectedEvent] = useState(null);
   const scrollRef = useRef(null);
@@ -942,16 +1062,15 @@ const EventSection = () => {
             className="flex gap-4 overflow-x-auto pb-8 pt-2 scrollbar-hide -mx-4 px-4 sm:-mx-0 sm:px-0"
             style={{
               WebkitOverflowScrolling: 'touch',
-              scrollBehavior: 'smooth',
               overscrollBehaviorX: 'contain',
-              scrollSnapType: 'x mandatory',
             }}
           >
             {currentEvents.map((event) => (
-              <div key={event.title} className="py-2" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
+              <div key={event.title} className="py-2" style={{ flexShrink: 0 }}>
                 <EventCard
                   event={event}
                   category={currentCategory}
+                  isOutsider={isOutsider}
                   onClick={() => setSelectedEvent(event)}
                 />
               </div>
