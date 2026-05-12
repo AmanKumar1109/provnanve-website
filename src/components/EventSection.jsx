@@ -138,6 +138,49 @@ const categories = [
 ];
 
 /* ═══════════════════════════════════
+    OUTSIDER ENTRY FEE MAP
+   ═══════════════════════════════════ */
+const outsiderFeeMap = {
+  'Colors of Konoha': 50,
+  'Hunter Rank: PRO': 50,
+  'Gundam Architecture': 50,
+  'Cyber-Runner: Edge': 50,
+  'Slam Dunk': { boys: 300, girls: 200 },
+  'Bluelock': 50,
+  'Karasuno Smash': { boys: 300, girls: 200 },
+  'Sage Mode: Trivia': 50,
+  'Food Wars': 50,
+  'Paper Dance': 50,
+  'Street Strikers': { boys: 300, girls: 200 },
+  'Shinobi Balloon Smash': 50,
+  'Gundam: Last Stand': 50,
+  'Iron Grip': 50,
+  'Shinobi Script': 50,
+  'Trigger-Point: BGMI Arena': 200,
+  'Fullmetal Kick Off': 50,
+  'Tug Of Titans': 300,
+  'Attack On Chairs': 50,
+  'DandaDance (Street Reloaded)': 300,
+  'Karaoke-ON \u2014 Solo Singing': 100,
+  'My Dance Academia \u2014 Group Dance': 500,
+  "Jojo's Bizarre Walk": 500,
+  'Infinite Scroll': 50,
+  'Sharingan Lens': 50,
+  'Kaminari-Strike: (Supersixes)': 50,
+  "Senku's Bridge": 50,
+  'Komi Can Paint': 50,
+  "Shikamaru's Cube": 50,
+  'Frag-Ops: PC Gaming': 300,
+  "Mangaka's Edge": 50,
+  'Dressing My Darling': 50,
+  'Eminence in Prompt': 50,
+  'Talk-no-Jutsu': 50,
+  'The Labyrinth': 50,
+  'Flip & Win': 50,
+  'Ai X Film': 50,
+};
+
+/* ═══════════════════════════════════
     EVENT MODAL
    ═══════════════════════════════════ */
 const EventModal = ({ event, category, onClose }) => {
@@ -230,15 +273,18 @@ const EventModal = ({ event, category, onClose }) => {
 
   const facultyPIs = facultyPIMap[event.title] || [];
 
-  // Fee helpers
-  const isPaidEvent = !!event.entryFee;
-  const isGenderSplit = event.entryFee && typeof event.entryFee === 'object';
+  // Fee helpers — outsiders pay outsiderFeeMap rates; within-college pays existing entryFee
+  const isOutsider = user?.collegeType === 'outside';
+  const outsiderFee = outsiderFeeMap[event.title];
+  const effectiveFee = isOutsider ? (outsiderFee || event.entryFee) : event.entryFee;
+  const isPaidEvent = !!effectiveFee;
+  const isGenderSplit = effectiveFee && typeof effectiveFee === 'object';
   const getEventFee = () => {
-    if (!event.entryFee) return 0;
-    if (typeof event.entryFee === 'object') {
-      return teamType === 'girls' ? event.entryFee.girls : event.entryFee.boys;
+    if (!effectiveFee) return 0;
+    if (typeof effectiveFee === 'object') {
+      return teamType === 'girls' ? effectiveFee.girls : effectiveFee.boys;
     }
-    return event.entryFee;
+    return effectiveFee;
   };
 
   // Initialize member IDs array if it's a team event
@@ -467,13 +513,14 @@ const EventModal = ({ event, category, onClose }) => {
                 {badge.text}
               </span>
             ))}
-            {event.entryFee && (
-              <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 font-bold">
+            {effectiveFee && (
+              <span className={`inline-flex items-center gap-1.5 text-xs sm:text-sm px-3 py-1.5 rounded-xl font-bold ${isOutsider ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
                 <span>💰</span>
-                {typeof event.entryFee === 'object'
-                  ? `₹${event.entryFee.boys} (Boys) / ₹${event.entryFee.girls} (Girls)`
-                  : `₹${event.entryFee}`
+                {typeof effectiveFee === 'object'
+                  ? `₹${effectiveFee.boys} (Boys) / ₹${effectiveFee.girls} (Girls)`
+                  : `₹${effectiveFee}`
                 }
+                {isOutsider && <span className="text-[10px] opacity-70 ml-1">(Outsider)</span>}
               </span>
             )}
             <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm px-3 py-1.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 font-bold">
@@ -617,7 +664,7 @@ const EventModal = ({ event, category, onClose }) => {
                       : 'bg-white/5 border-white/10 text-white/50 hover:bg-white/10'
                   }`}
                 >
-                  Boys Team — ₹{event.entryFee.boys}
+                  Boys Team — ₹{effectiveFee.boys}
                 </button>
                 <button
                   type="button"
@@ -628,7 +675,7 @@ const EventModal = ({ event, category, onClose }) => {
                       : 'bg-white/5 border-white/10 text-white/50 hover:bg-white/10'
                   }`}
                 >
-                  Girls Team — ₹{event.entryFee.girls}
+                  Girls Team — ₹{effectiveFee.girls}
                 </button>
               </div>
             </div>
@@ -670,7 +717,8 @@ const EventModal = ({ event, category, onClose }) => {
 /* ═══════════════════════════════════
     EVENT CARD
    ═══════════════════════════════════ */
-const EventCard = ({ event, category, onClick }) => {
+const EventCard = ({ event, category, onClick, isOutsider }) => {
+  const effectiveFee = isOutsider ? (outsiderFeeMap[event.title] || event.entryFee) : event.entryFee;
   const [overlayPos, setOverlayPos] = useState({ x: 0, y: 0 });
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
@@ -774,10 +822,10 @@ const EventCard = ({ event, category, onClick }) => {
         </div>
 
         {/* ── FEE BADGE (top-right, below emoji) ── */}
-        {event.entryFee && (
-          <div className="absolute top-16 right-4 z-10 px-2.5 py-1 rounded-lg text-[10px] font-black backdrop-blur-xl border border-amber-500/30 text-amber-400"
+        {effectiveFee && (
+          <div className={`absolute top-16 right-4 z-10 px-2.5 py-1 rounded-lg text-[10px] font-black backdrop-blur-xl border ${isOutsider ? 'border-red-500/30 text-red-400' : 'border-amber-500/30 text-amber-400'}`}
             style={{ background: 'rgba(0,0,0,0.6)' }}>
-            {typeof event.entryFee === 'object' ? `₹${event.entryFee.boys}/₹${event.entryFee.girls}` : `₹${event.entryFee}`}
+            {typeof effectiveFee === 'object' ? `₹${effectiveFee.boys}/₹${effectiveFee.girls}` : `₹${effectiveFee}`}
           </div>
         )}
 
@@ -874,6 +922,8 @@ const EventCard = ({ event, category, onClick }) => {
     MAIN: EVENT SECTION
    ═══════════════════════════════════ */
 const EventSection = () => {
+  const { user } = useAuth();
+  const isOutsider = user?.collegeType === 'outside';
   const [activeCategory, setActiveCategory] = useState('helix');
   const [selectedEvent, setSelectedEvent] = useState(null);
   const scrollRef = useRef(null);
@@ -1022,6 +1072,7 @@ const EventSection = () => {
                 <EventCard
                   event={event}
                   category={currentCategory}
+                  isOutsider={isOutsider}
                   onClick={() => setSelectedEvent(event)}
                 />
               </div>
