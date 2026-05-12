@@ -284,7 +284,7 @@ const About = () => {
               ref={badgeRef}
               className="absolute top-3 -right-6 z-20 bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 rounded-full text-sm font-bold shadow-xl text-white"
             >
-              Guest: VDJ Shan $
+              Guest: VDJ Shan & Pranav Sharma
             </div>
           </div>
 
