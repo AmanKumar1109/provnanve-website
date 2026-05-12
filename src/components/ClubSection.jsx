@@ -36,6 +36,7 @@ const FacebookIcon = ({ size }) => (
 const clubs = [
   {
     name: 'HELIX', tagline: 'Tech & AI',
+    logo: helix,
     desc: "RVSCET's premier club driving innovation with hands-on experience in emerging technologies and next-gen projects.",
     color: 'from-blue-400 to-cyan-300', glowColor: 'rgba(56,189,248,0.4)',
     socials: [
@@ -46,6 +47,7 @@ const clubs = [
   },
   {
     name: 'XPECTRA', tagline: 'Media & PR',
+    logo: xpectra,
     desc: 'Official media club capturing campus events and nurturing creative skills in photography, videography, and web design.',
     color: 'from-purple-400 to-pink-400', glowColor: 'rgba(216,184,255,0.4)',
     socials: [
@@ -56,6 +58,7 @@ const clubs = [
   },
   {
     name: 'CIRCUITRON', tagline: 'IoT & Robotics',
+    logo: circuitron,
     desc: 'Bridging theoretical electronics and practical innovation via hands-on workshops in smart automation and sensor integration.',
     color: 'from-green-400 to-emerald-400', glowColor: 'rgba(52,211,153,0.4)',
     socials: [
@@ -64,6 +67,7 @@ const clubs = [
   },
   {
     name: 'TARANGINI', tagline: 'Cultural',
+    logo: tarangini,
     desc: 'The vibrant creative heartbeat of the campus, showcasing talents in music, dance, drama, and fine arts.',
     color: 'from-orange-400 to-yellow-400', glowColor: 'rgba(250,204,21,0.4)',
     socials: [
@@ -72,6 +76,7 @@ const clubs = [
   },
   {
     name: 'RVS PANTHERS', tagline: 'Sports',
+    logo: rvsPanthers,
     desc: 'The powerhouse of athletic excellence, fostering teamwork, sportsmanship, and physical endurance.',
     color: 'from-red-400 to-orange-400', glowColor: 'rgba(248,113,113,0.4)',
     socials: [
@@ -84,7 +89,7 @@ const clubs = [
 const ClubCard = ({ club }) => {
   const cardRef = useRef(null);
 
-  // Hover: lift + glow  (mirrors hover:-translate-y-2 + borderGlow)
+  // Hover: lift + glow
   const onEnter = () => {
     gsap.to(cardRef.current, {
       y: -8,
@@ -117,41 +122,55 @@ const ClubCard = ({ club }) => {
       ref={cardRef}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
-      style={{ borderColor: 'rgba(31,41,55,1)' }}
-      className="shrink-0 w-[270px] sm:w-[320px] relative bg-[#0d051a] border rounded-xl p-6 sm:p-7 flex flex-col"
+      style={{ borderColor: 'rgba(31,41,55,1)', height: '360px' }}
+      className="group shrink-0 w-[270px] sm:w-[320px] relative bg-[#0d051a] border rounded-xl p-6 sm:p-7 flex flex-col justify-between overflow-hidden"
     >
       {/* Colored Top Bar */}
       <div
-        className={`top-bar absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${club.color} rounded-t-xl`}
+        className={`top-bar absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${club.color} rounded-t-xl z-20`}
         style={{ opacity: 0.7 }}
       />
 
-      <div className="flex-grow">
+      {/* Header (Always Visible) */}
+      <div className="relative z-20 shrink-0">
         <h3 className={`text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${club.color} mb-1 pb-1 inline-block`}>
           {club.name}
         </h3>
-        <div className="mb-3">
+        <div>
           <span className="inline-block text-[10px] font-semibold tracking-wider text-gray-300 bg-gray-800/80 px-2 py-0.5 rounded-full">
             {club.tagline}
           </span>
         </div>
-        <p className="text-sm text-gray-400 leading-relaxed">{club.desc}</p>
       </div>
 
-      {/* Social Links */}
-      {/* Social Links */}
-      <div className="mt-6 pt-4 border-t border-gray-800/50 flex items-center gap-3">
+      {/* Main Content Area: Logo by default, sliding description overlay on hover */}
+      <div className="flex-1 relative overflow-hidden my-4 rounded-lg">
+        {/* Logo Container */}
+        <div className="absolute inset-0 flex items-center justify-center transition-all duration-500 group-hover:scale-90 group-hover:opacity-10">
+          <img 
+            src={club.logo} 
+            alt={club.name} 
+            className="w-28 h-28 sm:w-32 sm:h-32 object-contain drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+          />
+        </div>
+
+        {/* Description Overlay sliding from bottom to top */}
+        <div className="absolute inset-0 z-10 flex flex-col justify-center bg-[#0d051a]/95 backdrop-blur-sm p-3 translate-y-[101%] group-hover:translate-y-0 transition-transform duration-400 ease-out rounded-lg border border-white/5">
+          <p className="text-[10px] font-bold tracking-widest uppercase text-white/40 mb-1">About Club</p>
+          <p className="text-xs sm:text-sm text-gray-300 leading-relaxed overflow-y-auto custom-scrollbar max-h-full pr-1">{club.desc}</p>
+        </div>
+      </div>
+
+      {/* Social Links (Always Visible at bottom) */}
+      <div className="pt-3 border-t border-gray-800/50 flex items-center gap-3 shrink-0 relative z-20">
         {club.socials.map((social, i) => {
           const Icon = social.icon;
           return (
-
             <a key={i}
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-500 transition-colors duration-200"
-              onMouseEnter={e => gsap.to(e.currentTarget, { color: '#ffffff', duration: 0.2 })}
-              onMouseLeave={e => gsap.to(e.currentTarget, { color: '#6b7280', duration: 0.2 })}
+              className="text-gray-500 transition-colors duration-200 hover:text-white"
             >
               <Icon size={18} />
             </a>
