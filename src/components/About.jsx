@@ -12,17 +12,13 @@ import img5 from '../assets/gallaryImages/5.jpeg';
 import img6 from '../assets/gallaryImages/6.jpeg';
 import img7 from '../assets/gallaryImages/7.jpeg';
 import img8 from '../assets/gallaryImages/8.jpeg';
-import imgLogo from '../assets/logo.png';
-import imgPicon from '../assets/picon.png';
 import celeb from '../assets/vdj shan.jpg';
-import imgRvs from '../assets/RVS_Logo_Coloured_White_bg.png';
 import stageHero from '../assets/about_hero_stage.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const sliderImages = [
   stageHero, celeb, img1, img2, img3, img4, img5, img6, img7, img8,
-  imgLogo, imgPicon, imgRvs,
 ];
 
 /* Hide scrollbar (injected once) */
@@ -288,7 +284,7 @@ const About = () => {
               ref={badgeRef}
               className="absolute top-3 -right-6 z-20 bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 rounded-full text-sm font-bold shadow-xl text-white"
             >
-              Sonic Guest: VDJ Shan
+              Guest: VDJ Shan $
             </div>
           </div>
 
