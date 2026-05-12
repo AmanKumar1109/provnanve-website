@@ -5,6 +5,10 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navbar from '../components/Navbar';
 import placeholderImg from '../assets/committee_placeholder.png';
+import aman from '../assets/committees/aman.png';
+import priyanshu from '../assets/committees/priyansu.png';
+import abhijeet from '../assets/committees/abhijeet.png';
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,9 +41,9 @@ const committees = [
     glow: 'rgba(56,189,248,0.3)',
     members: [
       { name: 'Satish Verma', role: 'Head', work: 'Website Development, Tech Event Management', image: placeholderImg },
-      { name: 'Priyanshu Ghosh', role: 'Co-Head', work: 'App Development, Backend Architecture', image: placeholderImg },
-      { name: 'Aman Kumar', role: 'Tech Coordinator', work: 'Hackathon Coordination, AI/ML Workshops', image: placeholderImg },
-      { name: 'Abhijeet Ghosh', role: 'Tech Coordinator', work: 'Database Management, API Integration', image: placeholderImg },
+      { name: 'Priyanshu Ghosh', role: 'Co-Head', work: 'App Development, Backend Architecture', image: priyanshu },
+      { name: 'Aman Kumar', role: 'Tech Coordinator', work: 'Hackathon Coordination, AI/ML Workshops', image: aman },
+      { name: 'Abhijeet Ghosh', role: 'Tech Coordinator', work: 'Database Management, API Integration', image: abhijeet },
     ],
   },
   {

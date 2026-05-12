@@ -1,6 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import helix from '../assets/club logo/helix.png';
+import xpectra from '../assets/club logo/xpectra.png';
+import circuitron from '../assets/club logo/circuitron.png';
+import tarangini from '../assets/club logo/tarangini.png';
+import rvsPanthers from '../assets/club logo/rvsPanthers.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
