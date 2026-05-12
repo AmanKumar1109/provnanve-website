@@ -15,6 +15,7 @@ const Dashboard = () => {
     
     // Event Payment States
     const [paymentApp, setPaymentApp] = useState('');
+    const [otherPaymentApp, setOtherPaymentApp] = useState('');
     const [transactionId, setTransactionId] = useState('');
     const [paying, setPaying] = useState(false);
     const [payError, setPayError] = useState('');
@@ -85,14 +86,20 @@ const Dashboard = () => {
             setPayError("Please provide both payment app and transaction ID.");
             return;
         }
+        if (paymentApp === 'other' && !otherPaymentApp.trim()) {
+            setPayError("Please enter the payment app name.");
+            return;
+        }
         setPaying(true);
         setPayError('');
         try {
             const userRef = doc(db, 'users', user.uid);
             
+            const finalPaymentApp = paymentApp === 'other' ? otherPaymentApp.trim() : paymentApp;
+
             const updatedDetails = profile.registeredEventsDetails.map(evt => {
                 if (evt.entryFee && evt.eventPaymentStatus === 'pending') {
-                    return { ...evt, eventPaymentStatus: 'reviewing', transactionId, paymentApp };
+                    return { ...evt, eventPaymentStatus: 'reviewing', transactionId, paymentApp: finalPaymentApp };
                 }
                 return evt;
             });
@@ -104,6 +111,7 @@ const Dashboard = () => {
             setProfile({ ...profile, registeredEventsDetails: updatedDetails });
             setPaySuccess("Payment submitted for review.");
             setPaymentApp('');
+            setOtherPaymentApp('');
             setTransactionId('');
             setTimeout(() => setPaySuccess(''), 3000);
         } catch (error) {
@@ -227,6 +235,9 @@ const Dashboard = () => {
                                                     <option value="paytm" className="bg-zinc-900">Paytm</option>
                                                     <option value="other" className="bg-zinc-900">Other</option>
                                                 </select>
+                                                {paymentApp === 'other' && (
+                                                    <input type="text" placeholder="Enter Payment App Name" value={otherPaymentApp} onChange={e => setOtherPaymentApp(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm text-white focus:border-amber-500/50 outline-none" />
+                                                )}
                                                 <input type="text" placeholder="Transaction ID (e.g. TXN123...)" value={transactionId} onChange={e => setTransactionId(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm text-white focus:border-amber-500/50 outline-none" />
                                                 <button type="submit" disabled={paying} className="w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
                                                     {paying ? <Loader className="w-4 h-4 animate-spin" /> : 'Submit Payment Details'}
