@@ -32,9 +32,7 @@ function App() {
         duration: 1.2,
         smoothWheel: true,
         wheelMultiplier: 0.9,
-        smoothTouch: true,       // ✅ REQUIRED for mobile
-        touchMultiplier: 1.2,    // increase for noticeable effect
-        syncTouch: true
+        smoothTouch: false,      // Disabled on mobile to prevent native scroll conflicts with virtual keyboard on forms
       }}
     >
       <AuthProvider>
