@@ -141,8 +141,71 @@ const Hero = () => {
 
         </div>
 
+        {/* ── Prize Pool Stats ── */}
+        <div className="mt-8 flex items-center justify-center">
+          <div
+            className="relative inline-flex items-center gap-4 sm:gap-6 px-6 sm:px-8 py-3 sm:py-4 rounded-2xl border"
+            style={{
+              background: 'linear-gradient(135deg, rgba(234,179,8,0.1), rgba(251,146,60,0.06), rgba(168,85,247,0.08))',
+              borderColor: 'rgba(234,179,8,0.25)',
+              boxShadow: '0 0 50px rgba(234,179,8,0.12), 0 0 0 1px rgba(255,255,255,0.04)',
+              backdropFilter: 'blur(16px)',
+            }}
+          >
+            {/* Animated top glow strip */}
+            <div className="absolute top-0 left-0 right-0 h-px rounded-t-2xl"
+              style={{ background: 'linear-gradient(90deg, transparent, rgba(234,179,8,0.6), rgba(251,146,60,0.6), transparent)' }}
+            />
+
+            {/* Prize Pool */}
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="text-[9px] sm:text-[10px] font-black tracking-[0.22em] uppercase"
+                style={{ color: 'rgba(234,179,8,0.55)' }}>
+                Prize Pool
+              </span>
+              <span
+                className="text-lg sm:text-2xl font-black tracking-tight leading-none"
+                style={{
+                  background: 'linear-gradient(90deg, #facc15, #fb923c, #facc15)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundSize: '200% auto',
+                  animation: 'heroShimmer 3s linear infinite',
+                }}
+              >
+                ₹1,50,000
+              </span>
+            </div>
+
+            {/* Divider */}
+            <div className="w-px h-8 self-center" style={{ background: 'rgba(255,255,255,0.08)' }} />
+
+            {/* Events count */}
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="text-[9px] sm:text-[10px] font-black tracking-[0.22em] uppercase text-white/30">Events</span>
+              <span className="text-lg sm:text-2xl font-black text-white/85 leading-none">35+</span>
+            </div>
+
+            {/* Divider */}
+            <div className="w-px h-8 self-center" style={{ background: 'rgba(255,255,255,0.08)' }} />
+
+            {/* Clubs count */}
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="text-[9px] sm:text-[10px] font-black tracking-[0.22em] uppercase text-white/30">Clubs</span>
+              <span className="text-lg sm:text-2xl font-black text-white/85 leading-none">5</span>
+            </div>
+          </div>
+        </div>
+
+        <style>{`
+          @keyframes heroShimmer {
+            0%   { background-position: 0% center; }
+            100% { background-position: 200% center; }
+          }
+        `}</style>
+
         {/* Announcement Popup — pops in with GSAP animation */}
-        <div className="mt-8 md:mt-10">
+        <div className="mt-6 md:mt-8">
           <AnnouncementPopup />
         </div>
       </div>
