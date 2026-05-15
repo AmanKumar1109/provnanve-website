@@ -2,7 +2,7 @@ import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Ticket, Minus, Plus, X, CheckCircle, AlertCircle, Loader, Music, Crown, Users, Copy, Check } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { doc, getDoc, updateDoc, arrayUnion, Timestamp, collection, query, where, getDocs, setDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, arrayUnion, Timestamp, collection, query, where, getDocs, setDoc, addDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import stageMap from '../assets/stage_area_map.png';
 import vdjShaan from '../assets/vdj shan.jpg';
@@ -87,7 +87,10 @@ const GetTicket = () => {
         purchasedAt: Timestamp.now(),
       };
 
+      let resolvedUid = null;
+
       if (isLoggedIn && user?.uid) {
+        resolvedUid = user.uid;
         const userRef = doc(db, 'users', user.uid);
         await updateDoc(userRef, { ticketPurchases: arrayUnion(ticketData) });
 
@@ -100,6 +103,7 @@ const GetTicket = () => {
         
         if (!querySnapshot.empty) {
           const existingDoc = querySnapshot.docs[0];
+          resolvedUid = existingDoc.id;
           const userRef = doc(db, 'users', existingDoc.id);
           await updateDoc(userRef, { ticketPurchases: arrayUnion(ticketData) });
         } else {
@@ -114,8 +118,40 @@ const GetTicket = () => {
             isGuest: true,
             ticketPurchases: [ticketData]
           });
+          resolvedUid = newUserRef.id;
         }
       }
+
+      // ── Also save to separate 'tickets' collection (random doc ID, uid inside) ──
+      await addDoc(collection(db, 'tickets'), {
+        // Ticket Info
+        ticketId: generatedTicketId,
+        ticketType: selectedTicket.id,
+        ticketLabel: selectedTicket.label,
+        quantity,
+        unitPrice: selectedTicket.price,
+        totalPrice: selectedTicket.price * quantity,
+        status: 'pending',
+        purchasedAt: Timestamp.now(),
+
+        // Personal Details
+        name,
+        email: email.toLowerCase(),
+        mobile,
+
+        // Academic Details
+        university,
+        branch,
+        rollNo,
+
+        // Payment Details
+        paymentApp: paymentApp === 'other' ? otherApp.trim() : paymentApp,
+        transactionId: transactionId.trim(),
+
+        // User Reference
+        uid: resolvedUid,
+        isGuest: !isLoggedIn,
+      });
 
       setSuccess('');
       setPaymentApp(''); setOtherApp(''); setTransactionId('');
