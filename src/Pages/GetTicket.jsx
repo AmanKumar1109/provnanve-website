@@ -2,7 +2,7 @@ import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Ticket, Minus, Plus, X, CheckCircle, AlertCircle, Loader, Music, Crown, Users, Copy, Check } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { doc, getDoc, updateDoc, arrayUnion, Timestamp } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, arrayUnion, Timestamp, collection, query, where, getDocs, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import stageMap from '../assets/stage_area_map.png';
 import vdjShaan from '../assets/vdj shan.jpg';
@@ -51,7 +51,6 @@ const GetTicket = () => {
   ];
 
   const openModal = (ticket) => {
-    if (!isLoggedIn) { navigate('/login'); return; }
     setSelectedTicket(ticket);
     setQuantity(1);
     setName(user?.name || '');
@@ -74,7 +73,6 @@ const GetTicket = () => {
     setSubmitting(true); setError('');
     try {
       const generatedTicketId = Math.floor(100000 + Math.random() * 900000).toString();
-      const userRef = doc(db, 'users', user.uid);
       const ticketData = {
         ticketId: generatedTicketId,
         ticketType: selectedTicket.id,
@@ -88,11 +86,36 @@ const GetTicket = () => {
         status: 'pending',
         purchasedAt: Timestamp.now(),
       };
-      await updateDoc(userRef, { ticketPurchases: arrayUnion(ticketData) });
 
-      // Update local auth context
-      const freshSnap = await getDoc(userRef);
-      if (freshSnap.exists() && login) login({ ...user, ...freshSnap.data() });
+      if (isLoggedIn && user?.uid) {
+        const userRef = doc(db, 'users', user.uid);
+        await updateDoc(userRef, { ticketPurchases: arrayUnion(ticketData) });
+
+        // Update local auth context
+        const freshSnap = await getDoc(userRef);
+        if (freshSnap.exists() && login) login({ ...user, ...freshSnap.data() });
+      } else {
+        const q = query(collection(db, 'users'), where('email', '==', email.toLowerCase()));
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+          const existingDoc = querySnapshot.docs[0];
+          const userRef = doc(db, 'users', existingDoc.id);
+          await updateDoc(userRef, { ticketPurchases: arrayUnion(ticketData) });
+        } else {
+          const newUserRef = doc(collection(db, 'users'));
+          await setDoc(newUserRef, {
+            name,
+            email: email.toLowerCase(),
+            mobile,
+            collegeName: university,
+            branch,
+            rollNumber: rollNo,
+            isGuest: true,
+            ticketPurchases: [ticketData]
+          });
+        }
+      }
 
       setSuccess('');
       setPaymentApp(''); setOtherApp(''); setTransactionId('');

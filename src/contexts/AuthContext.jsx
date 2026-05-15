@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase';
 
 const AuthContext = createContext();
 
@@ -31,11 +33,16 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('user', JSON.stringify(userData));
     };
 
-    const logout = () => {
+    const logout = async () => {
         setIsLoggedIn(false);
         setUser(null);
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('user');
+        try {
+            await signOut(auth);
+        } catch (error) {
+            console.error("Error signing out:", error);
+        }
     };
 
     const value = {
