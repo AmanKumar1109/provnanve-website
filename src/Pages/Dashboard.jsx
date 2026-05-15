@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft, User, Mail, Phone, GraduationCap, Hash, Shirt, CheckCircle, Calendar, Building2, LogOut, ShieldCheck, ShieldX, Copy, Check, Trash2, CreditCard, AlertCircle, Loader } from 'lucide-react';
+import { ArrowLeft, User, Mail, Phone, GraduationCap, Hash, Shirt, CheckCircle, Calendar, Building2, LogOut, ShieldCheck, ShieldX, Copy, Check, Trash2, CreditCard, AlertCircle, Loader, Ticket } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
@@ -160,6 +160,8 @@ const Dashboard = () => {
     const pendingPaidEvents = paidEvents.filter(e => e.eventPaymentStatus === 'pending');
     const totalAmountDue = pendingPaidEvents.reduce((acc, curr) => acc + (curr.entryFee || 0), 0);
 
+    const ticketPurchases = currentProfile?.ticketPurchases || [];
+
     return (
         <div className="min-h-screen bg-[#09000f] text-white">
             <nav className="border-b border-white/10 bg-[#0e0018]/80 backdrop-blur-sm px-4 sm:px-6 py-4 flex items-center justify-between gap-2">
@@ -297,6 +299,60 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 )}
+                            </div>
+                        )}
+
+                        {/* ── My Show Tickets ── */}
+                        {ticketPurchases.length > 0 && (
+                            <div className="bg-[#0e0018] border border-fuchsia-500/30 rounded-xl overflow-hidden shadow-[0_0_15px_rgba(217,70,239,0.1)]">
+                                <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-fuchsia-500/20 flex items-center gap-2.5 sm:gap-3 bg-fuchsia-500/5">
+                                    <Ticket className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-fuchsia-400 shrink-0" />
+                                    <h2 className="font-bold text-fuchsia-400 text-sm sm:text-base">My Show Tickets</h2>
+                                </div>
+                                <div className="divide-y divide-white/5">
+                                    {ticketPurchases.map((ticket, idx) => (
+                                        <div key={idx} className="px-4 sm:px-6 py-4 sm:py-5">
+                                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                                <div className="flex items-start sm:items-center gap-3 min-w-0">
+                                                    <div className={`p-2 rounded-lg shrink-0 ${ticket.ticketType === 'vip' ? 'bg-amber-500/15 border border-amber-500/25' : 'bg-purple-500/15 border border-purple-500/25'}`}>
+                                                        <Ticket className={`w-4 h-4 ${ticket.ticketType === 'vip' ? 'text-amber-400' : 'text-purple-400'}`} />
+                                                    </div>
+                                                    <div className="min-w-0 flex-1">
+                                                        <div className="flex items-center gap-2 flex-wrap">
+                                                            <span className="text-white text-sm font-semibold">{ticket.ticketLabel || (ticket.ticketType === 'vip' ? 'VIP Entry Pass' : 'Normal Entry Pass')}</span>
+                                                            <span className={`text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider ${ticket.ticketType === 'vip' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-purple-500/20 text-purple-400 border border-purple-500/30'}`}>
+                                                                {ticket.ticketType === 'vip' ? 'VIP' : 'Normal'}
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex items-center gap-3 mt-1.5 text-[11px] sm:text-xs text-white/40">
+                                                            <span>Qty: <span className="text-white/70 font-medium">{ticket.quantity}</span></span>
+                                                            <span>•</span>
+                                                            <span>₹{ticket.unitPrice} × {ticket.quantity}</span>
+                                                            {ticket.ticketId && <>
+                                                                <span>•</span>
+                                                                <span className="text-white/30">ID: <span className="text-fuchsia-400 font-mono font-bold select-all">{ticket.ticketId}</span></span>
+                                                            </>}
+                                                            {ticket.transactionId && <>
+                                                                <span>•</span>
+                                                                <span className="text-white/30">TXN: <span className="text-white/50 font-mono">{ticket.transactionId}</span></span>
+                                                            </>}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t border-white/5 sm:border-t-0">
+                                                    <span className={`text-sm font-bold ${ticket.ticketType === 'vip' ? 'text-amber-400' : 'text-fuchsia-400'}`}>₹{ticket.totalPrice}</span>
+                                                    <span className={`text-[9px] sm:text-[10px] font-bold px-2 py-0.5 sm:py-1 rounded-md uppercase tracking-wider ${
+                                                        ticket.status === 'verified' ? 'bg-green-500/20 text-green-400' :
+                                                        ticket.status === 'reviewing' ? 'bg-blue-500/20 text-blue-400' :
+                                                        'bg-yellow-500/20 text-yellow-400'
+                                                    }`}>
+                                                        {ticket.status === 'verified' ? 'Verified' : ticket.status === 'reviewing' ? 'Reviewing' : 'Pending'}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         )}
 

@@ -106,26 +106,15 @@ const Hero = () => {
         {/* Buttons */}
         <div className="flex flex-row items-center justify-center gap-3 sm:gap-6">
 
-          {/* Register / Dashboard */}
-          {isLoggedIn ? (
-            <button
-              onClick={() => navigate('/dashboard')}
-              className="group relative flex items-center justify-center gap-2 bg-[#7c3aed] text-white px-5 sm:px-8 py-3 rounded-xl font-semibold text-base sm:text-lg transition-all w-auto overflow-hidden hover:scale-105 active:scale-95 hover:shadow-[0_0_25px_rgba(124,58,237,0.8)]"
-            >
-              <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:animate-shine" />
-              <LayoutDashboard className="w-5 h-5 z-10" />
-              <span className="z-10">Dashboard</span>
-            </button>
-          ) : (
-            <button
-              onClick={() => navigate('/register')}
-              className="group relative flex items-center justify-center gap-2 bg-[#7c3aed] text-white px-5 sm:px-8 py-3 rounded-xl font-semibold text-base sm:text-lg transition-all w-auto overflow-hidden hover:scale-105 active:scale-95 hover:shadow-[0_0_25px_rgba(124,58,237,0.8)]"
-            >
-              <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:animate-shine" />
-              <User className="w-5 h-5 z-10" />
-              <span className="z-10">Register</span>
-            </button>
-          )}
+          {/* Get Ticket */}
+          <button
+            onClick={() => navigate('/get-ticket')}
+            className="group relative flex items-center justify-center gap-2 bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-5 sm:px-8 py-3 rounded-xl font-semibold text-base sm:text-lg transition-all w-auto overflow-hidden hover:scale-105 active:scale-95 hover:shadow-[0_0_30px_rgba(217,70,239,0.7)]"
+          >
+            <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:animate-shine" />
+            <Ticket className="w-5 h-5 z-10" />
+            <span className="z-10">Get Ticket</span>
+          </button>
 
           {/* Brochure */}
           <a
@@ -197,56 +186,8 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* ── Celebrity Night Passes Ticket Banner ── */}
-        <div className="mt-6 w-full max-w-2xl mx-auto px-4">
-          <div
-            className="group relative flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:p-6 rounded-2xl border transition-all duration-300 hover:scale-[1.02]"
-            style={{
-              background: 'linear-gradient(135deg, rgba(217,70,239,0.12), rgba(147,51,234,0.08), rgba(0,0,0,0.6))',
-              borderColor: 'rgba(217,70,239,0.3)',
-              boxShadow: '0 0 40px rgba(217,70,239,0.15), inset 0 0 20px rgba(147,51,234,0.05)',
-              backdropFilter: 'blur(20px)',
-            }}
-          >
-            {/* Top accent glow line */}
-            <div className="absolute top-0 left-10 right-10 h-[2px] rounded-full bg-gradient-to-r from-transparent via-fuchsia-500 to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
 
-            {/* Left side: Event info */}
-            <div className="flex items-start gap-3 sm:gap-4 text-left w-full sm:w-auto">
-              <div className="p-2.5 sm:p-3 rounded-xl bg-gradient-to-br from-fuchsia-500/20 to-purple-600/20 border border-fuchsia-500/30 text-fuchsia-400 shrink-0 group-hover:scale-110 transition-transform duration-300">
-                <Ticket className="w-5 h-5 sm:w-6 sm:h-6 animate-pulse" />
-              </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="text-[9px] sm:text-[10px] font-black tracking-[0.2em] uppercase bg-fuchsia-500/20 text-fuchsia-300 px-2 py-0.5 rounded border border-fuchsia-500/30">
-                    Celebrity Night
-                  </span>
-                  <span className="text-[11px] sm:text-xs font-semibold text-white/60">
-                    15th May
-                  </span>
-                </div>
-                <h4 className="text-sm sm:text-base font-bold text-white tracking-wide mt-1">
-                  Comedy Show &amp; DJ Night Passes
-                </h4>
-                <p className="text-[11px] sm:text-xs text-white/70 mt-0.5">
-                  Purchase at <span className="text-fuchsia-300 font-semibold">College Entry Gate</span>
-                </p>
-              </div>
-            </div>
 
-            {/* Right side: Pricing badges */}
-            <div className="flex flex-row sm:flex-col gap-2 w-full sm:w-auto justify-center sm:justify-end shrink-0 border-t sm:border-t-0 sm:border-l border-white/10 pt-3 sm:pt-0 sm:pl-5 mt-1 sm:mt-0">
-              <div className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 px-3 py-1 sm:py-1.5 rounded-lg flex-1 sm:flex-initial">
-                <span className="text-[10px] font-bold text-white/60 uppercase tracking-wider">VIP</span>
-                <span className="text-xs sm:text-sm font-black text-white/90">₹300</span>
-              </div>
-              <div className="flex items-center justify-center gap-2 bg-amber-500/10 border border-amber-500/30 px-3 py-1 sm:py-1.5 rounded-lg flex-1 sm:flex-initial">
-                <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">VVIP</span>
-                <span className="text-xs sm:text-sm font-black text-amber-300">₹500</span>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <style>{`
           @keyframes heroShimmer {

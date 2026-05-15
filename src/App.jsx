@@ -14,6 +14,7 @@ const Register = lazy(() => import('./Pages/Register'));
 const Login = lazy(() => import('./Pages/Login'));
 const Dashboard = lazy(() => import('./Pages/Dashboard'));
 const Committee = lazy(() => import('./Pages/Committee'));
+const GetTicket = lazy(() => import('./Pages/GetTicket'));
 
 
 // Simple loading fallback
@@ -47,6 +48,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/committee" element={<Committee />} />
+              <Route path="/get-ticket" element={<GetTicket />} />
             </Routes>
           </Suspense>
         </PageTransition>
